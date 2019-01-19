@@ -10,9 +10,9 @@ def newSwipe(ID_1, ID_2) 												   #Update swipe occurs, giving a first and
 	if ID_1 in DiG.neighbors(ID_2)
 		G.add_edge(ID_1, ID_2)
 	List = cliques_containing_node(G, nodes=ID_1)						
-	for j in List:
-		if len(List[j]) is 3
-			for i in List[0]:
+	for j in List:															#Checks the size of each clique, ignore if not of size n
+		if len(j) is n
+			for i in j:														#removes nodes from the clique
 				G.remove_node(i)
 				DiG.remove_node(i)
 			#List[0] is added to the database
