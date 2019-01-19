@@ -47,8 +47,8 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
-    
-def logout(request):
+
+def logout_view(request):
 	logout(request)
 	return redirect('index');
 
