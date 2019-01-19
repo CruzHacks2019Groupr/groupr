@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     url(r'^accounts/profile/$', views.redir, name='redir'),
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^chat/$', views.chat, name='chat'),
     # ex: /notes/5/
