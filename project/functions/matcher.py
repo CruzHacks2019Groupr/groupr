@@ -3,12 +3,12 @@ import networkx as nx
 import itertools
 from Event import Event 
 
-def findPerfectGroup(Graph,ID_1,ID_2) 												#Update swipe occurs, giving a first and second ID
-	List = cliques_containing_node(Graph.G, nodes=[ID_1,ID_2])						
+def findPerfectGroup(Event,node, size) 												#Update swipe occurs, giving a first and second ID
+	List = cliques_containing_node(Event.G, node)						
 	for j in List:															#Checks the size of each clique, ignore if not of size n
-		if len(j) is n
+		if len(j) is size
 			for i in j:														#removes nodes from the clique
-				Graph.remove_user(i)
+				Event.remove_user(i)
 			return j; 															#break when the first valid clique is found
 
 def forceGroups() #Makes groups based on current criterium
