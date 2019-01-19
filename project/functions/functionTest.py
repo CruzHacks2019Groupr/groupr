@@ -28,7 +28,8 @@ def event_test():
 		testEvent.add_edge(x[0],x[1])
 
 	print(testEvent.export_users())
-	print(testEvent.export_edges())
+	print(testEvent.export_edges_directed())
+	print(testEvent.export_edges_undirected())
 
 	testEvent.visualize();
 

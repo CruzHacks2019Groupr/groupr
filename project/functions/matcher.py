@@ -2,8 +2,8 @@
 import networkx as nx
 import itertools
 
+""" #OBSOLETE, just add edge directly to Event
 def newSwipe(ID_1, ID_2) 												   #Update swipe occurs, giving a first and second ID
-
 	#DiG is digraph from database
 	#G is undirected graph from database
 	DiG.add_edge(ID_1, ID_2)
@@ -17,6 +17,7 @@ def newSwipe(ID_1, ID_2) 												   #Update swipe occurs, giving a first and
 				DiG.remove_node(i)
 			break
 			#List[0] is added to the database
+"""
 
 def forceGroups() #Makes groups based on current criterium
 
