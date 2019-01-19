@@ -16,9 +16,31 @@
 <body>
 
 <div id="vue-div" v-show=false>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><img src="{% static 'project/logo.png' %}" style="max-width: 200px;"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Login</a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
     <br><br><br><br>
     {% block content %}{% endblock %}
-    <br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <p><center>This Project was created for a hackathon in 36 hours by some nerds</center></p>
 </div>
 
 </body>
