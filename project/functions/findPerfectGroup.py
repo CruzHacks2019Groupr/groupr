@@ -15,6 +15,7 @@ def newSwipe(ID_1, ID_2) 												   #Update swipe occurs, giving a first and
 			for i in j:														#removes nodes from the clique
 				G.remove_node(i)
 				DiG.remove_node(i)
+			break
 			#List[0] is added to the database
 
 def forceGroups() #Makes groups based on current criterium
