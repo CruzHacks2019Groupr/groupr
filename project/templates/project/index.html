@@ -3,10 +3,20 @@
 {% block title %}Groupr{% endblock %}
 {% block head %}<script type="text/javascript" src="static/project/main.js"></script> {% endblock %}
 {% block content %}
-<br><br><br><br>
+<br><br>
     <center>
-        <h1 class="center">Website Test</h1>
-        <h3 class="center">nothing here yet...</h3>
+    	{% if user.is_authenticated %}
+    	<h1>You are logged in</h1>
+    	<br>
+    	<h3>other user: <span v-bind="otherUsr"></span></h3>
+    	<br>
+    	<button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc">test</button>
+    	<button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
+    	<button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
+    	{% else %}
+        <h1 class="center">You are not logged in</h1>
+        <h3 class="center">pls log in</h3>
+        {% endif %}
     </center>
     <br><br>
 {% endblock %}

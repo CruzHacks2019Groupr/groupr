@@ -12,6 +12,14 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^chat/$', views.chat, name='chat'),
     url(r'^ajax/chat/$', views.broadcast),
+
+
+    #API
+    url(r'^testFunc/$', views.testFunc, name='testFunc'),
+    url(r'^accept/$', views.accept, name='accept'),
+    url(r'^decline/$', views.decline, name='decline'),
+    url(r'^getNextMatch/$', views.getNextMatch, name='getNextMatch'),
+
     # ex: /notes/5/
     #path('<int:note_id>/', views.detail, name='detail'),
     #path('get_notes/', views.get_notes, name='get_notes'),
