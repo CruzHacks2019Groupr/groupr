@@ -1,4 +1,5 @@
 from Event import Event
+from matcher import *
 
 def event_test():
 	numNodes = int(input("num nodes?"))
@@ -31,7 +32,8 @@ def event_test():
 	print(testEvent.export_edges_directed())
 	print(testEvent.export_edges_undirected())
 
-	testEvent.visualize();
+	print("Finding perfect matches")
+	print("group: " + str(findPerfectGroup(testEvent, 1, 3)))
 
 if __name__ == "__main__":
     event_test()
