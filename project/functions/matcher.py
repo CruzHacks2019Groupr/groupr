@@ -3,19 +3,18 @@ import networkx as nx
 import itertools
 from Event import Event 
 
-def findPerfectGroup(Graph,ID_1,ID_2) 												#Update swipe occurs, giving a first and second ID
+def findPerfectGroup(Graph,ID_1,ID_2) 									   #Update swipe occurs, giving a first and second ID
 	List = cliques_containing_node(Graph.G, nodes=[ID_1,ID_2])						
-	for j in List:															#Checks the size of each clique, ignore if not of size n
+	for j in List:														   #Checks the size of each clique, ignore if not of size n
 		if len(j) is n
-			for i in j:														#removes nodes from the clique
+			for i in j:													   #removes nodes from the clique
 				Graph.remove_user(i)
-			return j; 															#break when the first valid clique is found
+			return j													   #break when the first valid clique is found
 
-def forceGroups() #Makes groups based on current criterium
+def forceGroups(DiGraph) #Makes groups based on current criterium
 
-	possibleGroups = list(itertools.combinations(list(DiG), n))            #All combinations of the Node list in groups of length n are stored in list
-	i = 0
-	                                                                       #Nested loops build a combination of groups (disjoint is used to make sure the same person doesnt end up in a group twice)
+	possibleGroups = list(itertools.combinations(list(DiGraph), n))        #All combinations of the Node list in groups of length n are stored in list
+	i = 0                                                                  #Nested loops build a combination of groups (disjoint is used to make sure the same person doesnt end up in a group twice)
 	while not set(possibleGroups[0]).isdisjoint(possibleGroups[i]):
 		groupCombo[i].append(possibleGroups[i])                            #Add first group
 		scoreList[i] += computeScore(possibleGroups[i])                    #Add score of first group
@@ -34,8 +33,14 @@ def forceGroups() #Makes groups based on current criterium
 		if scoreList[k] > scoreList[temp]
 			temp = k
 
-	for k in groupCombo[temp]:                                             #Groups from combo are added
-		#groupCombo[temp][k] is added to the database
+	for k in groupCombo[temp]:                                             #Removes groups from graph
+		for l in groupCombo[temp][k]:
+			Digraph.remove_user(groupCombo[temp][k][l])
+
+	groupCombo[temp].append(list(Digraph))
+
+	return groupCombo[temp]
+
 	
 def computeScore(L) 													   #For a given group computes the score, which is the number edges
 
