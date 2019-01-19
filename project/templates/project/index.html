@@ -1,19 +1,22 @@
-<!-- development version, includes helpful console warnings -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script
-              src="https://code.jquery.com/jquery-3.3.1.min.js"
-              integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-              crossorigin="anonymous"></script>
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'project/bootstrap.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'project/style.css' %}">
-<script type="text/javascript" src="{% static 'project/main.js' %}"></script>
+{% extends 'base.html' %}
 
-<div id="vue-div" v-show=false>
-    <br><br><br><br>
+{% block title %}Groupr{% endblock %}
+{% block head %}<script type="text/javascript" src="static/project/main.js"></script> {% endblock %}
+{% block content %}
+<br><br>
     <center>
-        <h1 class="center">Website Test</h1>
-        <h3 class="center">nothing here yet...</h3>
+    	{% if user.is_authenticated %}
+    	<h1>You are logged in</h1>
+    	<br>
+    	<h3>other user: <span v-bind="otherUsr"></span></h3>
+    	<br>
+    	<button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc">test</button>
+    	<button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
+    	<button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
+    	{% else %}
+        <h1 class="center">You are not logged in</h1>
+        <h3 class="center">pls log in</h3>
+        {% endif %}
     </center>
     <br><br>
-</div>
+{% endblock %}

@@ -38,6 +38,36 @@ var app = function() {
         console.log("title: " + self.vue.noteTitle)
     }
 
+    self.testFunc = function(){
+        var request = {
+        }
+        var url = "/testFunc" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+        })
+    };
+
+    self.accept = function(){
+        var request = {
+        }
+        var url = "/accept" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+        })
+    };
+
+    self.decline = function(){
+        var request = {
+        }
+        var url = "/decline" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+        })
+    };
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -46,19 +76,24 @@ var app = function() {
         data: {
             //booleans
             page_loaded: false,
-            notes_list: [],
-            noteTitle: "",
-            noteBody: "",
+            otherUsr: "",
 
         },
         methods: {
             add: self.add,
             submit: self.submit,
+            accept: self.accept,
+            decline: self.decline,
+            testFunc: self.testFunc,
+            getNextMatch: self.getNextMatch,
         }
 
     });
 
     //self.load();
+
+
+
     $("#vue-div").show();
 
     return self;
