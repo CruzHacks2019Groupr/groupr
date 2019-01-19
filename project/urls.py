@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^chat/$', views.chat, name='chat'),
+    url(r'^ajax/chat/$', views.broadcast),
     # ex: /notes/5/
     #path('<int:note_id>/', views.detail, name='detail'),
     #path('get_notes/', views.get_notes, name='get_notes'),
