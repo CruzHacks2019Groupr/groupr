@@ -14,6 +14,10 @@ class Event:
 		self.DG.add_node(userId)
 		self.G.add_node(userId)
 
+	def remove_user(self, userId):
+		self.DG.remove_node(userId)
+		self.G.remove_node(userId)
+
 	def add_edge(self, sourceUser, destinationUser):
 		self.DG.add_edge(sourceUser, destinationUser)
 
