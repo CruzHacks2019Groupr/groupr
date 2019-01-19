@@ -52,6 +52,22 @@ def logout_view(request):
 	logout(request)
 	return redirect('index');
 
+def testFunc(request):
+    print("testFunc")
+    return HttpResponse("ok")
+
+def accept(request):
+    print("accept")
+    return HttpResponse("ok")
+
+def decline(request):
+    print("decline")
+    return HttpResponse("ok")
+
+def getNextMatch(request):
+    print("getNextMatch")
+    return HttpResponse("ok")
+
 """
 Demo:
 def post_note(request):
