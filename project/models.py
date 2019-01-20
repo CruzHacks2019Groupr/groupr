@@ -13,11 +13,30 @@ class Test(models.Model):
 #class User(AbstractUser):
 #	bio = models.TextField(max_length=500, blank=True)
 #	birth_date = models.DateField(null=True, blank=True)
-	#pic = models.ImageField(null=True)
+#	pic = models.ImageField(null=True)
 
-#class Event(models.Model):
-#	name = models.TextField(max_length=20)
-#	group_size = models.IntegerField()
+class Event(models.Model):
+	name = models.TextField(max_length=50)
+	group_size = models.IntegerField()
+	di = models.OneToOneField(
+        Graph,
+        on_delete=models.PROTECT,
+    )
+	undi = models.OneToOneField(
+        Graph,
+        on_delete=models.PROTECT,
+    )
+	users = models.CharField(max_length=5000, default='')
+	creator = models.CharField(max_length=150, blank=False)
+	userson = models.CharField(max_length=5000, default='')
+
+	def getUsers():
+		a = users.split(' ')
+
+	def getUsersOn():
+		a = userson.split(' ')
+
+
 
 
 class Graph(models.Model):
