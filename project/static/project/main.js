@@ -80,6 +80,17 @@ var app = function() {
         })
     };
 
+    self.loadData = function(){
+        var request = {
+        }
+        var url = "/loadData" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+            self.vue.events = data.events
+        })
+    };
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -89,6 +100,8 @@ var app = function() {
             //booleans
             page_loaded: false,
             suggested_usr_name: "",
+            logged_in: true,
+            events: [],
 
         },
         methods: {
@@ -97,13 +110,14 @@ var app = function() {
             decline: self.decline,
             testFunc: self.testFunc,
             getNextMatch: self.getNextMatch,
+            loadData: self.loadData,
         }
 
     });
 
     //self.load();
     self.getNextMatch()
-
+    self.loadData()
 
     $("#vue-div").show();
 

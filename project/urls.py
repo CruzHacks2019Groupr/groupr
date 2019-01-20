@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^accept/$', views.accept, name='accept'),
     url(r'^decline/$', views.decline, name='decline'),
     url(r'^getNextMatch/$', views.getNextMatch, name='getNextMatch'),
+    url(r'^loadData/$', views.loadData, name='loadData'),
+    
 
     # ex: /notes/5/
     #path('<int:note_id>/', views.detail, name='detail'),

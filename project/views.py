@@ -114,6 +114,14 @@ def decline(request):
     response_data['success'] = True
     return (JsonResponse(response_data))
 
+def loadData(request):
+    print("Load Data")
+    response_data = {}
+    response_data['success'] = True
+    response_data['events'] = (('YerbaHacks', 1), ('My Group', 2))
+    response_data['Group'] = None
+    return (JsonResponse(response_data))
+
 def getNextMatch(request):
     print("getNextMatch")
     response_data = {}
