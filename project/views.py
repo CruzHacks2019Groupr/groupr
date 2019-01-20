@@ -2,6 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.template import loader
 from django.utils import timezone
 import requests, random, string, re
@@ -124,7 +125,7 @@ def getNextMatch(request):
         if usrs[i] == request.user.id:
             dum = i
     usrsOn = Event.objects.get(id=eventID).getUsersOn()
-    #Usr = User.objects.get(id=usrsOn[dum])
+    Usr = User.objects.get(id=usrsOn[dum])
 
     response_data['suggested_usr_name'] = randomword(5) + " " + randomword(8)
     #response_data['suggested_usr_name'] = Usr.username
