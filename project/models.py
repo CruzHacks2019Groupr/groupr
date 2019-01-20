@@ -94,7 +94,7 @@ class Event(models.Model):
 		if len(self.users) == 0:
 			print(self.users)
 			self.users = self.users + str(id)
-			self.userson = self.userson + str(0)
+			self.userson = self.userson + str(-1)
 		else:
 			self.users = self.users + " " + str(id)
 			self.userson = self.userson + " " + str(0)
