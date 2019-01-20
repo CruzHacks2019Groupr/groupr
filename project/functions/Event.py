@@ -18,7 +18,7 @@ class Event:
 			self.add_user(user);
 
 		for edge in edges:
-			self.add_edge(edge);
+			self.add_edge(edge[0], edge[1]);
 
 	def add_user(self, userId):
 		self.DG.add_node(userId)

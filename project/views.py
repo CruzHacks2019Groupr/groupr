@@ -83,7 +83,7 @@ def testFunc(request):
     current_user = request.user
     print ("Current User ID: ", current_user.id)
     print("testFunc")
-
+    swipr.makeConnection(random.randint(0,20), random.randint(0,20))
 
     response_data = {}
     response_data['success'] = True
