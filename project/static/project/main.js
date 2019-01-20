@@ -108,6 +108,7 @@ var app = function() {
         var url = "/loadData" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
+            $("#vue-div").show();
             console.log(data)
             self.vue.event_names = data.event_names
             self.vue.event_ids = data.event_ids
@@ -150,7 +151,7 @@ var app = function() {
     //self.getNextMatch()
     
 
-    $("#vue-div").show();
+    
 
     return self;
 };
