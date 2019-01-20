@@ -5,7 +5,10 @@ class Search():
 		events = Event.objects.all()
 		myEvents = []
 		for x in events:
-			for i in x.getUsers():
+			usrs = x.getUsers()
+			if usrs is None:
+				return [] 
+			for i in usrs:
 				if(i == userID):
 					myEvents.append(x.id)
 		return myEvents
