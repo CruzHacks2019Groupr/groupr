@@ -18,7 +18,7 @@ from .searchUser import Search
 from . import BuildGroup
 from django.http import QueryDict
 #from django.models.User import User
-from .functions import reccomend
+from .functions import reccomendNext
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
