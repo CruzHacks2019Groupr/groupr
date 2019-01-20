@@ -47,7 +47,13 @@ var app = function() {
     };
 
     self.accept = function(){
+        var ev = -1
+        if (self.vue.curr_event != -1)
+            ev = self.vue.events[self.vue.curr_event][1]
+
         var request = {
+            "otherID": self.vue.suggested_usr_id,
+             "eventID": ev,
         }
         var url = "/accept" + "?" + $.param(request);
 
@@ -70,13 +76,19 @@ var app = function() {
     };
 
     self.getNextMatch = function(){
+        var ev = -1
+        if (self.vue.curr_event != -1)
+            ev = self.vue.events[self.vue.curr_event][1]
+
         var request = {
+                "eventID": ev,
         }
         var url = "/getNextMatch" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
             self.vue.suggested_usr_name =  data.suggested_usr_name
+            self.vue.suggested_usr_id =  data.suggested_usr_id
         })
     };
 
@@ -88,6 +100,8 @@ var app = function() {
         $.getJSON(url, function (data) {
             console.log(data)
             self.vue.events = data.events
+            self.vue.curr_event = data.curr_event
+            self.getNextMatch()
         })
     };
 
@@ -100,8 +114,10 @@ var app = function() {
             //booleans
             page_loaded: false,
             suggested_usr_name: "",
+            suggested_usr_id: -1,
             logged_in: true,
             events: [],
+            curr_event: -1,
 
         },
         methods: {
@@ -116,8 +132,9 @@ var app = function() {
     });
 
     //self.load();
-    self.getNextMatch()
     self.loadData()
+    //self.getNextMatch()
+    
 
     $("#vue-div").show();
 

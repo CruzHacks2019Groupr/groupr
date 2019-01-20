@@ -51,8 +51,7 @@ class Graph(models.Model):
 
 class Event(models.Model):
 	def __str__(self):
-		print(self.id)
-		pass
+		return str(self.id)
 
 	name = models.TextField(max_length=50)
 	group_size = models.IntegerField()
@@ -74,10 +73,16 @@ class Event(models.Model):
 
 	def getUsers(self):
 		a = self.users.split(' ')
+		if(len(a) == 0):
+			return None
+		for i in range(len(a)):
+			a[i] = int(a[i])
 		return a
 
 	def getUsersOn(self):
 		a = self.userson.split(' ')
+		for i in range(len(a)):
+			a[i] = int(a[i])
 		return a
 
 	def setUserOn(self, pos, num):
