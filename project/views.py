@@ -9,10 +9,12 @@ import requests, random, string, re
 from django.core import serializers
 import json
 from .functions import demoScript
+from .functions import matcher
 from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
 from .searchUser import Search
+from . import BuildGroup
 #from django.models.User import User
 
 
@@ -103,8 +105,27 @@ def testFunc(request):
 
 def accept(request):
     print("accept")
-    swipr.makeConnection(request.user.id, 4)
-    response_data = {}
+
+    mainUser = 1
+    acceptedUser = 2
+    eventID = 1
+    
+    targetEventModel = EventModel.objects.get(id=eventID)
+    targetEvent = Event(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
+
+    targetEvent.add_edge(mainUser, acceptedUser)
+
+    groupUsers = findPerfectGroup(targetEvent, mainUser, targetEventModel.groupSize)
+
+    group = 0;
+    groupId = 0;
+
+    if groupUsers != None:
+        group = buildGroup(targetEventModel.id, groupUsers)
+
+    groupId = group.id
+
+    response_data = {groupId}
     response_data['success'] = True
     return (JsonResponse(response_data))
 

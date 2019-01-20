@@ -17,6 +17,10 @@ def demo():
 	#Creates demoUsers and their associated profiles, then adds them to the demoEvent
 	demoUsers = []
 
+	demoEventModel.addUser(__MAINUSERID__);
+	demoEvent.add_user(__MAINUSERID__);
+
+
 	for userNum in range(__TOTALUSERS__):
 		demoUsers.append(User.objects.create_user("User#" + str(userNum), password='foobar'))
 		demoEventModel.addUser(demoUsers[userNum].id);
