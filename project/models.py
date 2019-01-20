@@ -46,11 +46,13 @@ class Event(models.Model):
         Graph,
         on_delete=models.PROTECT,
         related_name = 'di',
+        default=Graph(),
     )
 	undi = models.OneToOneField(
         Graph,
         on_delete=models.PROTECT,
         related_name = 'undi',
+        default=Graph(),
     )
 	users = models.CharField(max_length=5000, default="", blank = True) #optional
 	creator = models.CharField(max_length=150, blank=False)

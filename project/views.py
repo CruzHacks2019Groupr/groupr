@@ -9,6 +9,8 @@ from django.core import serializers
 import json
 from .functions import test
 from pusher import Pusher
+from .models import Event
+
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -47,6 +49,17 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+@login_required(login_url='/login/')
+def event(request):
+    if request.method == 'POST':
+        print(request.body)
+        #id = match(r"id=")
+        body_p1 = request.body.split('&')
+
+        e = Event(name = request.body.event, group_size = request.body.size, creator = request.user.username)
+        e.save()
+    return render(request, 'project/event.html')
 
 
 
