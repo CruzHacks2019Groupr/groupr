@@ -4,12 +4,13 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.utils import timezone
-import requests, random, string
+import requests, random, string, re
 from django.core import serializers
 import json
 from .functions import test
 from pusher import Pusher
-from .models import Event
+from .forms import EventForm
+from .models import Graph
 
 
 from django.contrib.auth import login, authenticate, logout
@@ -53,13 +54,20 @@ def signup(request):
 @login_required(login_url='/login/')
 def event(request):
     if request.method == 'POST':
-        print(request.body)
-        #id = match(r"id=")
-        body_p1 = request.body.split('&')
-
-        e = Event(name = request.body.event, group_size = request.body.size, creator = request.user.username)
-        e.save()
-    return render(request, 'project/event.html')
+        form = EventForm(request.POST)
+        if form.is_valid():
+            e = form.save(commit=False)
+            e.creator = request.user.username
+            a = Graph()
+            b = Graph()
+            a.save()
+            b.save()
+            e.di = a
+            e.undi = b
+            e.save()
+    else:
+        form = EventForm()
+    return render(request, 'project/event.html', {'form':form})
 
 
 

@@ -2,10 +2,9 @@
 
 {% block content %}
   <h2>Create Event</h2>
-  <form method="post">
+  <form action='/event/' method="post">
     {% csrf_token %}
-    Event Name: <input type="text" name="event"><br>
-    Group Size: <input type="text" name="size"><br>
-    <button type="submit">Sign up</button>
+    {{ form }}
+    <button type="submit">Submit Event</button>
   </form>
 {% endblock %}

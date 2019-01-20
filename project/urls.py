@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^chat/$', views.chat, name='chat'),
-    url(r'^event/$', views.event, name='chat'),
+    url(r'^event/$', views.event, name='event'),
     url(r'^ajax/chat/$', views.broadcast),
 
 
