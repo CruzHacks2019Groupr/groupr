@@ -2,7 +2,7 @@ from .models import Event, Groups
 
 class Search():
 	def getUserEvents(userID):
-		events = Event.objects.All()
+		events = Event.objects.all()
 		myEvents = []
 		for x in events:
 			for i in x.getUsers():

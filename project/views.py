@@ -12,7 +12,9 @@ from .functions import demoScript
 from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
+from .models import Event
 from .searchUser import Search
+from django.http import QueryDict
 #from django.models.User import User
 
 
@@ -88,7 +90,7 @@ def logout_view(request):
     logout(request)
     response_data = {}
     response_data['success'] = True
-    return (JsonResponse(response_data))	#all of these functions are returning this JSONresponse because
+    redirect('index')	#all of these functions are returning this JSONresponse because
     										#it makes it easy to confirm delivery on the client-side
 
 def testFunc(request):
@@ -101,42 +103,69 @@ def testFunc(request):
     response_data['success'] = True
     return (JsonResponse(response_data))
 
+@login_required(login_url='/login/')
 def accept(request):
     print("accept")
+    info = request.GET.dict()
+    print(info)
+
+    eventID = int(info.get('eventID'))
+    otherUserId = int(info.get('otherID'))
+    userId = request.user.id
     swipr.makeConnection(request.user.id, 4)
     response_data = {}
     response_data['success'] = True
     return (JsonResponse(response_data))
 
+@login_required(login_url='/login/')
 def decline(request):
     print("decline")
     response_data = {}
     response_data['success'] = True
     return (JsonResponse(response_data))
 
+@login_required(login_url='/login/')
 def loadData(request):
     print("Load Data")
     response_data = {}
     response_data['success'] = True
-    response_data['events'] = (('YerbaHacks', 1), ('My Group', 2))
+    evID = Search.getUserEvents(request.user.id)
+    evName = []
+    for i in evID:
+        evName.append(Event.objects.get(id=i).name)
+    l = []
+    for x in range(len(evID)):
+        l.append((evName[x],evID[x]))
+    events = tuple(l)
+    curr = -1
+    if(len(events) != 0):
+        curr = 0
+    response_data['events'] = events
+    response_data['curr_event'] = curr
     response_data['Group'] = None
     return (JsonResponse(response_data))
 
+@login_required(login_url='/login/')
 def getNextMatch(request):
     print("getNextMatch")
     response_data = {}
-    #impliment real code here
-    eventID = 1
-    usrs = Event.objects.get(id=eventID).getUsers()
-    dum = 0
-    for i in range(len(usrs)):
-        if usrs[i] == request.user.id:
-            dum = i
-    usrsOn = Event.objects.get(id=eventID).getUsersOn()
-    Usr = User.objects.get(id=usrsOn[dum])
-
-    response_data['suggested_usr_name'] = randomword(5) + " " + randomword(8)
-    #response_data['suggested_usr_name'] = Usr.username
+    event = request.GET.dict()
+    event = event.get('eventID')
+    print(event)
+    if (event != -1):
+        usrs = Event.objects.get(id=event).getUsers()
+        dum = 0
+        for i in range(len(usrs)):
+            if usrs[i] == request.user.id:
+                dum = i
+        usrsOn = Event.objects.get(id=event).getUsersOn()
+        Usr = User.objects.get(id=usrs[usrsOn[dum]])
+        #response_data['suggested_usr_name'] = randomword(5) + " " + randomword(8)
+        response_data['suggested_usr_name'] = Usr.username
+        response_data['suggested_usr_id'] = Usr.id
+    else:
+        response_data['suggested_usr_name'] = ""
+        response_data['suggested_usr_id'] = -1
 
     return (JsonResponse(response_data))
 
