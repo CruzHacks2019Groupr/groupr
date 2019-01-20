@@ -66,7 +66,7 @@ def event(request):
             a.save()
             b.save()
             e.di = a
-            #e.undi = b
+            e.undi = b
             e.save()
     else:
         form = EventForm()
