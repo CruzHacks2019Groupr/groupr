@@ -18,7 +18,7 @@ from .searchUser import Search
 from . import BuildGroup
 from django.http import QueryDict
 #from django.models.User import User
-from .functions import reccomendNext
+from .functions.reccomend import reccomendNext
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -134,7 +134,7 @@ def accept(request):
 
     response_data = {groupId}
  
-    reccomendNext(eventID, mainUser)
+    reccomendNext(targetEventModel, mainUser)
 
     response_data['success'] = True
     return (JsonResponse(response_data))
@@ -147,7 +147,10 @@ def decline(request):
     eventID = int(info.get('eventID'))
     mainUser = request.user.id
 
-    reccomendNext(eventID, mainUser)
+    targetEventModel = EventModel.objects.get(id=eventID)
+    targetEvent = Event(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
+
+    reccomendNext(targetEventModel, mainUser)
 
     response_data['success'] = True
     return (JsonResponse(response_data))
