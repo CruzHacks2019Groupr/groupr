@@ -103,7 +103,8 @@ var app = function() {
 
         $.getJSON(url, function (data) {
             console.log(data)
-            self.vue.events = data.events
+            self.vue.event_names = data.event_names
+            self.vue.event_ids = data.event_ids
             self.vue.curr_event = data.curr_event
             self.getNextMatch()
             self.vue.logged_in = true
@@ -121,7 +122,8 @@ var app = function() {
             suggested_usr_name: "",
             suggested_usr_id: -1,
             logged_in: false,
-            events: [],
+            event_names: [],
+            event_ids: [],
             curr_event: -1,
 
         },

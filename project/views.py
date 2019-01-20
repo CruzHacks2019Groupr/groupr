@@ -161,19 +161,15 @@ def loadData(request):
     response_data['success'] = True
     evID = Search.getUserEvents(request.user.id)
     evName = []
-    events = []
     print(evID)
     for i in evID:
         evName.append(Event.objects.get(id=i).name)
-        events.append((Event.objects.get(id=i).name), i)
-    l = []
-    for x in range(len(evID)):
-        l.append((evName[x],evID[x]))
-    
+
     curr = -1
-    if(len(events) != 0):
+    if(len(evID) != 0):
         curr = 0
-    response_data['events'] = events
+    response_data['event_ids'] = evID
+    response_data['event_names'] = evName
     response_data['curr_event'] = curr
     response_data['Group'] = None
     return (JsonResponse(response_data))
