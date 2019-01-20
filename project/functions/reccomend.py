@@ -1,15 +1,15 @@
-#TODO Import Database interface 
+from project.models import Event
 def reccomendNext(userID):
-	e = Event():
-	x = e.users.index(userID):
-	y = e.userOn(x):
-	if y>=e.groupSize
+	e = Event():									#loads event Data type
+	x = e.getUsers.index(userID):					#loads user index by searching for userID's position
+	y = e.getUserOn(x):								#gets int at user index representing the next user to swipe on
+	
+	if y is userID									#checks to make sure the user doesn't swipe on themselves
+		e.getUserOn(x)+=1:							#increment the userID and reloads it
+		y = e.getUserOn(x):
+
+	if y>=len(e.getUsers)							#checks to see if the position of the user is valid
 		return -1:
-	if y is userID
-		if y+1>=e.groupSize
-			return -1:
-		e.userOn(x)+=1:
-		return y+1:
 	else 
-		e.userOn(x)+=1:
-		return y:
+		e.getUserOn(x)+=1:							#increments the value for the future
+		return e.getUsers(y):
