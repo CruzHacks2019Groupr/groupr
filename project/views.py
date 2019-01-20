@@ -183,8 +183,7 @@ def getNextMatch(request):
     print("getNextMatch")
     response_data = {}
     event = request.GET.dict()
-    event = event.get('eventID')
-    print(event)
+    event = int(event.get('eventID'))
     if (event != -1):
         usrs = Event.objects.get(id=event).getUsers()
         dum = 0
