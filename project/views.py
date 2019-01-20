@@ -12,7 +12,7 @@ from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
 from .searchUser import Search
-from django.models.User import User
+#from django.models.User import User
 
 
 from django.contrib.auth import login, authenticate, logout
@@ -124,7 +124,7 @@ def getNextMatch(request):
         if usrs[i] == request.user.id:
             dum = i
     usrsOn = Event.objects.get(id=eventID).getUsersOn()
-    Usr = User.objects.get(id=usrsOn[dum])
+    #Usr = User.objects.get(id=usrsOn[dum])
 
     response_data['suggested_usr_name'] = randomword(5) + " " + randomword(8)
     #response_data['suggested_usr_name'] = Usr.username

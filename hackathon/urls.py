@@ -22,10 +22,11 @@ urlpatterns = [
 	path('', include('project.urls')),
     path('admin/', admin.site.urls),
 ]
-
+"""
 if settings.DEBUG
 	urlpatters+=[
 		url(r'^Demo/(?P<path>.*)$',serve,{
 				'document_root': settings.MEDIA_ROOT,
 			})
 	]
+"""
