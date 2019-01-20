@@ -76,3 +76,10 @@ class Event(models.Model):
 		else:
 			self.users = self.users + " " + id
 			self.userson = self.userson + " " + str(0)
+
+"""
+class UserInfo(models.Model):
+	user_id = models.IntegerField()
+	user_desc = models.CharField(max_length=500, default="", blank = True) #optional
+	user_img = models.ImageField()
+"""
