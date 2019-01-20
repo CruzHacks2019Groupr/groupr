@@ -5,7 +5,7 @@ def reccomendNext(e,userID):
 	x = e.getUsers().index(userID)					#loads user index by searching for userID's position
 	UserList = e.getUsersOn()
 	y = UserList[x]
-	if x = 0 and y =0								#edge case
+	if x == 0 and y == 0:								#edge case
 		x+=1		
 													#gets int at user index representing the next user to swipe on
 	if x == y:										#checks to make sure the user doesn't swipe on themselves
