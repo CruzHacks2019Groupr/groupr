@@ -36,3 +36,16 @@ class Event(models.Model):
 
 	def getUsersOn():
 		a = userson.split(' ')
+
+	def setUserOn(pos,num):
+		a = userson.split(' ')
+		a[pos] = num
+		userson = ' '.join(a)
+
+	def addUser(id):
+		if len(users) == 0:
+			users = users + id
+			userson = userson + 0
+		else:
+			users = users + " " + id
+			userson = userson + " " + 0
