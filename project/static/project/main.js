@@ -34,9 +34,7 @@ var app = function() {
         })        
         
     };
-    self.submit = function(){
-        console.log("title: " + self.vue.noteTitle)
-    }
+
 
     self.testFunc = function(){
         var request = {
@@ -55,6 +53,7 @@ var app = function() {
 
         $.getJSON(url, function (data) {
             console.log(data)
+            self.getNextMatch()
         })
     };
 
@@ -65,6 +64,19 @@ var app = function() {
 
         $.getJSON(url, function (data) {
             console.log(data)
+            self.getNextMatch()
+        })
+
+    };
+
+    self.getNextMatch = function(){
+        var request = {
+        }
+        var url = "/getNextMatch" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+            self.vue.suggested_usr_name =  data.suggested_usr_name
         })
     };
 
@@ -76,12 +88,11 @@ var app = function() {
         data: {
             //booleans
             page_loaded: false,
-            otherUsr: "",
+            suggested_usr_name: "",
 
         },
         methods: {
             add: self.add,
-            submit: self.submit,
             accept: self.accept,
             decline: self.decline,
             testFunc: self.testFunc,
@@ -91,7 +102,7 @@ var app = function() {
     });
 
     //self.load();
-
+    self.getNextMatch()
 
 
     $("#vue-div").show();

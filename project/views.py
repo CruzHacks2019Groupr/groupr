@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.utils import timezone
-import requests
+import requests, random, string
 from django.core import serializers
 import json
 from .functions import test
@@ -48,25 +48,49 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
+
+
+
+#API
+
+#used for generating random names
+def randomword(length):
+   letters = string.ascii_lowercase
+   return ''.join(random.choice(letters) for i in range(length))
+
 def logout_view(request):
-	logout(request)
-	return redirect('index');
+    logout(request)
+    response_data = {}
+    response_data['success'] = True
+    return (JsonResponse(response_data))	#all of these functions are returning this JSONresponse because
+    										#it makes it easy to confirm delivery on the client-side
 
 def testFunc(request):
     print("testFunc")
-    return HttpResponse("ok")
+    response_data = {}
+    response_data['success'] = True
+    return (JsonResponse(response_data))
 
 def accept(request):
     print("accept")
-    return HttpResponse("ok")
+    response_data = {}
+    response_data['success'] = True
+    return (JsonResponse(response_data))
 
 def decline(request):
     print("decline")
-    return HttpResponse("ok")
+    response_data = {}
+    response_data['success'] = True
+    return (JsonResponse(response_data))
 
 def getNextMatch(request):
     print("getNextMatch")
-    return HttpResponse("ok")
+    response_data = {}
+    #impliment real code here
+    response_data['suggested_usr_name'] = randomword(5) + " " + randomword(8)
+
+    return (JsonResponse(response_data))
 
 """
 Demo:
