@@ -87,10 +87,11 @@ class Event(models.Model):
 
 	def addUser(self, id):
 		if len(self.users) == 0:
-			self.users = self.users + id
+			print(self.users)
+			self.users = self.users + str(id)
 			self.userson = self.userson + str(0)
 		else:
-			self.users = self.users + " " + id
+			self.users = self.users + " " + str(id)
 			self.userson = self.userson + " " + str(0)
 
 class Groups(models.Model):

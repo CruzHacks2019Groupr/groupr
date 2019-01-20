@@ -7,7 +7,7 @@ from django.utils import timezone
 import requests, random, string, re
 from django.core import serializers
 import json
-from .functions import swipr
+from .functions import demoScript
 from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
@@ -91,7 +91,7 @@ def testFunc(request):
     current_user = request.user
     print ("Current User ID: ", current_user.id)
     print("testFunc")
-    swipr.makeConnection(random.randint(0,20), random.randint(0,20))
+    demoScript.demo()
 
     response_data = {}
     response_data['success'] = True
