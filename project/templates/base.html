@@ -11,6 +11,7 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'project/bootstrap.min.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'project/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'project/sidebar.css' %}">
 {% block head %}{% endblock %}
 </head>
 <body>
@@ -46,9 +47,16 @@
       	<a class="nav-link" > Current user: {{ user.get_username }} </a>
       </li>
     </ul>
-
   </div>
 </nav>
+{% if user.is_authenticated %}
+<div class="sidenav">
+  <a href="#"><img src="{% static 'project/icon.png' %}" style="max-width: 50px;">{{ user.get_username }}</a>
+  <a href="#">Events</a>
+  <a href="#">Create Event</a>
+  <a href="#">Edit Event</a>
+</div>
+{% endif %}
     <br><br><br><br>
     {% block content %}{% endblock %}
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
