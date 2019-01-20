@@ -35,5 +35,10 @@ def event_test():
 	print("Finding perfect matches")
 	print("group: " + str(findPerfectGroup(testEvent, 1, 3)))
 
+	print("Making groups from remaining nodes")
+	remaining = forceGroups(testEvent, 3)
+	for x in remaining:
+		print("group " + str(x))
+
 if __name__ == "__main__":
     event_test()

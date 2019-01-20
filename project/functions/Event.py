@@ -7,6 +7,7 @@ class Event:
 	#Event member variables:
 	#	DG: Graph of users and their connections (Directed)
 	#	G: Graph of users and their connections (Undirected, edge only exists if omnidirectional edge exists in DG)
+	#   userList: List of users
 
 	def __init__(self):
 		self.DG = nx.DiGraph()
@@ -16,7 +17,7 @@ class Event:
 	def add_user(self, userId):
 		self.DG.add_node(userId)
 		self.G.add_node(userId)
-		self.userlist.append(userId)
+		self.userList.append(userId)
 
 	def remove_user(self, userId):
 		self.DG.remove_node(userId)
