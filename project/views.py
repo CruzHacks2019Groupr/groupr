@@ -18,7 +18,7 @@ from .searchUser import Search
 from . import BuildGroup
 from django.http import QueryDict
 #from django.models.User import User
-
+from .functions import reccomend
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -134,6 +134,8 @@ def accept(request):
 
     response_data = {groupId}
  
+    reccomendNext(eventID, mainUser)
+
     response_data['success'] = True
     return (JsonResponse(response_data))
 
@@ -141,6 +143,12 @@ def accept(request):
 def decline(request):
     print("decline")
     response_data = {}
+    info = request.GET.dict()
+    eventID = int(info.get('eventID'))
+    mainUser = request.user.id
+
+    reccomendNext(eventID, mainUser)
+
     response_data['success'] = True
     return (JsonResponse(response_data))
 
