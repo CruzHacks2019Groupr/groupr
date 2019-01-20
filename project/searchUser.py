@@ -11,6 +11,14 @@ class Search():
 					myEvents.append(x.id)
 		return myEvents
 
+	def getUserCreatedEvents(userID):
+		events = Event.objects.all()
+		for x in events:
+			usr = x.creator
+			if(usr == userID):
+				return x.id
+		return None
+
 	def getUserGroups(userID):
 		groups = Groups.objects.All()
 		myGroups = []

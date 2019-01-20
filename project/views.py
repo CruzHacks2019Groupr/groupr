@@ -160,7 +160,11 @@ def loadData(request):
     print("Load Data")
     response_data = {}
     response_data['success'] = True
-    evID = Search.getUserEvents(request.user.id)
+    #evID = Search.getUserEvents(request.user.id)
+    events = Event.objects.all()
+    evID = []
+    for i in events:
+        evID.append(i.id)
     evName = []
     for i in evID:
         evName.append(Event.objects.get(id=i).name)
