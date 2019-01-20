@@ -15,8 +15,6 @@ def reccomendNext(e,userID):
 			return -1
 		e.setUserOn(x,y)							#increment the userID and reloads it
 		y = e.getUsersOn().index(x)
-	print("reccomend" + str(len(e.getUsers())))
-	print(str(y))
 	if y>=len(e.getUsers()):						#checks to see if the position of the user is valid
 		e.setUserOn(x, -1)
 		return -1

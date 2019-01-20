@@ -112,27 +112,27 @@ def accept(request):
 
     response_data = {}
     info = request.GET.dict()
-    print(info)
 
     eventID = int(info.get('eventID'))
     mainUser = request.user.id
     acceptedUser = int(info.get('otherID'))
+
     
     targetEventModel = Event.objects.get(id=eventID)
     targetEvent = EventClass(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
 
     targetEvent.add_edge(mainUser, acceptedUser) 
-
+    print("Group size" + str(targetEventModel.group_size))
     groupUsers = findPerfectGroup(targetEvent, mainUser, targetEventModel.group_size)
 
+    #print("Group Users" + groupUsers)
     group = -1;
 
     if groupUsers != None:
+        print("WE FOUND A GROUP")
         group = buildGroup(targetEventModel.id, groupUsers)
  
-    reccomendNext(targetEventModel, mainUser)
-
-    print("GroupID: " + str(group))
+    print("reccomend next: " +str(reccomendNext(targetEventModel, mainUser)))
 
 
     response_data['success'] = True
@@ -162,7 +162,6 @@ def loadData(request):
     response_data['success'] = True
     evID = Search.getUserEvents(request.user.id)
     evName = []
-    print(evID)
     for i in evID:
         evName.append(Event.objects.get(id=i).name)
 

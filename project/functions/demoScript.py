@@ -7,7 +7,7 @@ import random
 def demo():
 	__MAINUSERID__ = 1
 	__DEMOEVENTID__ = 1
-	__TOTALUSERS__ = 3
+	__TOTALUSERS__ = 5
 
 	#Gets references to mainUser and demoEvent
 	mainUserModel = User.objects.get(id=__MAINUSERID__)

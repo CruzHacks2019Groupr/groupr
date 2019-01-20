@@ -59,6 +59,11 @@ var app = function() {
 
         $.getJSON(url, function (data) {
             console.log(data)
+            self.vue.group = data.group
+            if (data.group!=-1) 
+            {
+                alert("Hello! I am an alert box!!");
+            }
             self.getNextMatch()
         })
     };
@@ -67,7 +72,7 @@ var app = function() {
         var ev = -1
         if (self.vue.curr_event != -1)
             ev = self.vue.event_ids[self.vue.curr_event]
-        
+
         var request = {
             "eventID": ev,
         }
@@ -126,6 +131,7 @@ var app = function() {
             event_names: [],
             event_ids: [],
             curr_event: -1,
+            group: -1,
 
         },
         methods: {
