@@ -64,7 +64,11 @@ var app = function() {
     };
 
     self.decline = function(){
+        var ev = -1
+        if (self.vue.curr_event != -1)
+            ev = self.vue.events[self.vue.curr_event][1]
         var request = {
+            "eventID": ev,
         }
         var url = "/decline" + "?" + $.param(request);
 
