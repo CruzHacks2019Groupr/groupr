@@ -3,7 +3,7 @@ var pusher = new Pusher('4105ec1d8d985dcf27bf', {
     cluster: 'us2'
 });
 //subscribe to the channel you want to listen to
-var my_channel = pusher.subscribe('a_channel');
+var my_channel = pusher.subscribe({{ room }});
 //wait for an event to be triggered in that channel
 my_channel.bind("an_event", function (data) {
     // declare a variable new_message to hold the new chat messages

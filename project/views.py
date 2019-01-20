@@ -11,6 +11,7 @@ from .functions import swipr
 from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
+from .searchUser import Search
 
 
 from django.contrib.auth import login, authenticate, logout
@@ -30,7 +31,8 @@ def detail(request, question_id):
 
 @login_required(login_url='/login/')
 def chat(request):
-    return render(request, "project/chat.html");
+    channel = Search.getUserGroupInEvent(request.user.id, 1)
+    return render(request, "project/chat.html", {'channel': channel})
 
 @csrf_exempt
 def broadcast(request):
@@ -63,7 +65,7 @@ def event(request):
             a.save()
             b.save()
             e.di = a
-            e.undi = b
+            #e.undi = b
             e.save()
     else:
         form = EventForm()
