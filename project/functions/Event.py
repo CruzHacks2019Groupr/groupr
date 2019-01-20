@@ -9,10 +9,16 @@ class Event:
 	#	G: Graph of users and their connections (Undirected, edge only exists if omnidirectional edge exists in DG)
 	#   userList: List of users
 
-	def __init__(self):
+	def __init__(self, users, edges):
 		self.DG = nx.DiGraph()
 		self.G = nx.Graph()
 		self.userList = [] #we should have an ordered node list in order to make sure users don't have repeats
+
+		for user in users:
+			self.add_user(user);
+
+		for edge in edges:
+			self.add_edge(edge[0], edge[1]);
 
 	def add_user(self, userId):
 		self.DG.add_node(userId)

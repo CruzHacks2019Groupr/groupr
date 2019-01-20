@@ -23,8 +23,15 @@ class Graph(models.Model):
 	def __str__(self):
 		pass
 	def getEdges(self):
-		a = [int(i) for i in self.edges_a.split(' ')]
-		b = [int(i) for i in self.edges_b.split(' ')]
+		if len(self.edges_a) == 0:
+			return[]
+		else:
+			a = [int(i) for i in self.edges_a.split(' ')]
+
+		if len(self.edges_b) == 0:
+			return[]
+		else:
+			b = [int(i) for i in self.edges_b.split(' ')]
 		return list(zip(a, b))
 
 	def setEdges(self, edges):
@@ -34,7 +41,10 @@ class Graph(models.Model):
 		self.edges_b = ' '.join(map(str,b))
 
 	def getNodes(self):
-		return list([int(i) for i in self.nodes.split(' ')])
+		if len(self.nodes) == 0:
+			return []
+		else:
+			return list([int(i) for i in self.nodes.split(' ')])
 
 	def setNodes(self, nodes):
 		self.nodes = ' '.join(map(str,nodes))
@@ -46,13 +56,11 @@ class Event(models.Model):
         Graph,
         on_delete=models.PROTECT,
         related_name = 'di',
-        default=Graph(),
     )
 	undi = models.OneToOneField(
         Graph,
         on_delete=models.PROTECT,
         related_name = 'undi',
-        default=Graph(),
     )
 	users = models.CharField(max_length=5000, default="", blank = True) #optional
 	creator = models.CharField(max_length=150, blank=False)
@@ -63,7 +71,7 @@ class Event(models.Model):
 		return a
 
 	def getUsersOn(self):
-		a = [int(n) for n in self.userson.split(' ')]
+		a = self.userson.split(' ')
 		return a
 
 	def setUserOn(self, pos, num):
@@ -79,9 +87,19 @@ class Event(models.Model):
 			self.users = self.users + " " + id
 			self.userson = self.userson + " " + str(0)
 
-"""
-class UserInfo(models.Model):
-	user_id = models.IntegerField()
-	user_desc = models.CharField(max_length=500, default="", blank = True) #optional
-	user_img = models.ImageField()
-"""
+class Groups(models.Model):
+	linkedEventId = models.TextField(max_length=50)
+	users = models.CharField(max_length=5000);
+
+	def getEventId(self):
+		return self.linkedEventId
+
+	def getUsers(self):
+		a = self.users.split(' ')
+		return a
+
+	def addUser(self, id):
+		if len(self.users) == 0:
+			self.users = self.users + id
+		else:
+			self.users = self.users + " " + id

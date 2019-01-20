@@ -7,7 +7,7 @@ from django.utils import timezone
 import requests, random, string, re
 from django.core import serializers
 import json
-from .functions import test
+from .functions import swipr
 from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
@@ -88,13 +88,18 @@ def logout_view(request):
     										#it makes it easy to confirm delivery on the client-side
 
 def testFunc(request):
+    current_user = request.user
+    print ("Current User ID: ", current_user.id)
     print("testFunc")
+    swipr.makeConnection(random.randint(0,20), random.randint(0,20))
+
     response_data = {}
     response_data['success'] = True
     return (JsonResponse(response_data))
 
 def accept(request):
     print("accept")
+    swipr.makeConnection(request.user.id, 4)
     response_data = {}
     response_data['success'] = True
     return (JsonResponse(response_data))
