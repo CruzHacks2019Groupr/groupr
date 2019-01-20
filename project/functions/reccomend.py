@@ -1,4 +1,6 @@
+from project.models import Graph
 from project.models import Event
+
 def reccomendNext(userID):
 	e = Event()										#loads event Data type
 	x = e.getUsers.index(userID)					#loads user index by searching for userID's position
