@@ -23,8 +23,15 @@ class Graph(models.Model):
 	def __str__(self):
 		pass
 	def getEdges(self):
-		a = [int(i) for i in self.edges_a.split(' ')]
-		b = [int(i) for i in self.edges_b.split(' ')]
+		if len(self.edges_a) == 0:
+			return[]
+		else:
+			a = [int(i) for i in self.edges_a.split(' ')]
+
+		if len(self.edges_b) == 0:
+			return[]
+		else:
+			b = [int(i) for i in self.edges_b.split(' ')]
 		return list(zip(a, b))
 
 	def setEdges(self, edges):
@@ -34,7 +41,10 @@ class Graph(models.Model):
 		self.edges_b = ' '.join(map(str,b))
 
 	def getNodes(self):
-		return list([int(i) for i in self.nodes.split(' ')])
+		if len(self.nodes) == 0:
+			return []
+		else:
+			return list([int(i) for i in self.nodes.split(' ')])
 
 	def setNodes(self, nodes):
 		self.nodes = ' '.join(map(str,nodes))

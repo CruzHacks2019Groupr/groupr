@@ -12,7 +12,7 @@ def makeConnection(user1, user2):
 
 	#Creates Event object from EventModel
 	testEvent = Event(obj.di.getNodes(), obj.di.getEdges())
-
+	
 	for x in range(1,21):
 		testEvent.add_user(x);
 
@@ -28,9 +28,11 @@ def makeConnection(user1, user2):
 	obj.di.setNodes(testEvent.export_users());
 	obj.di.setEdges(testEvent.export_edges_directed());
 
-	obj.save();
+	obj.di.save();
 
 	print(obj.name)
+	print(obj.di.getNodes())
+	print(obj.di.getEdges())
 
 
 """
