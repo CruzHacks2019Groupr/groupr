@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 #import project.models_.graph as Graph
 #import networkx as nx
 
-
+import os
 from django.core.validators import int_list_validator
 
 # Create your models here.
@@ -103,3 +103,18 @@ class Groups(models.Model):
 			self.users = self.users + id
 		else:
 			self.users = self.users + " " + id
+
+class Profile(models.Model):
+	bio = models.TextField(max_length=500,blank=True,null=True)
+	age = models.IntegerField(blank=True,null=True)
+	pic = models.ImageField(upload_to = 'demo/', default = 'demo/no-img.jpg')
+
+	def getBio(self):
+		return self.bio
+	def setBio(self,id):
+		self.bio=id
+	def getAge(self):
+		return self.age
+	def getPicture(self):
+		return self.pic.url
+		
