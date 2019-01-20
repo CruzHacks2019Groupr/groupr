@@ -50,18 +50,24 @@ class Graph(models.Model):
 		self.nodes = ' '.join(map(str,nodes))
 
 class Event(models.Model):
+	def __str__(self):
+		print(self.id)
+		pass
+
 	name = models.TextField(max_length=50)
 	group_size = models.IntegerField()
 	di = models.OneToOneField(
-        Graph,
-        on_delete=models.PROTECT,
-        related_name = 'di',
-    )
+		Graph,
+		on_delete=models.PROTECT,
+		related_name = 'di',
+	)
+	
 	undi = models.OneToOneField(
-        Graph,
-        on_delete=models.PROTECT,
-        related_name = 'undi',
-    )
+		Graph,
+		on_delete=models.PROTECT,
+		related_name = 'undi',
+	)
+	
 	users = models.CharField(max_length=5000, default="", blank = True) #optional
 	creator = models.CharField(max_length=150, blank=False)
 	userson = models.CharField(max_length=5000, default="", blank = True) #optional
@@ -81,10 +87,11 @@ class Event(models.Model):
 
 	def addUser(self, id):
 		if len(self.users) == 0:
-			self.users = self.users + id
+			print(self.users)
+			self.users = self.users + str(id)
 			self.userson = self.userson + str(0)
 		else:
-			self.users = self.users + " " + id
+			self.users = self.users + " " + str(id)
 			self.userson = self.userson + " " + str(0)
 
 class Groups(models.Model):
