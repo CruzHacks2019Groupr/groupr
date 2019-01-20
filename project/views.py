@@ -121,7 +121,7 @@ def accept(request):
     targetEventModel = Event.objects.get(id=eventID)
     targetEvent = EventClass(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
 
-    targetEvent.add_edge(mainUser, acceptedUser)
+    targetEvent.add_edge(mainUser, acceptedUser) 
 
     groupUsers = findPerfectGroup(targetEvent, mainUser, targetEventModel.group_size)
 
@@ -133,6 +133,7 @@ def accept(request):
     reccomendNext(targetEventModel, mainUser)
 
     print("GroupID: " + str(group))
+
 
     response_data['success'] = True
     response_data['group'] = group
@@ -182,17 +183,21 @@ def getNextMatch(request):
     event = int(event.get('eventID'))
     if (event != -1):
         usrs = Event.objects.get(id=event).getUsers()
-        dum = 0
+        me = -1
         for i in range(len(usrs)):
             if usrs[i] == request.user.id:
-                dum = i
+                me = i
         usrsOn = Event.objects.get(id=event).getUsersOn()
-        Usr = User.objects.get(id=usrs[usrsOn[dum]])
-        #response_data['suggested_usr_name'] = randomword(5) + " " + randomword(8)
-        response_data['suggested_usr_name'] = Usr.username
-        response_data['suggested_usr_id'] = Usr.id
+        print(usrsOn[me])
+        if me != -1 and usrsOn[me] != -1:
+            Usr = User.objects.get(id=usrs[usrsOn[me]])
+            response_data['suggested_usr_name'] = Usr.username
+            response_data['suggested_usr_id'] = Usr.id
+        else:
+            response_data['suggested_usr_name'] = "No More Users"
+            response_data['suggested_usr_id'] = -1
     else:
-        response_data['suggested_usr_name'] = ""
+        response_data['suggested_usr_name'] = "None"
         response_data['suggested_usr_id'] = -1
 
     return (JsonResponse(response_data))

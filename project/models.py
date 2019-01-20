@@ -87,23 +87,24 @@ class Event(models.Model):
 		return a
 
 	def setUserOn(self, pos, num):
+		print(self.userson)
 		a = self.userson.split(' ')
 		a[pos] = num
 		self.userson = ' '.join(str(x) for x in a)
+		self.save()
 
 	def addUser(self, id):
-		if len(self.users) == 0:
+		if len(self.getUsers()) == 0:
 			print(self.users)
 			self.users = self.users + str(id)
 			self.userson = self.userson + str(-1)
+		elif len(self.getUsers()) == 1:
+			self.users = self.users + " " + str(id)
+			self.userson = self.userson + " " + str(0)
+			self.setUserOn(0,1)
 		else:
 			self.users = self.users + " " + str(id)
 			self.userson = self.userson + " " + str(0)
-			self.fixUser()
-
-	def fixUser(self):
-		if(len(self.users) >= 2):
-			self.setUserOn(0,1)
 
 class Groups(models.Model):
 	linkedEventId = models.TextField(max_length=50)
