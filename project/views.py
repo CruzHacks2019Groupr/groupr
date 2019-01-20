@@ -93,7 +93,7 @@ def logout_view(request):
     logout(request)
     response_data = {}
     response_data['success'] = True
-    redirect('index')	#all of these functions are returning this JSONresponse because
+    return redirect('index')	#all of these functions are returning this JSONresponse because
     										#it makes it easy to confirm delivery on the client-side
 
 def testFunc(request):
