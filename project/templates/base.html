@@ -49,8 +49,10 @@
     </ul>
   </div>
 </nav>
+<div class="container">
+<div class="row">
 {% if user.is_authenticated %}
-<div class="sidenav">
+<div class="sidenav col-md-3">
   <a href="#"><img src="{% static 'project/icon.png' %}" style="max-width: 50px;">{{ user.get_username }}</a>
   <a href="#">Events</a>
   <a href="#">Create Event</a>
@@ -60,7 +62,10 @@
     <br><br><br><br>
     {% block content %}{% endblock %}
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <p><center>This Project was created for a hackathon in 36 hours by some nerds</center></p>
+    
+</div>
+<p><center>This Project was created for a hackathon in 36 hours by some nerds</center></p>
+</div>
 </div>
 
 </body>
