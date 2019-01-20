@@ -1,7 +1,7 @@
 #import everything we need
 import networkx as nx
 import itertools
-from Event import Event 
+from .Event import Event 
 
 def findPerfectGroup(Event, node, size):								   						#Update swipe occurs, giving a first and second ID
 	List = nx.cliques_containing_node(Event.G, node)						
