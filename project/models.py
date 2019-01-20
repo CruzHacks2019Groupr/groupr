@@ -61,7 +61,7 @@ class Event(models.Model):
 		return a
 
 	def getUsersOn(self):
-		a = self.userson.split(' ')
+		a = [int(n) for n in self.userson.split(' ')]
 		return a
 
 	def setUserOn(self, pos, num):
