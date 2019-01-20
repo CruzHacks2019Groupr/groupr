@@ -1,14 +1,14 @@
-from models import Graph
-from models import Event
-from reccomend import *
+from .models import Graph
+from .models import Event
+from .functions.reccomend import *
 
 def reccomend_test():
 
 	_di = Graph()
 	_undi = Graph()
-	e = Event(name = "NAME",  group_size = 5,  di = _di, undi = _undi, creator = "userid")
+	e = Event(name = "NAME",  group_size = 2,  di = _di, undi = _undi, creator = "userid")
 	e.addUser("Poop")
 	e.addUser("Jenkins")
-
-	print(e.reccomendNext("poop"))
-	print(e.reccomendNext("poop"))
+	print(e.getUsers())
+	print(e.getUsersOn())
+	print(reccomendNext(e,"Poop"))
