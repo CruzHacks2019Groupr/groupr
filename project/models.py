@@ -98,10 +98,11 @@ class Event(models.Model):
 		else:
 			self.users = self.users + " " + str(id)
 			self.userson = self.userson + " " + str(0)
-			fixUser()
+			self.fixUser()
+
 	def fixUser(self):
 		if(len(self.users) >= 2):
-			setUserOn(0,1)
+			self.setUserOn(0,1)
 
 class Groups(models.Model):
 	linkedEventId = models.TextField(max_length=50)
