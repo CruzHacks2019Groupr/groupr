@@ -6,8 +6,6 @@ class Search():
 		myEvents = []
 		for x in events:
 			usrs = x.getUsers()
-			if usrs is None:
-				return [] 
 			for i in usrs:
 				if(i == userID):
 					myEvents.append(x.id)

@@ -75,7 +75,7 @@ class Event(models.Model):
 
 		a = self.users.split(' ')
 		if(len(a) == 0 or self.users == ""):
-			return None
+			return []
 		for i in range(len(a)):
 			a[i] = int(a[i])
 		return a

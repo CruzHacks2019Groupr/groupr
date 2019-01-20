@@ -49,7 +49,7 @@ var app = function() {
     self.accept = function(){
         var ev = -1
         if (self.vue.curr_event != -1)
-            ev = self.vue.events[self.vue.curr_event][1]
+            ev = self.vue.event_ids[self.vue.curr_event]
 
         var request = {
             "otherID": self.vue.suggested_usr_id,
@@ -66,7 +66,8 @@ var app = function() {
     self.decline = function(){
         var ev = -1
         if (self.vue.curr_event != -1)
-            ev = self.vue.events[self.vue.curr_event][1]
+            ev = self.vue.event_ids[self.vue.curr_event]
+        
         var request = {
             "eventID": ev,
         }
@@ -82,7 +83,7 @@ var app = function() {
     self.getNextMatch = function(){
         var ev = -1
         if (self.vue.curr_event != -1)
-            ev = self.vue.events[self.vue.curr_event][1]
+            ev = self.vue.event_ids[self.vue.curr_event]
 
         var request = {
                 "eventID": ev,
