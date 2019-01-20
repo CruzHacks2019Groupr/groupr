@@ -13,7 +13,7 @@ from .functions import matcher
 from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
-from .models import Event
+from .models import Event as EventModel
 from .searchUser import Search
 from . import BuildGroup
 from django.http import QueryDict
