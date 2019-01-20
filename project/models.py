@@ -72,8 +72,9 @@ class Event(models.Model):
 	userson = models.CharField(max_length=5000, default="", blank = True) #optional
 
 	def getUsers(self):
+
 		a = self.users.split(' ')
-		if(len(a) == 0):
+		if(len(a) == 0 or self.users == ""):
 			return None
 		for i in range(len(a)):
 			a[i] = int(a[i])

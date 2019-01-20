@@ -6,16 +6,18 @@
 <div class="container">
 	<div class="row">
 
-		<div class=" col-md-2 sidenav" v-show="logged_in">
-			<span>image here sorry</span>
-            <span><h2>Events</h2></span>
-			<span v-for="e in events">
-				<a href="#">${e[0]}</a>
-			</span>
-            <span><h2>My Events</h2></span>
-            <span><h3><a href="/event/">Create Event</a></h3></span>
-            <span><h3><a href="#">Edit Profile</a></h3></span>
-            <span><h3><a href="#">Sign Out</a></h3></span>
+		<div class=" col-md-2">
+			<span  v-show="logged_in" class="sidenav">
+				<span>image here sorry</span>
+	            <span><h2>Events</h2></span>
+				<span v-for="e in events">
+					<a href="#">${e[0]}</a>
+				</span>
+	            <span><h2>My Events</h2></span>
+	            <span><h3><a href="/event/">Create Event</a></h3></span>
+	            <span><h3><a href="#">Edit Profile</a></h3></span>
+	            <span><h3><a href="#">Sign Out</a></h3></span>
+	        </span>
 		</div>
 		<br><br>
 		<div class="col-md-10">

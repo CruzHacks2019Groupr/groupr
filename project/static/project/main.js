@@ -106,6 +106,7 @@ var app = function() {
             self.vue.events = data.events
             self.vue.curr_event = data.curr_event
             self.getNextMatch()
+            self.vue.logged_in = true
         })
     };
 
@@ -119,7 +120,7 @@ var app = function() {
             page_loaded: false,
             suggested_usr_name: "",
             suggested_usr_id: -1,
-            logged_in: true,
+            logged_in: false,
             events: [],
             curr_event: -1,
 
