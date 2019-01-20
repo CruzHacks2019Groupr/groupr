@@ -185,7 +185,7 @@ def getNextMatch(request):
     event = request.GET.dict()
     event = int(event.get('eventID'))
     
-    response_data['suggested_usr_name'] = Usr.username
+    response_data['suggested_usr_name'] = randomword(5) + " " +randomword(5)
     response_data['suggested_usr_id'] = 3
     
     """
