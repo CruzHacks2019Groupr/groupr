@@ -82,7 +82,7 @@ class Groups(models.Model):
 	users = models.CharField(max_length=5000);
 
 	def getEventId(self):
-		reutrn str(self.linkedEventId)
+		return self.linkedEventId
 
 	def getUsers(self):
 		a = self.users.split(' ')
