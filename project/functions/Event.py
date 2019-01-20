@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib as mpl
+from project.models import Graph
 
+#Interacts with functions and database
 class Event:
 	#Event member variables:
 	#	DG: Graph of users and their connections (Directed)

@@ -3,7 +3,7 @@ import networkx as nx
 import itertools
 from Event import Event 
 
-def findPerfectGroup(Event,node, size):									   #Update swipe occurs, giving a first and second ID
+def findPerfectGroup(Event, node, size):									   #Update swipe occurs, giving a first and second ID
 	List = nx.cliques_containing_node(Event.G, node)						
 	for j in List:														   #Checks the size of each clique, ignore if not of size n
 		if len(j) is size:
@@ -11,9 +11,9 @@ def findPerfectGroup(Event,node, size):									   #Update swipe occurs, giving 
 				Event.remove_user(i)
 			return j; 													   #break when the first valid clique is found
 
-def forceGroups(DiGraph): #Makes groups based on current criterium
+def forceGroups(Event, size): #Makes groups based on current criterium
 
-	possibleGroups = list(itertools.combinations(list(DiGraph), n))        #All combinations of the Node list in groups of length n are stored in list
+	possibleGroups = list(itertools.combinations(list(Event.DG), size))        #All combinations of the Node list in groups of length n are stored in list
 	i = 0
 																		   #Nested loops build a combination of groups (disjoint is used to make sure the same person doesnt end up in a group twice)
 	while not set(possibleGroups[0]).isdisjoint(possibleGroups[i]):
@@ -36,9 +36,9 @@ def forceGroups(DiGraph): #Makes groups based on current criterium
 
 	for k in groupCombo[BestIndex]:                                        #Removes groups from graph
 		for l in groupCombo[BestIndex][k]:								   
-			Digraph.remove_user(groupCombo[BestIndex][k][l])
+			Event.DG.remove_user(groupCombo[BestIndex][k][l])
 
-	groupCombo[BestIndex].append(list(Digraph))							   #All remaining people are put into a group
+	groupCombo[BestIndex].append(list(Event.DG))							   #All remaining people are put into a group
 
 	return groupCombo[BestIndex]
 
