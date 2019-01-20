@@ -9,7 +9,8 @@ import requests, random, string, re
 from django.core import serializers
 import json
 from .functions import demoScript
-from .functions import matcher
+from .functions.matcher import *
+from .functions.Event import Event as EventClass
 from pusher import Pusher
 from .forms import EventForm
 from .models import Graph
@@ -117,26 +118,24 @@ def accept(request):
     mainUser = request.user.id
     acceptedUser = int(info.get('otherID'))
     
-    targetEventModel = EventModel.objects.get(id=eventID)
-    targetEvent = Event(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
+    targetEventModel = Event.objects.get(id=eventID)
+    targetEvent = EventClass(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
 
     targetEvent.add_edge(mainUser, acceptedUser)
 
-    groupUsers = findPerfectGroup(targetEvent, mainUser, targetEventModel.groupSize)
+    groupUsers = findPerfectGroup(targetEvent, mainUser, targetEventModel.group_size)
 
-    group = 0;
-    groupId = 0;
+    group = -1;
 
     if groupUsers != None:
         group = buildGroup(targetEventModel.id, groupUsers)
-
-    groupId = group.id
-
-    response_data = {groupId}
  
     reccomendNext(targetEventModel, mainUser)
 
+    print("GroupID: " + str(group))
+
     response_data['success'] = True
+    response_data['group'] = group
     return (JsonResponse(response_data))
 
 @login_required(login_url='/login/')
@@ -147,8 +146,8 @@ def decline(request):
     eventID = int(info.get('eventID'))
     mainUser = request.user.id
 
-    targetEventModel = EventModel.objects.get(id=eventID)
-    targetEvent = Event(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
+    targetEventModel = Event.objects.get(id=eventID)
+    targetEvent = EventClass(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
 
     reccomendNext(targetEventModel, mainUser)
 
