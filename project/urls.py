@@ -16,7 +16,7 @@ urlpatterns = [
 
 
     #API
-    url(r'^testFunc/$', views.testFunc, name='testFunc'),
+    url(r'^test/$', views.testFunc, name='testFunc'),
     url(r'^accept/$', views.accept, name='accept'),
     url(r'^decline/$', views.decline, name='decline'),
     url(r'^getNextMatch/$', views.getNextMatch, name='getNextMatch'),

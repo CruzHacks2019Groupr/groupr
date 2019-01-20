@@ -184,6 +184,11 @@ def getNextMatch(request):
     response_data = {}
     event = request.GET.dict()
     event = int(event.get('eventID'))
+    
+    response_data['suggested_usr_name'] = Usr.username
+    response_data['suggested_usr_id'] = 3
+    
+    """
     if (event != -1):
         usrs = Event.objects.get(id=event).getUsers()
         me = -1
@@ -200,9 +205,9 @@ def getNextMatch(request):
             response_data['suggested_usr_name'] = "No More Users"
             response_data['suggested_usr_id'] = -1
     else:
-        response_data['suggested_usr_name'] = "None"
+        response_data['suggested_usr_name'] = "No More Users"
         response_data['suggested_usr_id'] = -1
-
+    """
     return (JsonResponse(response_data))
 
 """
