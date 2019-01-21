@@ -13,11 +13,12 @@ class Search():
 
 	def getUserCreatedEvents(userID):
 		events = Event.objects.all()
+		myEvents = []
 		for x in events:
-			usr = x.creator
+			usr = int(x.creator)
 			if(usr == userID):
-				return x.id
-		return None
+				myEvents.append(x.id)
+		return myEvents
 
 	def getUserGroups(userID):
 		groups = Groups.objects.All()
@@ -35,3 +36,6 @@ class Search():
 			for i in people:
 				if(i == userID):
 					return x.id
+
+
+

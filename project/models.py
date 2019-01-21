@@ -48,6 +48,7 @@ class Graph(models.Model):
 
 	def setNodes(self, nodes):
 		self.nodes = ' '.join(map(str,nodes))
+		self.save()
 
 class Event(models.Model):
 	def __str__(self):
@@ -105,6 +106,7 @@ class Event(models.Model):
 		else:
 			self.users = self.users + " " + str(id)
 			self.userson = self.userson + " " + str(0)
+		self.save()
 
 class Groups(models.Model):
 	linkedEventId = models.TextField(max_length=50)
@@ -122,6 +124,7 @@ class Groups(models.Model):
 			self.users = self.users + id
 		else:
 			self.users = self.users + " " + id
+		self.save()
 
 class Profile(models.Model):
 	bio = models.TextField(max_length=500,blank=True,null=True)

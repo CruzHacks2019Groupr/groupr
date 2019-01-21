@@ -34,6 +34,11 @@ var app = function() {
         })        
         
     };
+    self.changeEvent = function(num, bool) {
+        self.vue.curr_event = num
+        self.vue.curr_type = bool
+        self.getNextMatch()
+    }
 
 
     self.testFunc = function(){
@@ -48,8 +53,14 @@ var app = function() {
 
     self.accept = function(){
         var ev = -1
-        if (self.vue.curr_event != -1)
-            ev = self.vue.event_ids[self.vue.curr_event]
+        if(!self.vue.curr_type) {
+            if(self.vue.curr_event != -1)
+                ev = self.vue.event_ids[self.vue.curr_event]
+        }
+        else {
+            if(self.vue.curr_event != -1)
+                ev = self.vue.my_event_ids[self.vue.curr_event]
+        }
 
         var request = {
             "otherID": self.vue.suggested_usr_id,
@@ -70,8 +81,14 @@ var app = function() {
 
     self.decline = function(){
         var ev = -1
-        if (self.vue.curr_event != -1)
-            ev = self.vue.event_ids[self.vue.curr_event]
+        if(!self.vue.curr_type) {
+            if(self.vue.curr_event != -1)
+                ev = self.vue.event_ids[self.vue.curr_event]
+        }
+        else {
+            if(self.vue.curr_event != -1)
+                ev = self.vue.my_event_ids[self.vue.curr_event]
+        }
 
         var request = {
             "eventID": ev,
@@ -87,11 +104,18 @@ var app = function() {
 
     self.getNextMatch = function(){
         var ev = -1
-        if (self.vue.curr_event != -1)
-            ev = self.vue.event_ids[self.vue.curr_event]
+        if(!self.vue.curr_type) {
+            if(self.vue.curr_event != -1)
+                ev = self.vue.event_ids[self.vue.curr_event]
+        }
+        else {
+            if(self.vue.curr_event != -1)
+                ev = self.vue.my_event_ids[self.vue.curr_event]
+        }
 
         var request = {
                 "eventID": ev,
+                "type": self.vue.curr_type
         }
         var url = "/getNextMatch" + "?" + $.param(request);
 
@@ -113,8 +137,12 @@ var app = function() {
             self.vue.event_names = data.event_names
             self.vue.event_ids = data.event_ids
             self.vue.curr_event = data.curr_event
-            self.getNextMatch()
-            self.vue.logged_in = true
+            self.vue.my_event_names = data.my_event_names
+            self.vue.my_event_ids = data.my_event_ids
+            self.vue.curr_type = data.curr_type
+            if(!data.curr_type)
+                self.getNextMatch()
+ 
         })
     };
 
@@ -125,13 +153,16 @@ var app = function() {
         unsafeDelimiters: ['!{', '}'],
         data: {
             //booleans
-            page_loaded: false,
+            page_loaded: true,
             suggested_usr_name: "",
             suggested_usr_id: -1,
-            logged_in: false,
+            logged_in: true,
             event_names: [],
             event_ids: [],
+            my_event_names: [],
+            my_event_ids: [],
             curr_event: -1,
+            curr_type: false,
             group: -1,
 
         },
@@ -142,6 +173,7 @@ var app = function() {
             testFunc: self.testFunc,
             getNextMatch: self.getNextMatch,
             loadData: self.loadData,
+            changeEvent: self.changeEvent,
         }
 
     });

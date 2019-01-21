@@ -18,7 +18,6 @@ from .models import Event
 from .searchUser import Search
 from . import BuildGroup
 from django.http import QueryDict
-#from django.models.User import User
 from .functions.reccomend import reccomendNext
 
 from django.contrib.auth import login, authenticate, logout
@@ -66,7 +65,7 @@ def event(request):
         form = EventForm(request.POST)
         if form.is_valid():
             e = form.save(commit=False)
-            e.creator = request.user.username
+            e.creator = request.user.id
             a = Graph()
             b = Graph()
             a.save()
@@ -74,6 +73,7 @@ def event(request):
             e.di = a
             e.undi = b
             e.save()
+            return redirect('index')
     else:
         form = EventForm()
     return render(request, 'project/event.html', {'form':form})
@@ -160,21 +160,31 @@ def loadData(request):
     print("Load Data")
     response_data = {}
     response_data['success'] = True
-    #evID = Search.getUserEvents(request.user.id)
-    events = Event.objects.all()
-    evID = []
-    for i in events:
-        evID.append(i.id)
+
+    evID = Search.getUserEvents(request.user.id)
     evName = []
     for i in evID:
         evName.append(Event.objects.get(id=i).name)
 
+    my_evID = Search.getUserCreatedEvents(request.user.id)
+    my_evName = []
+    for i in my_evID:
+        my_evName.append(Event.objects.get(id=i).name)
+
+    curr_type = False #False is ev, true is my_ev
     curr = -1
     if(len(evID) != 0):
         curr = 0
+    elif(len(my_evID) != 0):
+        curr = 0
+        curr_type = True
+
     response_data['event_ids'] = evID
     response_data['event_names'] = evName
+    response_data['my_event_ids'] = my_evID
+    response_data['my_event_names'] = my_evName
     response_data['curr_event'] = curr
+    response_data['curr_type'] = curr_type
     response_data['Group'] = None
     return (JsonResponse(response_data))
 
@@ -182,13 +192,9 @@ def loadData(request):
 def getNextMatch(request):
     print("getNextMatch")
     response_data = {}
-    event = request.GET.dict()
-    event = int(event.get('eventID'))
-    
-    response_data['suggested_usr_name'] = randomword(5) + " " +randomword(5)
-    response_data['suggested_usr_id'] = 3
-    
-    """
+    eventBody = request.GET.dict()
+    event = int(eventBody.get('eventID'))
+
     if (event != -1):
         usrs = Event.objects.get(id=event).getUsers()
         me = -1
@@ -207,7 +213,7 @@ def getNextMatch(request):
     else:
         response_data['suggested_usr_name'] = "No More Users"
         response_data['suggested_usr_id'] = -1
-    """
+    
     return (JsonResponse(response_data))
 
 """
