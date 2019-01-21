@@ -150,7 +150,7 @@ def decline(request):
     targetEventModel = Event.objects.get(id=eventID)
     targetEvent = EventClass(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
 
-    reccomendNext(targetEventModel, mainUser)
+    print("reccomend next: " +str(reccomendNext(targetEventModel, mainUser)))
 
     response_data['success'] = True
     return (JsonResponse(response_data))
@@ -202,9 +202,8 @@ def getNextMatch(request):
             if usrs[i] == request.user.id:
                 me = i
         usrsOn = Event.objects.get(id=event).getUsersOn()
-        print(usrsOn[me])
         if me != -1 and usrsOn[me] != -1:
-            Usr = User.objects.get(id=usrs[usrsOn[me]])
+            Usr = User.objects.get(id=usrs[usrsOn[me]-1]) #might be wrong
             response_data['suggested_usr_name'] = Usr.username
             response_data['suggested_usr_id'] = Usr.id
         else:
