@@ -17,7 +17,8 @@ class Graph(models.Model):
 	edges_a = models.CharField(max_length=5000)
 	edges_b = models.CharField(max_length=5000)
 	def __str__(self):
-		return(str(self.node_set.all()))
+		return("Nodes: " + str(self.node_set.all()) + " Edges: " + str(self.edge_set.all()))
+
 	def getEdges(self):
 		if len(self.edges_a) == 0:
 			return[]
@@ -116,10 +117,6 @@ class Edge(models.Model):
 	b = models.IntegerField()
 
 	graph = models.ForeignKey(Graph, on_delete=models.CASCADE)
-
-	def __init__(self, a, b):
-		self.a = a
-		self.b = b
 
 	def __str__(self):
 		return (str(self.a) + ", " + str(self.b))
