@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 #import project.models_.graph as Graph
 #import networkx as nx
 
@@ -8,20 +11,13 @@ from django.core.validators import int_list_validator
 
 # Create your models here.
 
-class Test(models.Model):
-	count = models.IntegerField(default=0)
-
-#class User(AbstractUser):
-#	bio = models.TextField(max_length=500, blank=True)
-#	birth_date = models.DateField(null=True, blank=True)
-#	pic = models.ImageField(null=True)
 
 class Graph(models.Model):
 	nodes = models.CharField(max_length=500)
 	edges_a = models.CharField(max_length=5000)
 	edges_b = models.CharField(max_length=5000)
 	def __str__(self):
-		pass
+		return(str(self.node_set.all()))
 	def getEdges(self):
 		if len(self.edges_a) == 0:
 			return[]
@@ -49,6 +45,8 @@ class Graph(models.Model):
 	def setNodes(self, nodes):
 		self.nodes = ' '.join(map(str,nodes))
 		self.save()
+
+
 
 class Event(models.Model):
 	def __str__(self):
@@ -108,6 +106,35 @@ class Event(models.Model):
 			self.userson = self.userson + " " + str(0)
 		self.save()
 
+
+
+
+
+#Edge (a,b)
+class Edge(models.Model):
+	a = models.IntegerField()
+	b = models.IntegerField()
+
+	graph = models.ForeignKey(Graph, on_delete=models.CASCADE)
+
+	def __init__(self, a, b):
+		self.a = a
+		self.b = b
+
+	def __str__(self):
+		return (str(self.a) + ", " + str(self.b))
+
+#Node just holds the user id
+class Node(models.Model):
+	userId = models.IntegerField()
+	graph = models.ForeignKey(Graph, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return(str(self.userId))
+
+
+
+
 class Groups(models.Model):
 	linkedEventId = models.TextField(max_length=50)
 	users = models.CharField(max_length=5000);
@@ -127,6 +154,7 @@ class Groups(models.Model):
 		self.save()
 
 class Profile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	bio = models.TextField(max_length=500,blank=True,null=True)
 	age = models.IntegerField(blank=True,null=True)
 	#pic = models.ImageField(upload_to = 'demo/', default = 'demo/no-img.jpg')
@@ -139,4 +167,16 @@ class Profile(models.Model):
 		return self.age
 	def getPicture(self):
 		return self.pic.url
-		
+	
+	def test(self):
+		print("test")
+
+
+	@receiver(post_save, sender=User)
+	def create_user_profile(sender, instance, created, **kwargs):
+		if created:
+			Profile.objects.create(user=instance)
+
+	@receiver(post_save, sender=User)
+	def save_user_profile(sender, instance, **kwargs):
+		instance.profile.save()
