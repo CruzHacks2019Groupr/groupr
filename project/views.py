@@ -82,6 +82,7 @@ def event(request):
 
 
 
+
 #API
 
 #used for generating random names
@@ -214,20 +215,3 @@ def getNextMatch(request):
         response_data['suggested_usr_id'] = -1
     
     return (JsonResponse(response_data))
-
-"""
-Demo:
-def post_note(request):
-	noteTitle = request.GET['title']
-	noteBody = request.GET['body']
-	n = note(note_title=noteTitle, note_text=noteBody, pub_date=timezone.now())
-	print(n)
-	n.save()
-	return(JsonResponse({"success", 1}))
-
-def get_notes(request):
-	print(request.GET['start_idx'])
-	resultset = note.objects.all()
-	results = [ob.as_json() for ob in resultset]
-	return(JsonResponse(json.dumps(results),safe=False))
-"""
