@@ -57,13 +57,13 @@ class Event(models.Model):
 	group_size = models.IntegerField()
 	di = models.OneToOneField(
 		Graph,
-		on_delete=models.PROTECT,
+		on_delete=models.CASCADE,
 		related_name = 'di',
 	)
 	
 	undi = models.OneToOneField(
 		Graph,
-		on_delete=models.PROTECT,
+		on_delete=models.CASCADE,
 		related_name = 'undi',
 	)
 	
@@ -120,6 +120,9 @@ class Edge(models.Model):
 
 	def __str__(self):
 		return (str(self.a) + ", " + str(self.b))
+
+	def tuple(self):
+		return [self.a, self.b]
 
 #Node just holds the user id
 class Node(models.Model):
