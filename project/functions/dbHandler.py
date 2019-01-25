@@ -8,8 +8,13 @@ import networkx as nx
 
 
 class UserHandler:
-	#this shit is gonna be wack
-	pass
+	#returns a list of all events (as EventHandlers) that the user owns
+	@staticmethod
+	def getEventsOwner(usrId):
+		db_events = Event.objects.filter(owner=usrId)
+		eventHandlers = [EventHandler(e.id) for e in db_events]
+		return eventHandlers
+
 
 
 #=========== event functions ===============
@@ -37,6 +42,9 @@ class EventHandler:
 		self.undi = GraphHandler(self.event.undi.id)
 		self.name = self.event.name
 		self.groupSize = self.event.group_size
+
+	def __str__(self):
+		return ("Event Name: " + self.event.name + " ID: " + str(self.id))
 
 	def export_users(self):
 		return self.di.getNodes()
@@ -72,6 +80,16 @@ class EventHandler:
 		dg = nx.parse_edgelist(self.di.getNodes())
 		return dg
 
+
+	def delete(self):
+		self.event.delete()
+		self.event = None
+		self.id = None
+		self.name = None
+		self = None
+		#deeeeeeeep
+		#also this will throw an error if you try to do anything with it so be careful
+		
 
 	#get/set user profile
 

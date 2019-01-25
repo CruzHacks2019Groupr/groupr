@@ -66,17 +66,10 @@ def event(request):
         if form.is_valid():
             e = form.save(commit=False)
             e.creator = request.user.id
-            #EventHandler.createEvent()
+            
+            ev = EventHandler.createEvent(e.name, e.group_size, e.creator)
 
-            print(e.group_size)
-
-            a = Graph()
-            b = Graph()
-            a.save()
-            b.save()
-            e.di = a
-            e.undi = b
-            e.save()
+            print(ev)
 
             return redirect('index')
     else:
