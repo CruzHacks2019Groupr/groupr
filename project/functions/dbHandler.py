@@ -25,12 +25,16 @@ class UserHandler:
 		for e in all_events:
 			eh = EventHandler(e.id)
 			if self.id in eh.export_users():
-				userEvents.add(eh)
+				userEvents.append(eh)
 		return userEvents
 
-	def joinEvent(self, eventId):
-		e = EventHandler(eventId)
-		e.add_user(self.id)
+	def joinEvent(self, addCode):
+		try:
+			e = Event.objects.get(addCode=addCode)
+		except Event.DoesNotExist:
+			pass
+		ev = EventHandler(e.id)
+		ev.add_user(self.id)
 
 
 #=========== event functions ===============
@@ -58,6 +62,7 @@ class EventHandler:
 		self.undi = GraphHandler(self.event.undi.id)
 		self.name = self.event.name
 		self.groupSize = self.event.group_size
+		self.addCode = self.event.addCode
 
 	def __str__(self):
 		return ("Event Name: " + self.event.name + " ID: " + str(self.id))

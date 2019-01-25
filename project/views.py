@@ -167,7 +167,8 @@ def loadData(request):
     for i in evID:
         evName.append(Event.objects.get(id=i).name)
 
-    my_events = UserHandler.getEventsOwner(request.user.id)
+    user = UserHandler(request.user.id)
+    my_events =user.getEventsOwner()
     my_evID = []
     my_evName = []
     for e in my_events:

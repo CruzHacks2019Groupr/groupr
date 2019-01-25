@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import random, string
 #import project.models_.graph as Graph
 #import networkx as nx
 
@@ -55,8 +56,10 @@ class Event(models.Model):
 
 	name = models.TextField(max_length=50)
 	group_size = models.IntegerField()
-	
 	owner = models.IntegerField( default=0)
+	addCode = models.CharField(max_length=5000, default=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(5)), blank = True)
+
+
 
 	users = models.CharField(max_length=5000, default="", blank = True) #DO NOT USE
 	userson = models.CharField(max_length=5000, default="", blank = True) #DO NOT USE
