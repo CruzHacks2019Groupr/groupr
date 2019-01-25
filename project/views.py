@@ -19,7 +19,7 @@ from .searchUser import Search
 from . import BuildGroup
 from django.http import QueryDict
 from .functions.reccomend import reccomendNext
-
+from .functions.dbHandler import EventHandler
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 
@@ -66,6 +66,10 @@ def event(request):
         if form.is_valid():
             e = form.save(commit=False)
             e.creator = request.user.id
+            #EventHandler.createEvent()
+
+            print(e.group_size)
+
             a = Graph()
             b = Graph()
             a.save()
@@ -73,6 +77,7 @@ def event(request):
             e.di = a
             e.undi = b
             e.save()
+
             return redirect('index')
     else:
         form = EventForm()

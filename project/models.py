@@ -56,7 +56,8 @@ class Event(models.Model):
 	name = models.TextField(max_length=50)
 	group_size = models.IntegerField()
 	users = models.CharField(max_length=5000, default="", blank = True) #optional
-	creator = models.CharField(max_length=150, blank=True)
+	creator = models.CharField(max_length=150, blank=True) #DO NOT USE
+	owner = models.IntegerField( default=0)
 	userson = models.CharField(max_length=5000, default="", blank = True) #optional
 
 

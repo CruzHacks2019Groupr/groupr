@@ -6,6 +6,7 @@
 
 <div class="container">
 	<div class="row">
+        {% if user.is_authenticated %}
 		<div class=" col-md-2 sidenav" v-show="logged_in">
             <div style="padding-left: 30px;">
                 <span><h3>My Events</h3></span>
@@ -27,7 +28,6 @@
 		<div class="col-md-10">
                 <br><br><br><br>
 		    <center>
-		    	{% if user.is_authenticated %}
                 <h1 v-if="curr_event != -1 && !curr_type"> ${event_names[curr_event]} </h1>
                 <h1 v-else-if="curr_event != -1 && curr_type"> ${my_event_names[curr_event]} </h1>
                 <h1 v-else> You Don't Have Any Events </h1>
@@ -40,11 +40,19 @@
         		    	<button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
                     </div>
                 </div>
-		    	{% else %}
-		        <h1 class="center">You are not logged in</h1>
-		        <h3 class="center">pls log in</h3>
-		        {% endif %}
 		    </center>
 		</div>
+        {% else %}
+        <div class="col-md-12">
+            <center>
+                <br><br><br>
+                <h1 class="center">You are not logged in</h1>
+                <br>
+                <a type="button" class="btn btn-primary btn-lg" href="{% url 'login' %}" >Login</a>
+                <a type="button" class="btn btn-primary btn-lg" href="{% url 'signup' %}" >Sign Up</a>
+            </center>
+        </div>
+        {% endif %}
 	</div>
+</div>
 {% endblock %}

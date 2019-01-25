@@ -1,7 +1,6 @@
 from ..models import Graph, Node, Edge, Event
 from django.db.models import Q
-
-# NO NX IN HERE
+import networkx as nx
 
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
@@ -17,7 +16,7 @@ class UserHandler:
 class EventHandler:
 	#create event
 	@staticmethod
-	def createEvent(name, groupSize):
+	def createEvent(name, groupSize, creator):
 		e = Event()
 		e.name = name
 		e.group_size = groupSize
@@ -27,6 +26,7 @@ class EventHandler:
 		undi.save()
 		e.di = di
 		e.undi = undi
+		e.owner = creator
 		e.save()
 		return EventHandler(e.id)
 
@@ -63,6 +63,15 @@ class EventHandler:
 			self.undi.deleteEdge(destinationUser, sourceUser)
 		if (sourceUser, destinationUser) in undiEdges:
 			self.undi.deleteEdge(sourceUser, destinationUser)
+
+	def G(self):
+		g = nx.parse_edgelist(self.undi.getNodes())
+		return g
+
+	def DG(self):
+		dg = nx.parse_edgelist(self.di.getNodes())
+		return dg
+
 
 	#get/set user profile
 
