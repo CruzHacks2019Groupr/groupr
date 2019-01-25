@@ -8,13 +8,29 @@ import networkx as nx
 
 
 class UserHandler:
-	#returns a list of all events (as EventHandlers) that the user owns
-	@staticmethod
-	def getEventsOwner(usrId):
-		db_events = Event.objects.filter(owner=usrId)
+	def __init__(self, userId):
+		self.id = userId
+
+
+	def getEventsOwner(self):
+		db_events = Event.objects.filter(owner=self.id)
 		eventHandlers = [EventHandler(e.id) for e in db_events]
 		return eventHandlers
 
+
+
+	def getEvents(self):
+		all_events = Event.objects.all()
+		userEvents = []
+		for e in all_events:
+			eh = EventHandler(e.id)
+			if self.id in eh.export_users():
+				userEvents.add(eh)
+		return userEvents
+
+	def joinEvent(self, eventId):
+		e = EventHandler(eventId)
+		e.add_user(self.id)
 
 
 #=========== event functions ===============
@@ -45,6 +61,9 @@ class EventHandler:
 
 	def __str__(self):
 		return ("Event Name: " + self.event.name + " ID: " + str(self.id))
+
+	def __repr__(self):
+		return str(self)
 
 	def export_users(self):
 		return self.di.getNodes()
@@ -89,7 +108,7 @@ class EventHandler:
 		self = None
 		#deeeeeeeep
 		#also this will throw an error if you try to do anything with it so be careful
-		
+
 
 	#get/set user profile
 

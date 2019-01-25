@@ -8,20 +8,21 @@ from django.utils import timezone
 import requests, random, string, re
 from django.core import serializers
 import json
+from pusher import Pusher
+from django.http import QueryDict
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import UserCreationForm
+
+from .models import Graph
+from .models import Event
+from .functions.reccomend import reccomendNext
+from .functions.dbHandler import EventHandler, UserHandler
+from .forms import EventForm
+from .searchUser import Search
+from . import BuildGroup
 from .functions import demoScript
 from .functions.matcher import *
 from .functions.Event import Event as EventClass
-from pusher import Pusher
-from .forms import EventForm
-from .models import Graph
-from .models import Event
-from .searchUser import Search
-from . import BuildGroup
-from django.http import QueryDict
-from .functions.reccomend import reccomendNext
-from .functions.dbHandler import EventHandler
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm
 
 
 pusher = Pusher(app_id=u'694776', key=u'4105ec1d8d985dcf27bf', secret=u'1cf25393f1f636e8dc3e' ,cluster=u'us2')
@@ -160,21 +161,25 @@ def loadData(request):
     response_data = {}
     response_data['success'] = True
 
+
     evID = Search.getUserEvents(request.user.id)
     evName = []
     for i in evID:
         evName.append(Event.objects.get(id=i).name)
 
-    my_evID = Search.getUserCreatedEvents(request.user.id)
+    my_events = UserHandler.getEventsOwner(request.user.id)
+    my_evID = []
     my_evName = []
-    for i in my_evID:
-        my_evName.append(Event.objects.get(id=i).name)
+    for e in my_events:
+        my_evName.append(e.name)
+        my_evID.append(e.id)
+
 
     curr_type = False #False is ev, true is my_ev
     curr = -1
     if(len(evID) != 0):
         curr = 0
-    elif(len(my_evID) != 0):
+    elif(len(my_events) != 0):
         curr = 0
         curr_type = True
 

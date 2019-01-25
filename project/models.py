@@ -55,11 +55,12 @@ class Event(models.Model):
 
 	name = models.TextField(max_length=50)
 	group_size = models.IntegerField()
-	users = models.CharField(max_length=5000, default="", blank = True) #optional
-	creator = models.CharField(max_length=150, blank=True) #DO NOT USE
+	
 	owner = models.IntegerField( default=0)
-	userson = models.CharField(max_length=5000, default="", blank = True) #optional
 
+	users = models.CharField(max_length=5000, default="", blank = True) #DO NOT USE
+	userson = models.CharField(max_length=5000, default="", blank = True) #DO NOT USE
+	creator = models.CharField(max_length=150, blank=True) #DO NOT USE
 
 
 	di = models.OneToOneField(
@@ -111,7 +112,7 @@ class Event(models.Model):
 		self.save()
 
 
-
+#add code for event
 
 
 #Edge (a,b)
