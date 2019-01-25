@@ -104,11 +104,9 @@ var app = function() {
         $.getJSON(url, function (data) {
             
             console.log(data)
-            self.vue.event_names = data.event_names
-            self.vue.event_ids = data.event_ids
             self.vue.curr_event = data.curr_event
-            self.vue.my_event_names = data.my_event_names
-            self.vue.my_event_ids = data.my_event_ids
+            self.vue.my_events = data.my_events
+            self.vue.events = data.events
             self.vue.curr_type = data.curr_type
             if(!data.curr_type)
                 self.getNextMatch()
@@ -134,6 +132,7 @@ var app = function() {
             curr_event: -1,
             curr_type: false,
             group: -1,
+            my_events: [],
 
         },
         methods: {
