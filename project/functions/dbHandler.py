@@ -1,4 +1,7 @@
 from ..models import Graph, Node, Edge, Event
+from django.db.models import Q
+
+# NO NX IN HERE
 
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
@@ -32,13 +35,34 @@ class EventHandler:
 		self.id = self.event.id
 		self.di = GraphHandler(self.event.di.id)
 		self.undi = GraphHandler(self.event.undi.id)
+		self.name = self.event.name
+		self.groupSize = self.event.group_size
 
+	def export_users(self):
+		return self.di.getNodes()
 
-	#add user
+	def add_user(self, userId):
+		self.di.addNode(userId)
+		self.undi.addNode(userId)
 
+	def remove_user(self, userId):
+		self.di.deleteNode(userId)
+		self.undi.deleteNode(userId)
 
-	#delete user
+	def add_edge(self, sourceUser, destinationUser):
+		self.di.addEdge(sourceUser, destinationUser)
 
+		#Checks if inverse edge exists in DG
+		if (destinationUser, sourceUser) in self.di.getEdges():
+			self.undi.addEdge(destinationUser, sourceUser)
+
+	def remove_edge(self, sourceUser, destinationUser):
+		self.di.deleteEdge(sourceUser, destinationUser)
+		undiEdges = self.undi.getEdges()
+		if (destinationUser, sourceUser) in undiEdges:
+			self.undi.deleteEdge(destinationUser, sourceUser)
+		if (sourceUser, destinationUser) in undiEdges:
+			self.undi.deleteEdge(sourceUser, destinationUser)
 
 	#get/set user profile
 
@@ -77,6 +101,10 @@ class GraphHandler:
 		self.addNode(usr_id1, silent=True)
 		self.addNode(usr_id2, silent=True)
 
+		#stay safe kids
+		if usr_id1 == usr_id2:
+			return
+
 		#check if already exists
 		if self.graph.edge_set.filter(a=usr_id1, b=usr_id2):
 			print("Error, graph", self.id, "already has edge (", usr_id1, ", ", usr_id2, ")")
@@ -85,11 +113,14 @@ class GraphHandler:
 		e.save()
 
 
-	#Deletes node. DOES NOT CHECK FOR PREEXISTING EDGES! BE CAREFUL!
+	#Deletes node. First deletes edges
 	def deleteNode(self, usr_id, silent=False):
 		try:
 			n = self.graph.node_set.get(userId=usr_id)
 			n.delete()
+			edgesToDelete = self.graph.edge_set.filter(Q(a=usr_id) | Q(b=usr_id))
+			for e in edgesToDelete:
+				e.delete()
 		except Node.DoesNotExist:
 			if not silent:
 				print("NODE ", usr_id, " DOES NOT EXIST IN GRAPH")

@@ -55,6 +55,12 @@ class Event(models.Model):
 
 	name = models.TextField(max_length=50)
 	group_size = models.IntegerField()
+	users = models.CharField(max_length=5000, default="", blank = True) #optional
+	creator = models.CharField(max_length=150, blank=True)
+	userson = models.CharField(max_length=5000, default="", blank = True) #optional
+
+
+
 	di = models.OneToOneField(
 		Graph,
 		on_delete=models.CASCADE,
@@ -67,10 +73,6 @@ class Event(models.Model):
 		related_name = 'undi',
 	)
 	
-	users = models.CharField(max_length=5000, default="", blank = True) #optional
-	creator = models.CharField(max_length=150, blank=True)
-	userson = models.CharField(max_length=5000, default="", blank = True) #optional
-
 	def getUsers(self):
 
 		a = self.users.split(' ')
@@ -122,7 +124,7 @@ class Edge(models.Model):
 		return (str(self.a) + ", " + str(self.b))
 
 	def tuple(self):
-		return [self.a, self.b]
+		return (self.a, self.b)
 
 #Node just holds the user id
 class Node(models.Model):
