@@ -3,19 +3,35 @@ from ..models import Graph, Node, Edge, Event
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
 
+
+
+class UserHandler:
+	#this shit is gonna be wack
+	pass
+
+
 #=========== event functions ===============
 class EventHandler:
 	#create event
-	def __init__(self, event_id=None):
-		if(event_id is None):
-			self.event = Event()
-			self.event.save()
-			self.event.di = Graph()
-			self.event.di.save()
-			self.event.undi = Graph()
-			self.event.undi.save()
-		else:
-			pass
+	@staticmethod
+	def createEvent(name, groupSize):
+		e = Event()
+		e.name = name
+		e.group_size = groupSize
+		di = Graph()
+		di.save()
+		undi = Graph()
+		undi.save()
+		e.di = di
+		e.undi = undi
+		e.save()
+		return EventHandler(e.id)
+
+	def __init__(self, event_id):
+		self.event = Event.objects.get(id=event_id)
+		self.id = self.event.id
+		self.di = GraphHandler(self.event.di.id)
+		self.undi = GraphHandler(self.event.undi.id)
 
 
 	#add user

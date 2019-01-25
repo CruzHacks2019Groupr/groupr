@@ -68,7 +68,7 @@ class Event(models.Model):
 	)
 	
 	users = models.CharField(max_length=5000, default="", blank = True) #optional
-	creator = models.CharField(max_length=150, blank=False)
+	creator = models.CharField(max_length=150, blank=True)
 	userson = models.CharField(max_length=5000, default="", blank = True) #optional
 
 	def getUsers(self):
