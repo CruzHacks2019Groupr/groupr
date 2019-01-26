@@ -11,7 +11,7 @@ def findPerfectGroup(Event, User):
 				Event.removeUser(j)
 			return i
 
-def forceGroups(Event)
+def forceGroups(Event):
 	possibleGroups = list(itertools.combinations(list(Event.DG()), Event.groupSize))    		#All combinations of the Node list in groups of length n are stored in list
 	i = 0
 	groupCombo = [list(list())]	
@@ -43,7 +43,7 @@ def forceGroups(Event)
 
 	return groupCombo[BestIndex]
 
-	def computeScore(Event, L):													   				#For a given group computes the score, which is the number edges
+def computeScore(Event, L):													   				#For a given group computes the score, which is the number edges
 	score = 0
 	for i in L:
 		for j in L:
