@@ -109,7 +109,7 @@ def accept(request):
 
 	response_data = {}
 	info = request.GET.dict()
-
+	"""
 	eventID = int(info.get('eventID'))
 	mainUser = request.user.id
 	acceptedUser = int(info.get('otherID'))
@@ -130,17 +130,19 @@ def accept(request):
 		group = buildGroup(targetEventModel.id, groupUsers)
  
 	print("reccomend next: " +str(reccomendNext(targetEventModel, mainUser)))
-
-
-	response_data['success'] = True
+	
 	response_data['group'] = group
+	"""
+	response_data['success'] = True
 	return (JsonResponse(response_data))
 
 @login_required(login_url='/login/')
 def decline(request):
 	print("decline")
+	
 	response_data = {}
 	info = request.GET.dict()
+	"""
 	eventID = int(info.get('eventID'))
 	mainUser = request.user.id
 
@@ -148,6 +150,7 @@ def decline(request):
 	targetEvent = EventClass(targetEventModel.di.getNodes(), targetEventModel.di.getEdges())
 
 	print("reccomend next: " +str(reccomendNext(targetEventModel, mainUser)))
+	"""
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))
@@ -199,6 +202,7 @@ def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
 	eventBody = request.GET.dict()
+	"""
 	event = int(eventBody.get('eventID'))
 
 	if (event != -1):
@@ -218,5 +222,6 @@ def getNextMatch(request):
 	else:
 		response_data['suggested_usr_name'] = "No More Users"
 		response_data['suggested_usr_id'] = -1
+	"""
 	
 	return (JsonResponse(response_data))

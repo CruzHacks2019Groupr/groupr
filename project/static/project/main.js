@@ -22,46 +22,19 @@ var app = function() {
     };
 
     self.accept = function(){
-        var ev = -1
-        if(!self.vue.curr_type) {
-            if(self.vue.curr_event != -1)
-                ev = self.vue.event_ids[self.vue.curr_event]
-        }
-        else {
-            if(self.vue.curr_event != -1)
-                ev = self.vue.my_event_ids[self.vue.curr_event]
-        }
 
         var request = {
-            "otherID": self.vue.suggested_usr_id,
-             "eventID": ev,
         }
         var url = "/accept" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
-            self.vue.group = data.group
-            if (data.group!=-1) 
-            {
-                alert("Hello! I am an alert box!!");
-            }
             self.getNextMatch()
         })
     };
 
     self.decline = function(){
-        var ev = -1
-        if(!self.vue.curr_type) {
-            if(self.vue.curr_event != -1)
-                ev = self.vue.event_ids[self.vue.curr_event]
-        }
-        else {
-            if(self.vue.curr_event != -1)
-                ev = self.vue.my_event_ids[self.vue.curr_event]
-        }
-
         var request = {
-            "eventID": ev,
         }
         var url = "/decline" + "?" + $.param(request);
 
@@ -73,19 +46,8 @@ var app = function() {
     };
 
     self.getNextMatch = function(){
-        var ev = -1
-        if(!self.vue.curr_type) {
-            if(self.vue.curr_event != -1)
-                ev = self.vue.event_ids[self.vue.curr_event]
-        }
-        else {
-            if(self.vue.curr_event != -1)
-                ev = self.vue.my_event_ids[self.vue.curr_event]
-        }
 
         var request = {
-                "eventID": ev,
-                "type": self.vue.curr_type
         }
         var url = "/getNextMatch" + "?" + $.param(request);
 
@@ -125,18 +87,14 @@ var app = function() {
             suggested_usr_name: "",
             suggested_usr_id: -1,
             logged_in: true,
-            event_names: [],
-            event_ids: [],
-            my_event_names: [],
-            my_event_ids: [],
             curr_event: -1,
             curr_type: false,
             group: -1,
             my_events: [],
+            events: [],
 
         },
         methods: {
-            add: self.add,
             accept: self.accept,
             decline: self.decline,
             testFunc: self.testFunc,
