@@ -1,19 +1,18 @@
-#import everything we need
 import networkx as nx
 import itertools
-from .Event import Event 
+from .dbHandler import UserHandler
+from .dbHandler import EventHandler
 
-def findPerfectGroup(Event, node, size):								   						#Update swipe occurs, giving a first and second ID
-	List = nx.cliques_containing_node(Event.G, node)						
-	for j in List:														  					 	#Checks the size of each clique, ignore if not of size n
-		if len(j) is size:
-			for i in j:													   						#removes nodes from the clique
-				Event.remove_user(i)
-			return j; 													   						#break when the first valid clique is found
+def findPerfectGroup(Event, User):
+	PerfectGroups = nx.cliques_containing_node(Event.G(), User)
+	for i in PerfectGroups:
+		if len(i) is Event.groupSize:
+			for j in i
+				Event.removeUser(j)
+			return i
 
-def forceGroups(Event, size):								 									#Makes groups based on current criterium
-
-	possibleGroups = list(itertools.combinations(list(Event.DG), size))    						#All combinations of the Node list in groups of length n are stored in list
+def forceGroups(Event)
+	possibleGroups = list(itertools.combinations(list(Event.DG()), Event.groupSize))    		#All combinations of the Node list in groups of length n are stored in list
 	i = 0
 	groupCombo = [list(list())]	
 	scoreList = []										  										#Nested loops build a combination of groups (disjoint is used to make sure the same person doesnt end up in a group twice)
@@ -40,16 +39,14 @@ def forceGroups(Event, size):								 									#Makes groups based on current cr
 		for l in range(len(groupCombo[BestIndex][k])):								   
 			Event.remove_user(groupCombo[BestIndex][k][l])
 
-	groupCombo[BestIndex].append(list(Event.DG))							   					#All remaining people are put into a group
+	groupCombo[BestIndex].append(list(Event.DG()))							   					#All remaining people are put into a group
 
 	return groupCombo[BestIndex]
 
-	
-def computeScore(Event, L):													   					#For a given group computes the score, which is the number edges
-
+	def computeScore(Event, L):													   				#For a given group computes the score, which is the number edges
 	score = 0
 	for i in L:
 		for j in L:
-			if i != j and i in Event.DG.neighbors(j):
+			if i != j and i in Event.DG().neighbors(j):
 				score+=1;
 	return score
