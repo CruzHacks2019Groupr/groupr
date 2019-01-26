@@ -24,7 +24,7 @@ class UserHandler:
 		userEvents = []
 		for e in all_events:
 			eh = EventHandler(e.id)
-			if self.id in eh.export_users():
+			if self.id in eh.exportUsers():
 				userEvents.append(eh)
 		return userEvents
 
@@ -34,7 +34,7 @@ class UserHandler:
 		except Event.DoesNotExist:
 			pass
 		ev = EventHandler(e.id)
-		ev.add_user(self.id)
+		ev.addUser(self.id)
 
 
 #=========== event functions ===============
@@ -70,25 +70,25 @@ class EventHandler:
 	def __repr__(self):
 		return str(self)
 
-	def export_users(self):
+	def exportUsers(self):
 		return self.di.getNodes()
 
-	def add_user(self, userId):
+	def addUser(self, userId):
 		self.di.addNode(userId)
 		self.undi.addNode(userId)
 
-	def remove_user(self, userId):
+	def removeUser(self, userId):
 		self.di.deleteNode(userId)
 		self.undi.deleteNode(userId)
 
-	def add_edge(self, sourceUser, destinationUser):
+	def addEdge(self, sourceUser, destinationUser):
 		self.di.addEdge(sourceUser, destinationUser)
 
 		#Checks if inverse edge exists in DG
 		if (destinationUser, sourceUser) in self.di.getEdges():
 			self.undi.addEdge(destinationUser, sourceUser)
 
-	def remove_edge(self, sourceUser, destinationUser):
+	def removeEdge(self, sourceUser, destinationUser):
 		self.di.deleteEdge(sourceUser, destinationUser)
 		undiEdges = self.undi.getEdges()
 		if (destinationUser, sourceUser) in undiEdges:
