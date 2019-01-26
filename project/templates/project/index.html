@@ -10,6 +10,10 @@
 		<div class=" col-md-2 sidenav" v-show="logged_in">
             <div style="padding-left: 30px;">
                 <span><h3>My Events</h3></span>
+                <form action='/addevent/' method="post">
+                    {% csrf_token %}
+                    Add Code: <input type="text" name="code">
+                </form>
     			<span v-for="(e, i) in events" :key='i'>
     				<a href='#' v-on:click="changeEvent(i, false)">${e.name}</a>
     			</span>
