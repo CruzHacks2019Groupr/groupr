@@ -28,9 +28,18 @@
 		<div class="col-md-10">
                 <br><br><br><br>
 		    <center>
-                <h1 v-if="curr_event != -1 && !curr_type"> ${events[curr_event].name} </h1>
-                <h1 v-else-if="curr_event != -1 && curr_type"> ${my_events[curr_event].name} </h1>
-                <h1 v-else> You Don't Have Any Events </h1>
+                <span v-if="curr_event != -1 && !curr_type">
+                    <h1> ${events[curr_event].name} </h1>
+                </span>
+                <span v-else-if="curr_event != -1 && curr_type">
+                    <h1> ${my_events[curr_event].name} </h1>
+                    <br>
+                    <h2>Add Code:  ${my_events[curr_event].addCode}</h2>
+                </span>
+                <span v-else>
+                    <h1> You Don't Have Any Events </h1>
+                </span>
+                
                 <br>
                 <div v-if="!curr_type && curr_event != -1">
                     <h3>other user: ${suggested_usr_name} </h3>
