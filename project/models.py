@@ -139,44 +139,14 @@ class Node(models.Model):
 	def __str__(self):
 		return(str(self.userId))
 
-
-
-
-class Groups(models.Model):
-	linkedEventId = models.TextField(max_length=50)
-	users = models.CharField(max_length=5000);
-
-	def getEventId(self):
-		return self.linkedEventId
-
-	def getUsers(self):
-		a = self.users.split(' ')
-		return a
-
-	def addUser(self, id):
-		if len(self.users) == 0:
-			self.users = self.users + id
-		else:
-			self.users = self.users + " " + id
-		self.save()
-
+#this is the user profile
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	name = models.TextField(max_length=30, blank=True,null=True)
 	bio = models.TextField(max_length=500,blank=True,null=True)
+
 	age = models.IntegerField(blank=True,null=True)
 	#pic = models.ImageField(upload_to = 'demo/', default = 'demo/no-img.jpg')
-
-	def getBio(self):
-		return self.bio
-	def setBio(self,id):
-		self.bio=id
-	def getAge(self):
-		return self.age
-	def getPicture(self):
-		return self.pic.url
-	
-	def test(self):
-		print("test")
 
 
 	@receiver(post_save, sender=User)
@@ -187,3 +157,18 @@ class Profile(models.Model):
 	@receiver(post_save, sender=User)
 	def save_user_profile(sender, instance, **kwargs):
 		instance.profile.save()
+
+#this is the profile tied to each event
+class EventProfile(models.Model):
+	# using foreignkeys because I'm a good boy
+	user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+	event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+	#store as JSON
+	customInfo = models.TextField(max_length=1000,blank=True,null=True)
+
+#the much-feared manyToMany
+class Group(models.Model):
+	users = models.ManyToManyField(EventProfile)
+	title = models.TextField(max_length=50,blank=True,null=True)
+	uniqueHash = models.TextField(max_length=10)

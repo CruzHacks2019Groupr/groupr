@@ -1,23 +1,48 @@
-from ..models import Graph, Node, Edge, Event
+from ..models import Graph, Node, Edge, Event, EventProfile, Profile, Group
 from django.db.models import Q
+from django.contrib.auth.models import User
 import networkx as nx
+import random, string
 
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
 
 
 
+
+class GroupHandler:
+
+	@staticmethod
+	#takes the list of user ids and an eventHandler
+	def createGroup(usersList, event):
+		g = Group()
+		#literally not a unique hash lol
+		g.uniqueHash = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8))
+		g.save()
+		for user in usersList:
+			g.users.add(UserHandler(user).getEventProfile(event))
+		return GroupHandler(g.id)
+
+	def __init__(self, groupId):
+		self.id = groupId
+		self.group = Group.objects.get(id=groupId)
+
+	#returns a list of UserHandler objects
+	def getUsers(self):
+		users = self.group.users.all()
+
+
 class UserHandler:
+
 	def __init__(self, userId):
 		self.id = userId
-
+		self.user = User.objects.get(id=userId)
+		self.profile = self.user.profile
 
 	def getEventsOwner(self):
 		db_events = Event.objects.filter(owner=self.id)
 		eventHandlers = [EventHandler(e.id) for e in db_events]
 		return eventHandlers
-
-
 
 	def getEvents(self):
 		all_events = Event.objects.all()
@@ -35,7 +60,32 @@ class UserHandler:
 			pass
 		ev = EventHandler(e.id)
 		ev.addUser(self.id)
+		ep = EventProfile()
+		ep.user = self.profile
+		ep.event = ev.event
 
+	def getEventProfile(self, ev):
+		ep = EventProfile.objects.get(event=ev, user=self.user)
+		return ep
+
+	def getBio(self):
+		return self.profile.bio
+
+	def setBio(self, bio):
+		self.profile.bio = bio
+		self/profile.bio.save()
+
+	def getName(self):
+		if self.profile.name is not None:
+			return self.profile.name
+		return self.user.username
+
+	def setName(self, name):
+		self.profile.name = name
+		self.profile.save()
+
+	def getGroups(self):
+		pass
 
 #=========== event functions ===============
 class EventHandler:
@@ -103,7 +153,6 @@ class EventHandler:
 	def DG(self):
 		dg = nx.parse_edgelist(self.di.getNodes())
 		return dg
-
 
 	def delete(self):
 		self.event.delete()
