@@ -7,7 +7,7 @@ def findPerfectGroup(Event, User):
 	PerfectGroups = nx.cliques_containing_node(Event.G(), User)
 	for i in PerfectGroups:
 		if len(i) is Event.groupSize:
-			for j in i
+			for j in i:
 				Event.removeUser(j)
 			return i
 
