@@ -13,23 +13,36 @@ import random, string
 class GroupHandler:
 
 	@staticmethod
-	#takes the list of user ids and an eventHandler
+	#takes the list of UserHandlers and an eventHandler
 	def createGroup(usersList, event):
 		g = Group()
 		#literally not a unique hash lol
 		g.uniqueHash = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8))
+		g.event = event.event
 		g.save()
 		for user in usersList:
-			g.users.add(UserHandler(user).getEventProfile(event))
+			g.users.add(user.getEventProfile(event))
+		g.save()
 		return GroupHandler(g.id)
 
 	def __init__(self, groupId):
 		self.id = groupId
 		self.group = Group.objects.get(id=groupId)
+		self.event = EventHandler(self.group.event.id)
+
+	def __str__(self):
+		return("Group: " + str(self.id) + " part of Event: " + str(self.event.id))
+
+	def __repr__(self):
+		return str(self)
 
 	#returns a list of UserHandler objects
 	def getUsers(self):
+		#EventProfile objects
 		users = self.group.users.all()
+		#This is getting messy. Hopefully this will be the worst of it.
+		#EventProfile -> Profile -> User -> UserHandler
+		return [UserHandler(u.user.user.id) for u in users]
 
 
 class UserHandler:
@@ -38,6 +51,12 @@ class UserHandler:
 		self.id = userId
 		self.user = User.objects.get(id=userId)
 		self.profile = self.user.profile
+
+	def __str__(self):
+		return("User: " + self.getName() + " ID: " + str(self.id))
+
+	def __repr__(self):
+		return str(self)
 
 	def getEventsOwner(self):
 		db_events = Event.objects.filter(owner=self.id)
@@ -63,9 +82,11 @@ class UserHandler:
 		ep = EventProfile()
 		ep.user = self.profile
 		ep.event = ev.event
+		ep.save()
 
+	#Takes EventHandler object
 	def getEventProfile(self, ev):
-		ep = EventProfile.objects.get(event=ev, user=self.user)
+		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
 		return ep
 
 	def getBio(self):
@@ -85,7 +106,9 @@ class UserHandler:
 		self.profile.save()
 
 	def getGroups(self):
-		pass
+		groups = Group.objects.filter(users__id=self.id)
+		return [GroupHandler(g.id) for g in groups]
+
 
 #=========== event functions ===============
 class EventHandler:
@@ -115,7 +138,7 @@ class EventHandler:
 		self.addCode = self.event.addCode
 
 	def __str__(self):
-		return ("Event Name: " + self.event.name + " ID: " + str(self.id))
+		return ("Event Name: " + self.event.name + " ID: " + str(self.id) + " Add Code: " + self.addCode) 
 
 	def __repr__(self):
 		return str(self)
@@ -163,7 +186,9 @@ class EventHandler:
 		#deeeeeeeep
 		#also this will throw an error if you try to do anything with it so be careful
 
-
+	def getGroups(self):
+		groups = Group.objects.filter(event=self.event)
+		return [GroupHandler(g.id) for g in groups]
 	#get/set user profile
 
 

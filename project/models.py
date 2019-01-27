@@ -165,10 +165,11 @@ class EventProfile(models.Model):
 	event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
 	#store as JSON
-	customInfo = models.TextField(max_length=1000,blank=True,null=True)
+	customInfo = models.TextField(max_length=2000,blank=True,null=True)
 
 #the much-feared manyToMany
 class Group(models.Model):
+	event = models.ForeignKey(Event, on_delete=models.CASCADE)
 	users = models.ManyToManyField(EventProfile)
 	title = models.TextField(max_length=50,blank=True,null=True)
 	uniqueHash = models.TextField(max_length=10)
