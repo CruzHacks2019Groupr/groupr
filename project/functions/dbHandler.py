@@ -1,23 +1,67 @@
-from ..models import Graph, Node, Edge, Event
+from ..models import Graph, Node, Edge, Event, EventProfile, Profile, Group
 from django.db.models import Q
+from django.contrib.auth.models import User
 import networkx as nx
+import random, string
 
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
 
 
 
+
+class GroupHandler:
+
+	@staticmethod
+	#takes the list of UserHandlers and an eventHandler
+	def createGroup(usersList, event):
+		g = Group()
+		#literally not a unique hash lol
+		g.uniqueHash = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8))
+		g.event = event.event
+		g.save()
+		for user in usersList:
+			g.users.add(user.getEventProfile(event))
+		g.save()
+		return GroupHandler(g.id)
+
+	def __init__(self, groupId):
+		self.id = groupId
+		self.group = Group.objects.get(id=groupId)
+		self.event = EventHandler(self.group.event.id)
+
+	def __str__(self):
+		return("Group: " + str(self.id) + " part of Event: " + str(self.event.id))
+
+	def __repr__(self):
+		return str(self)
+
+	#returns a list of UserHandler objects
+	def getUsers(self):
+		#EventProfile objects
+		users = self.group.users.all()
+		#This is getting messy. Hopefully this will be the worst of it.
+		#EventProfile -> Profile -> User -> UserHandler
+		return [UserHandler(u.user.user.id) for u in users]
+
+
 class UserHandler:
+
 	def __init__(self, userId):
 		self.id = userId
+		self.user = User.objects.get(id=userId)
+		self.profile = self.user.profile
 
+	def __str__(self):
+		return("User: " + self.getName() + " ID: " + str(self.id))
+
+	def __repr__(self):
+		return str(self)
 
 	def getEventsOwner(self):
 		db_events = Event.objects.filter(owner=self.id)
 		eventHandlers = [EventHandler(e.id) for e in db_events]
 		return eventHandlers
-
-
 
 	def getEvents(self):
 		all_events = Event.objects.all()
@@ -35,6 +79,35 @@ class UserHandler:
 			pass
 		ev = EventHandler(e.id)
 		ev.addUser(self.id)
+		ep = EventProfile()
+		ep.user = self.profile
+		ep.event = ev.event
+		ep.save()
+
+	#Takes EventHandler object
+	def getEventProfile(self, ev):
+		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
+		return ep
+
+	def getBio(self):
+		return self.profile.bio
+
+	def setBio(self, bio):
+		self.profile.bio = bio
+		self/profile.bio.save()
+
+	def getName(self):
+		if self.profile.name is not None:
+			return self.profile.name
+		return self.user.username
+
+	def setName(self, name):
+		self.profile.name = name
+		self.profile.save()
+
+	def getGroups(self):
+		groups = Group.objects.filter(users__id=self.id)
+		return [GroupHandler(g.id) for g in groups]
 
 
 #=========== event functions ===============
@@ -65,7 +138,7 @@ class EventHandler:
 		self.addCode = self.event.addCode
 
 	def __str__(self):
-		return ("Event Name: " + self.event.name + " ID: " + str(self.id))
+		return ("Event Name: " + self.event.name + " ID: " + str(self.id) + " Add Code: " + self.addCode) 
 
 	def __repr__(self):
 		return str(self)
@@ -104,7 +177,6 @@ class EventHandler:
 		dg = nx.parse_edgelist(self.di.getNodes())
 		return dg
 
-
 	def delete(self):
 		self.event.delete()
 		self.event = None
@@ -114,7 +186,9 @@ class EventHandler:
 		#deeeeeeeep
 		#also this will throw an error if you try to do anything with it so be careful
 
-
+	def getGroups(self):
+		groups = Group.objects.filter(event=self.event)
+		return [GroupHandler(g.id) for g in groups]
 	#get/set user profile
 
 

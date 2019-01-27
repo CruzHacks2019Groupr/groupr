@@ -104,6 +104,16 @@ def testFunc(request):
 	return (JsonResponse(response_data))
 
 @login_required(login_url='/login/')
+def addEvent(request):
+	response_data = {}
+	info = request.POST.dict()
+	print(info)
+	user = UserHandler(request.user.id)
+	user.joinEvent(info.get('code'))
+	return redirect('index')
+
+
+@login_required(login_url='/login/')
 def accept(request):
 	print("accept")
 
