@@ -37,7 +37,7 @@ def forceGroups(Event):
 
 	for k in range(len(groupCombo[BestIndex])):                                        			#Removes groups from graph
 		for l in range(len(groupCombo[BestIndex][k])):								   
-			Event.remove_user(groupCombo[BestIndex][k][l])
+			Event.removeUser(groupCombo[BestIndex][k][l])
 
 	groupCombo[BestIndex].append(list(Event.DG()))							   					#All remaining people are put into a group
 
