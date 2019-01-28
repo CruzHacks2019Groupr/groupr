@@ -1,3 +1,8 @@
+.sidenav .active{
+  color: #ccc;
+  font-weight: bold;
+}
+
 .sidenav {
   height: 100vh;
   max-height: 100%;
