@@ -165,7 +165,7 @@ class EventProfile(models.Model):
 	event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
 	#store as JSON
-	customInfo = models.TextField(max_length=2000,blank=True,null=True)
+	customInfo = models.TextField(max_length=2000, default="{}")
 
 #the much-feared manyToMany
 class Group(models.Model):

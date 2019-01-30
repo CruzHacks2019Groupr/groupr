@@ -2,7 +2,7 @@ from ..models import Graph, Node, Edge, Event, EventProfile, Profile, Group
 from django.db.models import Q
 from django.contrib.auth.models import User
 import networkx as nx
-import random, string
+import random, string, json
 
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
@@ -83,11 +83,27 @@ class UserHandler:
 		ep.user = self.profile
 		ep.event = ev.event
 		ep.save()
+		self.setCustomInfo(ev, {})
 
-	#Takes EventHandler object
+	#Takes EventHandler object, returns reference to db. Don't use this
 	def getEventProfile(self, ev):
 		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
 		return ep
+
+	#takes eventHandler, returns dict of custom info
+	def getCustomInfo(self, ev):
+		eventProfile = self.getEventProfile(ev)
+		info = EventProfile.customInfo
+		if info is not "":
+			return json.loads(info)
+		else:
+			return {}
+
+	#takes eventHandler and a dict
+	def setCustomInfo(self, ev, d):
+		info = json.dumps(d)
+		eventProfile = self.getEventProfile(ev)
+		EventProfile.customInfo = info
 
 	def getBio(self):
 		return self.profile.bio
@@ -143,8 +159,13 @@ class EventHandler:
 	def __repr__(self):
 		return str(self)
 
+	#returns list of ids (depreciated)
 	def exportUsers(self):
 		return self.di.getNodes()
+
+	#returns list of UserHandlers
+	def getUsers(self):
+		return [UserHandler(n) for n in self.di.getNodes()]
 
 	def addUser(self, userId):
 		self.di.addNode(userId)
