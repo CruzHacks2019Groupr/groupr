@@ -16,7 +16,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .functions.reccomend import reccomendNext
 from .functions.dbHandler import EventHandler, UserHandler
 from .forms import EventForm
-from . import BuildGroup
+
 from .functions import demoScript
 from .functions.matcher import *
 from .functions.Event import Event as EventClass

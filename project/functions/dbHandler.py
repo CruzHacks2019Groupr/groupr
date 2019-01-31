@@ -167,10 +167,12 @@ class EventHandler:
 	def getUsers(self):
 		return [UserHandler(n) for n in self.di.getNodes()]
 
+	#DO NOT USE, DO user.joinEvent()
 	def addUser(self, userId):
 		self.di.addNode(userId)
 		self.undi.addNode(userId)
 
+	#DO NOT USE
 	def removeUser(self, userId):
 		self.di.deleteNode(userId)
 		self.undi.deleteNode(userId)
