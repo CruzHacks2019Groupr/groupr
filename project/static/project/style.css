@@ -8,3 +8,34 @@
 .active{
 	color: white;
 }
+
+.sidenav .active{
+  color: #ccc;
+  font-weight: bold;
+}
+
+.sidenav {
+  height: 100vh;
+  max-height: 100%;
+  padding-left: 0px;
+  left: 0;
+  background-color: #333;
+  position: relative;
+  float: left;
+}
+.container{
+  max-width: 2000px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
