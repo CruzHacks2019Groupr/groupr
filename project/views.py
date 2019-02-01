@@ -32,6 +32,8 @@ def index(request):
     return render(request, 'project/index.html')
 
 def landing(request):
+    if request.user.is_authenticated:
+        return redirect('index');  
     return render(request, 'project/landing.html')
 
 def redir(request):
