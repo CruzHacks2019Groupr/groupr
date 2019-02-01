@@ -8,6 +8,8 @@ import random, string, json
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
 
 
+def genHash(len):
+	return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(len))
 
 
 class GroupHandler:
@@ -16,8 +18,11 @@ class GroupHandler:
 	#takes the list of UserHandlers and an eventHandler
 	def createGroup(usersList, event):
 		g = Group()
-		#literally not a unique hash lol
-		g.uniqueHash = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8))
+
+		g.uniqueHash = genHash(8)
+		while Group.objects.filter(uniqueHash=g.uniqueHash):
+			g.uniqueHash = genHash(8)
+
 		g.event = event.event
 		g.save()
 		for user in usersList:
@@ -27,7 +32,7 @@ class GroupHandler:
 
 	def __init__(self, groupId):
 		if type(groupId) is GroupHandler:
-			return groupId
+			groupId = groupId.id
 		self.id = groupId
 		self.group = Group.objects.get(id=groupId)
 		self.event = EventHandler(self.group.event.id)
@@ -51,7 +56,7 @@ class UserHandler:
 
 	def __init__(self, userId):
 		if type(userId) is UserHandler:
-			return userId
+			userId = userId.id
 		self.id = userId
 		self.user = User.objects.get(id=userId)
 		self.profile = self.user.profile
@@ -139,6 +144,12 @@ class EventHandler:
 	@staticmethod
 	def createEvent(name, groupSize, creator):
 		e = Event()
+
+		e.addCode = genHash(5)
+		while Event.objects.filter(addCode=e.addCode):
+			e.addCode = genHash(8)
+			
+
 		e.name = name
 		e.group_size = groupSize
 		di = Graph()
@@ -153,7 +164,7 @@ class EventHandler:
 
 	def __init__(self, event_id):
 		if type(event_id) is EventHandler:
-			return event_id
+			event_id = event_id.id
 		self.event = Event.objects.get(id=event_id)
 		self.id = self.event.id
 		self.di = GraphHandler(self.event.di.id)
