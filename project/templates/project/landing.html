@@ -1,0 +1,91 @@
+<!-- development version, includes helpful console warnings -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Groupr</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script
+              src="https://code.jquery.com/jquery-3.3.1.min.js"
+              integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+              crossorigin="anonymous"></script>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'project/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'project/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'project/sidebar.css' %}">
+{% block head %}{% endblock %}
+</head>
+<body>
+
+<div id="vue-div" v-show=false>
+
+    <div class="container">
+        <div class="row">
+            <div class="jumbotron" style="width: 100%;">
+                
+                <center>
+                    <img src="{% static 'project/logo-big.png' %}" class="img-fluid" style="max-width: 1000px;">
+                </center>
+                <br><br>
+                <div class="col-md-8 offset-md-2">
+                    <h1 class="center">Groupr will help you find your team.</h1>
+                <br><br>
+                <h4>Choose who you'd like to work with, and let our algorithms do the rest. This project was originally created by a group of five for the UCSC CruzHacks hackathon.</h4>
+                </div>
+                
+
+        </div>
+        </div>
+
+        <div class="col-md-6 offset-md-3">
+            <br><br>
+                <center>
+                <h2>Sign up</h2>
+                  <form action='/signup/' method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            
+                            <div class="col-md-6" style="padding-right: 30px;">
+                                <label for="id_username">Username: </label>
+                                <br>
+                                <input type="text" name="username" maxlength="150" autofocus="" required="" id="id_username">
+
+                                <br><br>
+
+                                <label for="your_name">Display Name: </label>
+                                <br>
+                                <input id="your_name" type="text" name="your_name">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_password1">Password:</label>
+                                <br>
+                                <input type="password" name="password1" required="" id="id_password1">
+
+                                <br><br>
+
+                                <label for="id_password2">Password confirmation:</label>
+                                <br>
+                                <input type="password" name="password2" required="" id="id_password2">
+                                
+                            </div>
+                            <br>
+                        </div>
+                        <input type="submit" value="Sign Up" class="btn btn-primary btn-lg">
+                  </form>
+            </center>
+        </div>
+        <div class="col-md-6 offset-md-3">
+            <br><br><br>
+            <center>
+                <a type="button" class="btn btn-primary btn-lg loginbutton" href="{% url 'login' %}" >Login</a>
+            </center>
+            
+        </div>
+
+
+</div>
+</div>
+
+</body>
+</html>
+

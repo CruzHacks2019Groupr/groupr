@@ -24,8 +24,15 @@ from .functions.Event import Event as EventClass
 
 pusher = Pusher(app_id=u'694776', key=u'4105ec1d8d985dcf27bf', secret=u'1cf25393f1f636e8dc3e' ,cluster=u'us2')
 
+@login_required(login_url='/landing/')
 def index(request):
-	return render(request, 'project/index.html')
+    print(request.user)
+    if request.user is None:
+        return redirect('landing')
+    return render(request, 'project/index.html')
+
+def landing(request):
+    return render(request, 'project/landing.html')
 
 def redir(request):
 	return redirect('index');    

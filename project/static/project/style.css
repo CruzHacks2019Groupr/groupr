@@ -48,3 +48,9 @@
   background-color: #343a40;
   padding-top: 10px;
 }
+
+.loginbutton{
+  position: fixed;
+  top: 0;
+  right: 0;
+}
