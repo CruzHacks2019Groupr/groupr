@@ -21,11 +21,13 @@ class GroupHandler:
 		g.event = event.event
 		g.save()
 		for user in usersList:
-			g.users.add(user.getEventProfile(event))
+			g.users.add(user._getEventProfile(event))
 		g.save()
 		return GroupHandler(g.id)
 
 	def __init__(self, groupId):
+		if type(groupId) is GroupHandler:
+			return groupId
 		self.id = groupId
 		self.group = Group.objects.get(id=groupId)
 		self.event = EventHandler(self.group.event.id)
@@ -48,6 +50,8 @@ class GroupHandler:
 class UserHandler:
 
 	def __init__(self, userId):
+		if type(userId) is UserHandler:
+			return userId
 		self.id = userId
 		self.user = User.objects.get(id=userId)
 		self.profile = self.user.profile
@@ -78,21 +82,17 @@ class UserHandler:
 		except Event.DoesNotExist:
 			pass
 		ev = EventHandler(e.id)
-		ev.addUser(self.id)
+		ev._addUserToGraph(self.id)
 		ep = EventProfile()
 		ep.user = self.profile
 		ep.event = ev.event
 		ep.save()
 		self.setCustomInfo(ev, {})
 
-	#Takes EventHandler object, returns reference to db. Don't use this
-	def getEventProfile(self, ev):
-		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
-		return ep
-
 	#takes eventHandler, returns dict of custom info
 	def getCustomInfo(self, ev):
-		eventProfile = self.getEventProfile(ev)
+		ev = EventHandler(ev)
+		eventProfile = self._getEventProfile(ev)
 		info = EventProfile.customInfo
 		if info is not "":
 			return json.loads(info)
@@ -101,8 +101,9 @@ class UserHandler:
 
 	#takes eventHandler and a dict
 	def setCustomInfo(self, ev, d):
+		ev = EventHandler(ev)
 		info = json.dumps(d)
-		eventProfile = self.getEventProfile(ev)
+		eventProfile = self._getEventProfile(ev)
 		EventProfile.customInfo = info
 
 	def getBio(self):
@@ -125,6 +126,12 @@ class UserHandler:
 		groups = Group.objects.filter(users__id=self.id)
 		return [GroupHandler(g.id) for g in groups]
 
+		#Takes EventHandler object, returns reference to db. Don't use this
+	def _getEventProfile(self, ev):
+		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
+		return ep
+
+
 
 #=========== event functions ===============
 class EventHandler:
@@ -145,6 +152,8 @@ class EventHandler:
 		return EventHandler(e.id)
 
 	def __init__(self, event_id):
+		if type(event_id) is EventHandler:
+			return event_id
 		self.event = Event.objects.get(id=event_id)
 		self.id = self.event.id
 		self.di = GraphHandler(self.event.di.id)
@@ -167,16 +176,7 @@ class EventHandler:
 	def getUsers(self):
 		return [UserHandler(n) for n in self.di.getNodes()]
 
-	#DO NOT USE, DO user.joinEvent()
-	def addUser(self, userId):
-		self.di.addNode(userId)
-		self.undi.addNode(userId)
-
-	#DO NOT USE
-	def removeUser(self, userId):
-		self.di.deleteNode(userId)
-		self.undi.deleteNode(userId)
-
+	#takes ids
 	def addEdge(self, sourceUser, destinationUser):
 		self.di.addEdge(sourceUser, destinationUser)
 
@@ -184,6 +184,7 @@ class EventHandler:
 		if (destinationUser, sourceUser) in self.di.getEdges():
 			self.undi.addEdge(destinationUser, sourceUser)
 
+	#takes ids
 	def removeEdge(self, sourceUser, destinationUser):
 		self.di.deleteEdge(sourceUser, destinationUser)
 		undiEdges = self.undi.getEdges()
@@ -206,17 +207,32 @@ class EventHandler:
 		self.id = None
 		self.name = None
 		self = None
-		#deeeeeeeep
-		#also this will throw an error if you try to do anything with it so be careful
+		#also this will throw an error if you try to do anything with the object after deletion so be careful
 
 	def getGroups(self):
 		groups = Group.objects.filter(event=self.event)
 		return [GroupHandler(g.id) for g in groups]
 	#get/set user profile
 
+	def addUser(self, userId):
+		UserHandler(userId).joinEvent(self.addCode)
+
+
+	#DO NOT USE, use addUser
+	def _addUserToGraph(self, userId):
+		self.di.addNode(userId)
+		self.undi.addNode(userId)
+
+	#DO NOT USE
+	def _removeUser(self, userId):
+		self.di.deleteNode(userId)
+		self.undi.deleteNode(userId)
+
+
 
 	#update event info
 
+#Don't use this class unless you really need to
 class GraphHandler:
 	def __init__(self, graph_id=None):
 		if(graph_id is None):
