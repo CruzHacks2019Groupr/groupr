@@ -74,7 +74,7 @@ def event(request):
 			e = form.save(commit=False)
 			e.creator = request.user.id
 			
-			ev = EventHandler.createEvent(e.name, e.group_size, e.creator)
+			ev = EventHandler.createEvent(e.name, e.description, e.group_size, e.creator)
 
 			print(ev)
 
@@ -191,6 +191,7 @@ def loadData(request):
 		temp['ID'] = e.id
 		temp['name'] = e.name
 		temp['addCode'] = e.addCode
+		temp['description'] = e.description
 		my_json_events.append(temp)
 
 

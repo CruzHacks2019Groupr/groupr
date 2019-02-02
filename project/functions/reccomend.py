@@ -63,6 +63,9 @@ def getList(e, userID):
 
 
 """
+
+OLD HACKATHON CODE
+
 def reccomendNext(e,userID):
 	x = e.getUsers().index(userID)					#loads user index by searching for userID's position
 	UserList = e.getUsersOn()

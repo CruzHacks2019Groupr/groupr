@@ -13,59 +13,78 @@
                 <div class="btn-group dropright">
                   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Join Event
-                  </button>
-                  <div class="dropdown-menu">
+                </button>
+                <div class="dropdown-menu">
                     <form action='/addevent/' method="post">
-                    {% csrf_token %}
-                    <input type="text" class="form-control" placeholder="Event Code" name="code" autofocus="">
-                </form>
-                  </div>
+                        {% csrf_token %}
+                        <input type="text" class="form-control" placeholder="Event Code" name="code" autofocus="">
+                    </form>
                 </div>
-
-                
-                <span><h3>My Events</h3></span>
-
-    			<span v-for="(e, i) in events" :key='i'>
-    				<a href='#' v-bind:class="{active: (!curr_type && i == curr_event)}" v-on:click="changeEvent(i, false)">${e.name}</a>
-    			</span>
-                <span><h3>Created Events</h3></span>
-                <span v-for="(e, i) in my_events" :key='i'>
-                    <a href='#' v-bind:class="{active: (curr_type && i == curr_event)}" v-on:click="changeEvent(i, true)">${e.name}</a>
-                </span>
-                <p>----------</p>
-                <span><h3><a href="#">Join Event</a></h3></span>
-                <span><h3><a href="/event/">Create Event</a></h3></span>
-                <span><h3><a href="#">Edit Profile</a></h3></span>
-                <span><h3><a href="/logout/">Sign Out</a></h3></span>
             </div>
-		</div>
-		<br><br>
-		<div class="col-md-9 col-xl-10">
-                <br><br><br><br>
-		    <center>
-                <span v-if="curr_event != -1 && !curr_type">
-                    <h1> ${events[curr_event].name} </h1>
-                </span>
-                <span v-else-if="curr_event != -1 && curr_type">
-                    <h1> ${my_events[curr_event].name} </h1>
-                    <br>
-                    <h2>Add Code:  ${my_events[curr_event].addCode}</h2>
-                </span>
-                <span v-else>
-                    <h1> You Don't Have Any Events </h1>
-                </span>
-                
-                <br>
-                <div v-if="!curr_type && curr_event != -1">
-                    <h3>other user: ${suggested_usr_name} </h3>
-                    <br>
-                    <div v-if="suggested_usr_id != -1">
-        		    	<button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
-        		    	<button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
-                    </div>
-                </div>
-		    </center>
-		</div>
-	</div>
+            <br> <br>
+            <div class="btn-group dropright">
+              <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Create Event
+            </button>
+            <div class="dropdown-menu">
+                <form action='/event/' method="post">
+                    {% csrf_token %}
+                    <input type="text" class="form-control" placeholder="Event Name" name="name" autofocus="">
+                    <input type="text" class="form-control" placeholder="Event Description" name="description">
+                    <input type="text" class="form-control" placeholder="Group Size" name="group_size">
+                    <input type="submit" style="display: none;">
+                </form>
+            </div>
+        </div>
+        <br> <br>
+
+
+        <span v-if="events.length != 0"><h3>My Events</h3></span>
+
+        <span v-for="(e, i) in events" :key='i'>
+            <a href='#' v-bind:class="{active: (!curr_type && i == curr_event)}" v-on:click="changeEvent(i, false)">${e.name}</a>
+        </span>
+        <span v-if="my_events.length != 0"><h3>Created Events</h3></span>
+        <span v-for="(e, i) in my_events" :key='i'>
+            <a href='#' v-bind:class="{active: (curr_type && i == curr_event)}" v-on:click="changeEvent(i, true)">${e.name}</a>
+        </span>
+        <p>----------</p>
+        <span><h3><a href="#">Edit Profile</a></h3></span>
+        <span><h3></h3></span>
+    </div>
+</div>
+<br><br>
+<div class="col-md-9 col-xl-10">
+    <br><br><br><br>
+    <center>
+        <span v-if="curr_event != -1 && !curr_type">
+            <h1> ${events[curr_event].name} </h1>
+
+            <h4>${events[curr_event].description}</h4>
+        </span>
+        <span v-else-if="curr_event != -1 && curr_type">
+            <h1> ${my_events[curr_event].name} </h1>
+
+            <h4>${my_events[curr_event].description}</h4>
+            <br>
+            <h2>Add Code:  ${my_events[curr_event].addCode}</h2>
+        </span>
+        <span v-else>
+            <h1> You Don't Have Any Events </h1>
+            <h3>Why don't you create an event, or join one?</h3>
+        </span>
+
+        <br>
+        <div v-if="!curr_type && curr_event != -1">
+            <h3>other user: ${suggested_usr_name} </h3>
+            <br>
+            <div v-if="suggested_usr_id != -1">
+             <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
+             <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
+         </div>
+     </div>
+ </center>
+</div>
+</div>
 </div>
 {% endblock %}

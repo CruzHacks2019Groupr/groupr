@@ -23,6 +23,7 @@ class Event(models.Model):
 		return str(self.id)
 
 	name = models.TextField(max_length=50)
+	description = models.TextField(max_length=200)
 	group_size = models.IntegerField()
 	owner = models.IntegerField( default=0)
 	#not actually checked for uniqueness, pls fix

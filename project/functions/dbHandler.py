@@ -149,7 +149,7 @@ class UserHandler:
 class EventHandler:
 	#create event
 	@staticmethod
-	def createEvent(name, groupSize, creator):
+	def createEvent(name, desc, groupSize, creator):
 		e = Event()
 
 		e.addCode = genHash(5)
@@ -166,6 +166,7 @@ class EventHandler:
 		e.di = di
 		e.undi = undi
 		e.owner = creator
+		e.description = desc
 		e.save()
 		return EventHandler(e.id)
 
@@ -179,6 +180,7 @@ class EventHandler:
 		self.name = self.event.name
 		self.groupSize = self.event.group_size
 		self.addCode = self.event.addCode
+		self.description = self.event.description
 
 	def __str__(self):
 		return ("Event Name: " + self.event.name + " ID: " + str(self.id) + " Add Code: " + self.addCode) 
