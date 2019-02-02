@@ -122,6 +122,7 @@ def accept(request):
 
 	response_data = {}
 	info = request.GET.dict()
+
 	"""
 	eventID = int(info.get('eventID'))
 	mainUser = request.user.id
@@ -214,7 +215,9 @@ def loadData(request):
 def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
-	eventBody = request.GET.dict()
+	requestDict = request.GET.dict()
+	event = EventHandler(requestDict.get('eventID'))
+	
 	"""
 	event = int(eventBody.get('eventID'))
 

@@ -77,7 +77,7 @@ class UserHandler:
 		userEvents = []
 		for e in all_events:
 			eh = EventHandler(e.id)
-			if self.id in eh.exportUsers():
+			if self.id in eh.getUserIds():
 				userEvents.append(eh)
 		return userEvents
 
@@ -99,7 +99,7 @@ class UserHandler:
 	def getCustomInfo(self, ev):
 		ev = EventHandler(ev)
 		eventProfile = self._getEventProfile(ev)
-		info = EventProfile.customInfo
+		info = eventProfile.customInfo
 		if info is not "":
 			return json.loads(info)
 		else:
@@ -110,7 +110,8 @@ class UserHandler:
 		ev = EventHandler(ev)
 		info = json.dumps(d)
 		eventProfile = self._getEventProfile(ev)
-		EventProfile.customInfo = info
+		eventProfile.customInfo = info
+		eventProfile.save()
 
 	def getBio(self):
 		return self.profile.bio
@@ -181,7 +182,7 @@ class EventHandler:
 		return str(self)
 
 	#returns list of ids (depreciated)
-	def exportUsers(self):
+	def getUserIds(self):
 		return self.di.getNodes()
 
 	#returns list of UserHandlers
