@@ -76,12 +76,19 @@
 
         <br>
         <div v-if="!curr_type && curr_event != -1">
-            <h3>other user: ${suggested_usr_name} </h3>
+            <span v-if="suggested_usr_name != ''">
+                <h3>other user: ${suggested_usr_name} </h3>
+                <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
+                <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
+            </span>
+            <span v-else>
+                <h3>It looks like you've already rated everyone in this event!</h3>
+            </span>
+            
             <br>
-            <div v-if="suggested_usr_id != -1">
-             <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
-             <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
-         </div>
+
+             
+
      </div>
  </center>
 </div>
