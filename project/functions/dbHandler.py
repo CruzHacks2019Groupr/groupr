@@ -57,9 +57,14 @@ class UserHandler:
 	def __init__(self, userId):
 		if type(userId) is UserHandler:
 			userId = userId.id
-		self.id = userId
-		self.user = User.objects.get(id=userId)
-		self.profile = self.user.profile
+		try:
+			self.id = userId
+			self.user = User.objects.get(id=userId)
+			self.profile = self.user.profile
+			self.exists = True
+		except User.DoesNotExist:
+			self.exists = False
+		
 
 	def __str__(self):
 		return("User: " + self.getName() + " ID: " + str(self.id))

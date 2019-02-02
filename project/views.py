@@ -216,8 +216,18 @@ def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
 	requestDict = request.GET.dict()
+	print(requestDict)
 	event = EventHandler(requestDict.get('eventID'))
-	
+	user = UserHandler(request.user.id)
+	suggestedUser = UserHandler(reccomendNext(event,user))
+	if suggestedUser.exists:
+		response_data['suggested_usr_name'] = suggestedUser.getName()
+		response_data['suggested_usr_id'] = suggestedUser.id
+	else:
+		response_data['suggested_usr_name'] = ""
+		response_data['suggested_usr_id'] = ""
+
+
 	"""
 	event = int(eventBody.get('eventID'))
 
