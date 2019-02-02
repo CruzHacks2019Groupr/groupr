@@ -82,10 +82,11 @@ class UserHandler:
 		return userEvents
 
 	def joinEvent(self, addCode):
+		addCode = addCode.strip()
 		try:
 			e = Event.objects.get(addCode=addCode)
 		except Event.DoesNotExist:
-			pass
+			return
 		ev = EventHandler(e.id)
 		ev._addUserToGraph(self.id)
 		ep = EventProfile()
@@ -147,7 +148,7 @@ class EventHandler:
 
 		e.addCode = genHash(5)
 		while Event.objects.filter(addCode=e.addCode):
-			e.addCode = genHash(8)
+			e.addCode = genHash(5)
 			
 
 		e.name = name
@@ -234,8 +235,8 @@ class EventHandler:
 		self.di.addNode(userId)
 		self.undi.addNode(userId)
 
-	#DO NOT USE
-	def _removeUser(self, userId):
+	#DO NOT USE (unless you really mean to)
+	def _removeUserFromGraph(self, userId):
 		self.di.deleteNode(userId)
 		self.undi.deleteNode(userId)
 

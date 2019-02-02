@@ -83,24 +83,18 @@ def event(request):
 		form = EventForm()
 	return render(request, 'project/event.html', {'form':form})
 
+def logout_view(request):
+	logout(request)
+	response_data = {}
+	response_data['success'] = True
+	return redirect('index')	#all of these functions are returning this JSONresponse because
+								#it makes it easy to confirm delivery on the client-side
 
 
 
 
 
 #API
-
-#used for generating random names
-def randomword(length):
-   letters = string.ascii_lowercase
-   return ''.join(random.choice(letters) for i in range(length))
-
-def logout_view(request):
-	logout(request)
-	response_data = {}
-	response_data['success'] = True
-	return redirect('index')	#all of these functions are returning this JSONresponse because
-											#it makes it easy to confirm delivery on the client-side
 
 def testFunc(request):
 	current_user = request.user
