@@ -6,6 +6,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    url(r'^landing/$', views.landing, name='landing'),
+    
     url(r'^accounts/profile/$', views.redir, name='redir'),
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
     url(r'^logout/$', views.logout_view, name='logout'),

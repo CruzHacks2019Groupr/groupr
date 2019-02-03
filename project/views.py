@@ -24,8 +24,17 @@ from .functions.Event import Event as EventClass
 
 pusher = Pusher(app_id=u'694776', key=u'4105ec1d8d985dcf27bf', secret=u'1cf25393f1f636e8dc3e' ,cluster=u'us2')
 
+@login_required(login_url='/landing/')
 def index(request):
-	return render(request, 'project/index.html')
+    print(request.user)
+    if request.user is None:
+        return redirect('landing')
+    return render(request, 'project/index.html')
+
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect('index');  
+    return render(request, 'project/landing.html')
 
 def redir(request):
 	return redirect('index');    
@@ -65,7 +74,7 @@ def event(request):
 			e = form.save(commit=False)
 			e.creator = request.user.id
 			
-			ev = EventHandler.createEvent(e.name, e.group_size, e.creator)
+			ev = EventHandler.createEvent(e.name, e.description, e.group_size, e.creator)
 
 			print(ev)
 
@@ -74,24 +83,18 @@ def event(request):
 		form = EventForm()
 	return render(request, 'project/event.html', {'form':form})
 
+def logout_view(request):
+	logout(request)
+	response_data = {}
+	response_data['success'] = True
+	return redirect('index')	#all of these functions are returning this JSONresponse because
+								#it makes it easy to confirm delivery on the client-side
 
 
 
 
 
 #API
-
-#used for generating random names
-def randomword(length):
-   letters = string.ascii_lowercase
-   return ''.join(random.choice(letters) for i in range(length))
-
-def logout_view(request):
-	logout(request)
-	response_data = {}
-	response_data['success'] = True
-	return redirect('index')	#all of these functions are returning this JSONresponse because
-											#it makes it easy to confirm delivery on the client-side
 
 def testFunc(request):
 	current_user = request.user
@@ -119,6 +122,7 @@ def accept(request):
 
 	response_data = {}
 	info = request.GET.dict()
+
 	"""
 	eventID = int(info.get('eventID'))
 	mainUser = request.user.id
@@ -192,6 +196,7 @@ def loadData(request):
 		temp['ID'] = e.id
 		temp['name'] = e.name
 		temp['addCode'] = e.addCode
+		temp['description'] = e.description
 		my_json_events.append(temp)
 
 
@@ -216,7 +221,19 @@ def loadData(request):
 def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
-	eventBody = request.GET.dict()
+	requestDict = request.GET.dict()
+	print(requestDict)
+	event = EventHandler(requestDict.get('eventID'))
+	user = UserHandler(request.user.id)
+	suggestedUser = UserHandler(reccomendNext(event,user))
+	if suggestedUser.exists:
+		response_data['suggested_usr_name'] = suggestedUser.getName()
+		response_data['suggested_usr_id'] = suggestedUser.id
+	else:
+		response_data['suggested_usr_name'] = ""
+		response_data['suggested_usr_id'] = ""
+
+
 	"""
 	event = int(eventBody.get('eventID'))
 

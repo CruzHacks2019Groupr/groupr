@@ -23,10 +23,11 @@ class Event(models.Model):
 		return str(self.id)
 
 	name = models.TextField(max_length=50)
+	description = models.TextField(max_length=200)
 	group_size = models.IntegerField()
 	owner = models.IntegerField( default=0)
 	#not actually checked for uniqueness, pls fix
-	addCode = models.CharField(max_length=50, default=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(5)), blank = True)
+	addCode = models.CharField(max_length=10)
 
 
 	di = models.OneToOneField(

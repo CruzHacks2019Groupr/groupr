@@ -48,6 +48,7 @@ var app = function() {
     self.getNextMatch = function(){
 
         var request = {
+            "eventID": self.vue.events[self.vue.curr_event].ID
         }
         var url = "/getNextMatch" + "?" + $.param(request);
 
