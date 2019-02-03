@@ -61,7 +61,10 @@
             <h1> ${events[curr_event].name} </h1>
 
             <h4>${events[curr_event].description}</h4>
-            <span v-if="suggested_usr_name != ''">
+            <span v-if="events[curr_event].group.length!=0">
+                <h3> IN A GROUP! </h3>
+            </span>
+            <span v-else-if="suggested_usr_name != ''">
                 <h3>other user: ${suggested_usr_name} </h3>
                 <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
                 <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
