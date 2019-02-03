@@ -90,7 +90,6 @@ var app = function() {
             logged_in: true,
             curr_event: -1,
             curr_type: false,
-            group: -1,
             my_events: [],
             events: [],
 

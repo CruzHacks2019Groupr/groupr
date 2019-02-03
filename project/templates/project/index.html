@@ -61,6 +61,14 @@
             <h1> ${events[curr_event].name} </h1>
 
             <h4>${events[curr_event].description}</h4>
+            <span v-if="suggested_usr_name != ''">
+                <h3>other user: ${suggested_usr_name} </h3>
+                <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
+                <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
+            </span>
+            <span v-else>
+                <h3>It looks like you've already rated everyone in this event!</h3>
+            </span>
         </span>
         <span v-else-if="curr_event != -1 && curr_type">
             <h1> ${my_events[curr_event].name} </h1>
@@ -75,21 +83,6 @@
         </span>
 
         <br>
-        <div v-if="!curr_type && curr_event != -1">
-            <span v-if="suggested_usr_name != ''">
-                <h3>other user: ${suggested_usr_name} </h3>
-                <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
-                <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
-            </span>
-            <span v-else>
-                <h3>It looks like you've already rated everyone in this event!</h3>
-            </span>
-            
-            <br>
-
-             
-
-     </div>
  </center>
 </div>
 </div>
