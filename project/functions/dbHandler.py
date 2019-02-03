@@ -17,7 +17,6 @@ class GroupHandler:
 	#takes the list of UserHandlers and an eventHandler
 	def createGroup(usersList, event):
 		g = Group()
-
 		g.uniqueHash = genHash(8)
 		while Group.objects.filter(uniqueHash=g.uniqueHash):
 			g.uniqueHash = genHash(8)
@@ -27,6 +26,8 @@ class GroupHandler:
 		for user in usersList:
 			g.users.add(UserHandler(user)._getEventProfile(event))
 		g.save()
+		g = GroupHandler(g)
+		g.setCustomInfo({})
 		return GroupHandler(g.id)
 
 	def __init__(self, groupId):
@@ -50,6 +51,20 @@ class GroupHandler:
 		#EventProfile -> Profile -> User -> UserHandler
 		return [UserHandler(u.user.user.id) for u in users]
 
+	#returns dict of custom info
+	def getCustomInfo(self):
+		info = self.group.customInfo
+		if info is not "":
+			return json.loads(info)
+		else:
+			return {}
+
+	#takes  a dict
+	def setCustomInfo(self, d):
+		info = json.dumps(d)
+		self.group.customInfo = info
+		group.save()
+
 	#lets a user vote
 	def userVote(self, user, boolean):
 		user = UserHandler(user)
@@ -59,14 +74,16 @@ class GroupHandler:
 			vote = GroupVote()
 		vote.user = user.profile
 		vote.group = self.group
+		vote.vote = boolean
 		vote.save()
 
 	#returns dict of users' votes
 	def getVotes(self):
-		votes = UserVotes.objects.filter(group=self.group)
+		votes = GroupVote.objects.filter(group=self.group)
 		allVotes = {}
 		for v in votes:
-			allVotes[str(vote.user.user.id)] = vote.vote
+			allVotes[str(v.user.user.id)] = v.vote
+		return allVotes
 
 
 class UserHandler:
@@ -153,10 +170,7 @@ class UserHandler:
 
 	def getGroups(self, event=None):
 		groups = Group.objects.filter(users__id=self.id)
-		print("1")
-		print(groups)
 		if(event is not None):
-			print("2")
 			event = EventHandler(event)
 			if event.exists:
 				groups = [g for g in groups if g.event == event.event]
