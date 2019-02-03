@@ -10,6 +10,7 @@ def findPerfectGroup(Event, User):
 			for j in i:
 				Event._removeUserFromGraph(j)
 			return createGroup(i, Event)
+	return -1
 
 def forceGroups(Event):
 	possibleGroups = list(itertools.combinations(list(Event.DG()), Event.groupSize))    		#All combinations of the Node list in groups of length n are stored in list
