@@ -134,8 +134,12 @@ class UserHandler:
 		self.profile.name = name
 		self.profile.save()
 
-	def getGroups(self):
+	def getGroups(self, event=None):
 		groups = Group.objects.filter(users__id=self.id)
+		if(event is not None):
+			event = EventHandler(event)
+			if event.exists:
+				groups = [g for g in groups if g.event is event.event]
 		return [GroupHandler(g.id) for g in groups]
 
 		#Takes EventHandler object, returns reference to db. Don't use this
@@ -173,14 +177,18 @@ class EventHandler:
 	def __init__(self, event_id):
 		if type(event_id) is EventHandler:
 			event_id = event_id.id
-		self.event = Event.objects.get(id=event_id)
-		self.id = self.event.id
-		self.di = GraphHandler(self.event.di.id)
-		self.undi = GraphHandler(self.event.undi.id)
-		self.name = self.event.name
-		self.groupSize = self.event.group_size
-		self.addCode = self.event.addCode
-		self.description = self.event.description
+		try:
+			self.event = Event.objects.get(id=event_id)
+			self.id = self.event.id
+			self.di = GraphHandler(self.event.di.id)
+			self.undi = GraphHandler(self.event.undi.id)
+			self.name = self.event.name
+			self.groupSize = self.event.group_size
+			self.addCode = self.event.addCode
+			self.description = self.event.description
+			self.exists = True
+		except Event.DoesNotExist:
+			self.exists = False
 
 	def __str__(self):
 		return ("Event Name: " + self.event.name + " ID: " + str(self.id) + " Add Code: " + self.addCode) 
