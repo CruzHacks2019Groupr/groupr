@@ -98,3 +98,9 @@ class Group(models.Model):
 	users = models.ManyToManyField(EventProfile)
 	title = models.TextField(max_length=50,blank=True,null=True)
 	uniqueHash = models.TextField(max_length=10)
+	statusCode = models.IntegerField(blank=True,null=True)
+
+class GroupVote(models.Model):
+	user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+	event = models.ForeignKey(Event, on_delete=models.CASCADE)
+	vote = models.IntegerField(blank=True,null=True)

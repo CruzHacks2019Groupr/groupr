@@ -1,4 +1,4 @@
-from ..models import Graph, Node, Edge, Event, EventProfile, Profile, Group
+from ..models import Graph, Node, Edge, Event, EventProfile, Profile, Group, GroupVote
 from django.db.models import Q
 from django.contrib.auth.models import User
 import networkx as nx
@@ -26,7 +26,7 @@ class GroupHandler:
 		g.event = event.event
 		g.save()
 		for user in usersList:
-			g.users.add(user._getEventProfile(event))
+			g.users.add(UserHandler(user)._getEventProfile(event))
 		g.save()
 		return GroupHandler(g.id)
 
@@ -52,12 +52,22 @@ class GroupHandler:
 		return [UserHandler(u.user.user.id) for u in users]
 
 	#lets a user vote
-	def userVote(user, boolean):
-		pass
+	def userVote(self, user, boolean):
+		user = UserHandler(user)
+		try:
+			vote = GroupVote.objects.get(group=self.group, user=user.profile)
+		except GroupVote.DoesNotExist:
+			vote = GroupVote()
+		vote.user = user.profile
+		vote.group = self.group
+		vote.save()
 
 	#returns dict of users' votes
-	def getVotes():
-		pass
+	def getVotes(self):
+		votes = UserVotes.objects.filter(group=self.group)
+		allVotes = {}
+		for v in votes:
+			allVotes[str(vote.user.user.id)] = vote.vote
 
 
 class UserHandler:
@@ -144,10 +154,13 @@ class UserHandler:
 
 	def getGroups(self, event=None):
 		groups = Group.objects.filter(users__id=self.id)
+		print("1")
+		print(groups)
 		if(event is not None):
+			print("2")
 			event = EventHandler(event)
 			if event.exists:
-				groups = [g for g in groups if g.event is event.event]
+				groups = [g for g in groups if g.event == event.event]
 		return [GroupHandler(g.id) for g in groups]
 
 		#Takes EventHandler object, returns reference to db. Don't use this
