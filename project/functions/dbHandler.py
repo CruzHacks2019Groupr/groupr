@@ -34,9 +34,16 @@ class GroupHandler:
 		if type(groupId) is GroupHandler:
 			groupId = groupId.id
 		self.id = groupId
-		self.group = Group.objects.get(id=groupId)
-		self.event = EventHandler(self.group.event.id)
+		try:
+			self.group = Group.objects.get(id=groupId)
+			self.event = EventHandler(self.group.event.id)
+			self.exists = True
+			if self.event.exists == False:
+				self.exists = False
+		except Group.DoesNotExist:
+			self.exists = False
 
+		
 	def __str__(self):
 		return("Group: " + str(self.id) + " part of Event: " + str(self.event.id))
 
@@ -84,6 +91,10 @@ class GroupHandler:
 		for v in votes:
 			allVotes[str(v.user.user.id)] = v.vote
 		return allVotes
+
+	def delete(self):
+		self.group.delete()
+		self.exists = False
 
 
 class UserHandler:
@@ -177,6 +188,10 @@ class UserHandler:
 		return [GroupHandler(g.id) for g in groups]
 
 		#Takes EventHandler object, returns reference to db. Don't use this
+
+	def delete(self):
+		self.profile.delete()
+
 	def _getEventProfile(self, ev):
 		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
 		return ep
@@ -268,7 +283,7 @@ class EventHandler:
 		self.event = None
 		self.id = None
 		self.name = None
-		self = None
+		self.exists = False
 		#also this will throw an error if you try to do anything with the object after deletion so be careful
 
 	def getGroups(self):
