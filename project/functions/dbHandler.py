@@ -153,10 +153,7 @@ class UserHandler:
 
 	def getGroups(self, event=None):
 		groups = Group.objects.filter(users__id=self.id)
-		print("1")
-		print(groups)
 		if(event is not None):
-			print("2")
 			event = EventHandler(event)
 			if event.exists:
 				groups = [g for g in groups if g.event == event.event]
@@ -199,6 +196,7 @@ class EventHandler:
 			event_id = event_id.id
 		try:
 			self.event = Event.objects.get(id=event_id)
+			self.owner = self.event.owner
 			self.id = self.event.id
 			self.di = GraphHandler(self.event.di.id)
 			self.undi = GraphHandler(self.event.undi.id)

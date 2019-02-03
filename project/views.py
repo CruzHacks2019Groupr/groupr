@@ -169,7 +169,6 @@ def decline(request):
 
 @login_required(login_url='/login/')
 def loadData(request):
-	print("Load Data")
 	response_data = {}
 	response_data['success'] = True
 
@@ -180,34 +179,36 @@ def loadData(request):
 		temp = {}
 		temp['ID'] = e.id
 		temp['name'] = e.name
-		temp['group'] = user.getGroups(event = e.id)
+		temp['isIn'] = True
+		temp['addCode'] = e.addCode
+		temp['description'] = e.description
+		if(e.owner == user.id):
+			temp['isOwner'] = True
+		else:
+			temp['isOwner'] = False
+		g = user.getGroups(event = e)
+		if(g != []):
+			temp['group'] = g[0].id
 		json_events.append(temp)
 
 	my_events = user.getEventsOwner()
-	my_json_events = []
 	for e in my_events:
-		temp = {}
-		temp['ID'] = e.id
-		temp['name'] = e.name
-		temp['addCode'] = e.addCode
-		temp['description'] = e.description
-		my_json_events.append(temp)
+		isIn = False
+		for E in json_events:
+			if(e.id == E.get('ID') and user.id == e.owner):
+				isIn = True
+		if not isIn:	
+			print(e)
+			temp = {}
+			temp['ID'] = e.id
+			temp['name'] = e.name
+			temp['addCode'] = e.addCode
+			temp['isIn'] = False
+			temp['isOwner'] = True
+			temp['description'] = e.description
+			json_events.append(temp)
 
-
-
-	curr_type = False #False is ev, true is my_ev
-	curr = -1
-	if(len(json_events) != 0):
-		curr = 0
-	elif(len(my_json_events) != 0):
-		curr = 0
-		curr_type = True
-
-	#response_data['events'] = 
-	response_data['my_events'] =  my_json_events
 	response_data['events'] = json_events
-	response_data['curr_event'] = curr
-	response_data['curr_type'] = curr_type
 	return (JsonResponse(response_data))
 
 @login_required(login_url='/login/')
@@ -215,7 +216,6 @@ def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
 	requestDict = request.GET.dict()
-	print(requestDict)
 	event = EventHandler(requestDict.get('eventID'))
 	user = UserHandler(request.user.id)
 	suggestedUser = UserHandler(reccomendNext(event,user))
