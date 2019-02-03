@@ -35,17 +35,13 @@ def forceGroups(Event):
 		if scoreList[k] > scoreList[BestIndex]:
 			BestIndex = k
 
-	for k in range(len(groupCombo[BestIndex])):                                        			#Removes groups from graph
-		for l in range(len(groupCombo[BestIndex][k])):								   
-			Event._removeUserFromGraph(groupCombo[BestIndex][k][l])
-
-	groupCombo[BestIndex].append(list(Event.DG()))							   					#All remaining people are put into a group
-
 	groupList = []
-	for k in groupCombo[BestIndex]:
+	for k in groupCombo[BestIndex]
 		groupList.append(createGroup(k, Event))
+		for l in k
+			Event._removeUserFromGraph(l)
 
-	return groupList
+	groupList.append(createGroup(list(Event.DG()), Event))
 
 def computeScore(Event, L):													   				#For a given group computes the score, which is the number edges
 	score = 0
