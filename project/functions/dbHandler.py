@@ -51,6 +51,14 @@ class GroupHandler:
 		#EventProfile -> Profile -> User -> UserHandler
 		return [UserHandler(u.user.user.id) for u in users]
 
+	#lets a user vote
+	def userVote(user, boolean):
+		pass
+
+	#returns dict of users' votes
+	def getVotes():
+		pass
+
 
 class UserHandler:
 
