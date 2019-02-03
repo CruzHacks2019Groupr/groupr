@@ -8,8 +8,8 @@ def findPerfectGroup(Event, User):
 	for i in PerfectGroups:
 		if len(i) is Event.groupSize:
 			for j in i:
-				Event.removeUser(j)
-			return i
+				Event._removeUserFromGraph(j)
+			return createGroup(i, Event)
 
 def forceGroups(Event):
 	possibleGroups = list(itertools.combinations(list(Event.DG()), Event.groupSize))    		#All combinations of the Node list in groups of length n are stored in list
@@ -35,13 +35,14 @@ def forceGroups(Event):
 		if scoreList[k] > scoreList[BestIndex]:
 			BestIndex = k
 
-	for k in range(len(groupCombo[BestIndex])):                                        			#Removes groups from graph
-		for l in range(len(groupCombo[BestIndex][k])):								   
-			Event.removeUser(groupCombo[BestIndex][k][l])
+	groupList = []
+	for k in groupCombo[BestIndex]:
+		groupList.append(createGroup(k, Event))
+		for l in k:
+			Event._removeUserFromGraph(l)
 
-	groupCombo[BestIndex].append(list(Event.DG()))							   					#All remaining people are put into a group
-
-	return groupCombo[BestIndex]
+	groupList.append(createGroup(list(Event.DG()), Event))
+	return groupList
 
 def computeScore(Event, L):													   				#For a given group computes the score, which is the number edges
 	score = 0
