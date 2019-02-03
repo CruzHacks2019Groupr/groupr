@@ -14,7 +14,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 
 from .functions.reccomend import reccomendNext
-from .functions.dbHandler import EventHandler, UserHandler
+from .functions.dbHandler import EventHandler, UserHandler, GroupHandler
 from .forms import EventForm
 
 from .functions.matcher import *
@@ -180,7 +180,7 @@ def loadData(request):
 		temp = {}
 		temp['ID'] = e.id
 		temp['name'] = e.name
-		temp['group'] = user.getGroups(e)
+		temp['group'] = user.getGroups(event = e.id)
 		json_events.append(temp)
 
 	my_events = user.getEventsOwner()
