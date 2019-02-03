@@ -17,9 +17,7 @@ from .functions.reccomend import reccomendNext
 from .functions.dbHandler import EventHandler, UserHandler
 from .forms import EventForm
 
-from .functions import demoScript
 from .functions.matcher import *
-from .functions.Event import Event as EventClass
 
 
 pusher = Pusher(app_id=u'694776', key=u'4105ec1d8d985dcf27bf', secret=u'1cf25393f1f636e8dc3e' ,cluster=u'us2')
@@ -177,16 +175,12 @@ def loadData(request):
 
 	user = UserHandler(request.user.id)
 	events = user.getEvents()
-	groups = user.getGroups()
 	json_events = []
 	for e in events:
 		temp = {}
 		temp['ID'] = e.id
 		temp['name'] = e.name
-		temp['group'] = ''
-		for g in groups:
-			if(g.event.id == e.id):
-				temp['group'] = g.id
+		temp['group'] = user.getGroups(e)
 		json_events.append(temp)
 
 	my_events = user.getEventsOwner()
@@ -214,7 +208,6 @@ def loadData(request):
 	response_data['events'] = json_events
 	response_data['curr_event'] = curr
 	response_data['curr_type'] = curr_type
-	response_data['Group'] = None
 	return (JsonResponse(response_data))
 
 @login_required(login_url='/login/')
