@@ -173,11 +173,16 @@ def loadData(request):
 
 	user = UserHandler(request.user.id)
 	events = user.getEvents()
+	groups = user.getGroups()
 	json_events = []
 	for e in events:
 		temp = {}
 		temp['ID'] = e.id
 		temp['name'] = e.name
+		temp['group'] = ''
+		for g in groups:
+			if(g.event.id == e.id):
+				temp['group'] = g.id
 		json_events.append(temp)
 
 	my_events = user.getEventsOwner()

@@ -76,7 +76,7 @@ class UserHandler:
 		try:
 			e = Event.objects.get(addCode=addCode)
 		except Event.DoesNotExist:
-			pass
+			return 0
 		ev = EventHandler(e.id)
 		ev.addUser(self.id)
 		ep = EventProfile()
