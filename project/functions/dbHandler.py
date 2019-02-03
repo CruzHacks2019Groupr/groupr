@@ -228,6 +228,7 @@ class EventHandler:
 			event_id = event_id.id
 		try:
 			self.event = Event.objects.get(id=event_id)
+			self.owner = self.event.owner
 			self.id = self.event.id
 			self.di = GraphHandler(self.event.di.id)
 			self.undi = GraphHandler(self.event.undi.id)

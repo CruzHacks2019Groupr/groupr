@@ -6,8 +6,8 @@ var app = function() {
     
     self.changeEvent = function(num, bool) {
         self.vue.curr_event = num
-        self.vue.curr_type = bool
-        self.getNextMatch()
+        if (self.vue.events[num].isIn)
+            self.getNextMatch()
     }
 
 
@@ -67,11 +67,11 @@ var app = function() {
         $.getJSON(url, function (data) {
             
             console.log(data)
-            self.vue.curr_event = data.curr_event
-            self.vue.my_events = data.my_events
+            
             self.vue.events = data.events
-            self.vue.curr_type = data.curr_type
-            if(!data.curr_type)
+            if(data.events.length != 0)
+                self.vue.curr_event = 0
+            if(data.events.length != 0 && self.vue.events[0].isIn)
                 self.getNextMatch()
  
         })
@@ -89,8 +89,6 @@ var app = function() {
             suggested_usr_id: -1,
             logged_in: true,
             curr_event: -1,
-            curr_type: false,
-            my_events: [],
             events: [],
 
         },
