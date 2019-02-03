@@ -197,43 +197,8 @@ def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
 	requestDict = request.GET.dict()
-<<<<<<< HEAD
 
 	response_data['nextUser'] = reccomendNext(info.get('!!!EVENT!!!'), info.get('!!!USER!!!'))
-=======
-	event = EventHandler(requestDict.get('eventID'))
-	user = UserHandler(request.user.id)
-	suggestedUser = UserHandler(reccomendNext(event,user))
-	if suggestedUser.exists:
-		response_data['suggested_usr_name'] = suggestedUser.getName()
-		response_data['suggested_usr_id'] = suggestedUser.id
-	else:
-		response_data['suggested_usr_name'] = ""
-		response_data['suggested_usr_id'] = ""
-
-
-	"""
-	event = int(eventBody.get('eventID'))
-
-	if (event != -1):
-		usrs = Event.objects.get(id=event).getUsers()
-		me = -1
-		for i in range(len(usrs)):
-			if usrs[i] == request.user.id:
-				me = i
-		usrsOn = Event.objects.get(id=event).getUsersOn()
-		if me != -1 and usrsOn[me] != -1:
-			Usr = User.objects.get(id=usrs[usrsOn[me]-1]) #might be wrong
-			response_data['suggested_usr_name'] = Usr.username
-			response_data['suggested_usr_id'] = Usr.id
-		else:
-			response_data['suggested_usr_name'] = "No More Users"
-			response_data['suggested_usr_id'] = -1
-	else:
-		response_data['suggested_usr_name'] = "No More Users"
-		response_data['suggested_usr_id'] = -1
-	"""
->>>>>>> bc64d3fa1af350b8f5fbb86099af45b85cc33438
 	
 	response_data['success'] = True
 	return (JsonResponse(response_data))
