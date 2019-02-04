@@ -123,7 +123,7 @@ def accept(request):
 
 	event = EventHandler(info.get('eventID'))
 	user = UserHandler(request.user.id)
-	acceptedUser = info.get('acceptedUser')
+	acceptedUser = reccomendNext(event, user)
 	popUser(event, user)
 
 	event.addEdge(user.id, acceptedUser)
