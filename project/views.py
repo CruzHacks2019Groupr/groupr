@@ -13,7 +13,7 @@ from django.http import QueryDict
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from .functions.reccomend import reccomendNext
+from .functions.reccomend import *
 from .functions.dbHandler import EventHandler, UserHandler, GroupHandler
 from .forms import EventForm
 
@@ -121,9 +121,9 @@ def accept(request):
 	response_data = {}
 	info = request.GET.dict()
 
-	event = info.get('!!!EVENT!!!')
-	user = info.get('!!!USER!!!')
-	acceptedUser = info.get('!!!OTHER USER!!!')
+	event = EventHandler(info.get('eventID'))
+	user = request.user.id
+	acceptedUser = info.get('other')
 
 	popUser(event, user)
 	event.addEdge(user, acceptedUser)
@@ -143,7 +143,7 @@ def decline(request):
 	response_data = {}
 	info = request.GET.dict()
 
-	popUser(info.get('!!!EVENT!!!'), info.get('!!!USER!!!'))
+	popUser(info.get('eventID'), request.user.id)
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))
@@ -196,9 +196,16 @@ def loadData(request):
 def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
-	requestDict = request.GET.dict()
+	info = request.GET.dict()
 
-	response_data['nextUser'] = reccomendNext(info.get('!!!EVENT!!!'), info.get('!!!USER!!!'))
+	usr = reccomendNext(info.get('eventID'), request.user.id)
+	print(usr)
+	if(usr != None):
+		response_data['suggested_usr_id'] = usr
+		response_data['suggested_usr_name'] = UserHandler(usr).user.username
+	else:
+		response_data['suggested_usr_id'] = -1
+		response_data['suggested_usr_name'] = ''
 	
 	response_data['success'] = True
 	return (JsonResponse(response_data))

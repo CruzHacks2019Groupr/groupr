@@ -378,7 +378,7 @@ class GraphHandler:
 
 	#list of ints
 	def getNodes(self):
-		nodes = [n.userId for n in self.graph.node_set.all()]
+		nodes = list(map(str, [n.userId for n in self.graph.node_set.all()]))
 		return nodes
 
 	#returns a list of tuples

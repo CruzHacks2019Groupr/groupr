@@ -24,6 +24,8 @@ var app = function() {
     self.accept = function(){
 
         var request = {
+            "eventID": self.vue.events[self.vue.curr_event].ID,
+            "other": self.vue.suggested_usr_id
         }
         var url = "/accept" + "?" + $.param(request);
 
@@ -35,6 +37,7 @@ var app = function() {
 
     self.decline = function(){
         var request = {
+            "eventID": self.vue.events[self.vue.curr_event].ID
         }
         var url = "/decline" + "?" + $.param(request);
 

@@ -12,6 +12,9 @@ def reccomendNext(e,userID):
 	#check if the user has the reccomend list. It should be generated during joinEvent probably.
 	if "reccomendList" not in profile:
 		generateList(e, userID)
+		profile = user.getCustomInfo(event)
+		print(profile)
+	print(profile)
 
 	rec = profile["reccomendList"]
 	
