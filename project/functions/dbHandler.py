@@ -138,6 +138,9 @@ class UserHandler:
 		except Event.DoesNotExist:
 			return
 		ev = EventHandler(e.id)
+		#check if user is already in the event
+		if self.id in ev.getUserIds():
+			return
 		ev._addUserToGraph(self.id)
 		ep = EventProfile()
 		ep.user = self.profile
@@ -272,11 +275,15 @@ class EventHandler:
 			self.undi.deleteEdge(sourceUser, destinationUser)
 
 	def G(self):
-		g = nx.parse_edgelist(self.undi.getNodes())
+		g = nx.Graph()
+		g.add_nodes_from(self.undi.getNodes())
+		g.add_edges_from(self.undi.getEdges())
 		return g
 
 	def DG(self):
-		dg = nx.parse_edgelist(self.di.getNodes())
+		dg = nx.Graph()
+		dg.add_nodes_from(self.di.getNodes())
+		dg.add_edges_from(self.di.getEdges())
 		return dg
 
 	def delete(self):

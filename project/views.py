@@ -13,7 +13,7 @@ from django.http import QueryDict
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from .functions.reccomend import reccomendNext
+from .functions.reccomend import reccomendNext, popUser
 from .functions.dbHandler import EventHandler, UserHandler, GroupHandler
 from .forms import EventForm
 
@@ -121,12 +121,12 @@ def accept(request):
 	response_data = {}
 	info = request.GET.dict()
 
-	event = info.get('!!!EVENT!!!')
-	user = info.get('!!!USER!!!')
-	acceptedUser = info.get('!!!OTHER USER!!!')
-
+	event = EventHandler(info.get('eventID'))
+	user = UserHandler(request.user.id)
+	acceptedUser = reccomendNext(event, user)
 	popUser(event, user)
-	event.addEdge(user, acceptedUser)
+
+	event.addEdge(user.id, acceptedUser)
 
 	if(findPerfectGroup(event, user) == None):
 		response_data['groupFormed'] = False
@@ -143,7 +143,9 @@ def decline(request):
 	response_data = {}
 	info = request.GET.dict()
 
-	popUser(info.get('!!!EVENT!!!'), info.get('!!!USER!!!'))
+	event = EventHandler(info.get('eventID'))
+	user = UserHandler(request.user.id)
+	popUser(event, user)
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))
@@ -192,13 +194,21 @@ def loadData(request):
 	response_data['events'] = json_events
 	return (JsonResponse(response_data))
 
-@login_required(login_url='/login/')
+
 def getNextMatch(request):
 	print("getNextMatch")
 	response_data = {}
-	requestDict = request.GET.dict()
-
-	response_data['nextUser'] = reccomendNext(info.get('!!!EVENT!!!'), info.get('!!!USER!!!'))
-	
 	response_data['success'] = True
-	return (JsonResponse(response_data))
+	requestDict = request.GET.dict()
+	print(requestDict)
+	event = EventHandler(requestDict.get('eventID'))
+	user = UserHandler(request.user.id)
+	suggestedUser = UserHandler(reccomendNext(event,user))
+	if suggestedUser.exists:
+		response_data['suggested_usr_name'] = suggestedUser.getName()
+		response_data['suggested_usr_id'] = suggestedUser.id
+	else:
+		response_data['suggested_usr_name'] = ""
+		response_data['suggested_usr_id'] = ""
+	return(JsonResponse(response_data))
+
