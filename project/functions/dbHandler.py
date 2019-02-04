@@ -171,7 +171,7 @@ class UserHandler:
 
 	def setBio(self, bio):
 		self.profile.bio = bio
-		self/profile.bio.save()
+		self.profile.bio.save()
 
 	def getName(self):
 		if self.profile.name is not None:
@@ -385,7 +385,7 @@ class GraphHandler:
 
 	#list of ints
 	def getNodes(self):
-		nodes = list(map(str, [n.userId for n in self.graph.node_set.all()]))
+		nodes = [n.userId for n in self.graph.node_set.all()]
 		return nodes
 
 	#returns a list of tuples

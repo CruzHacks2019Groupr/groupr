@@ -198,11 +198,11 @@ def getNextMatch(request):
 	response_data = {}
 	info = request.GET.dict()
 
-	suggestedUser = UserHandler(reccomendNext(info.get('eventID'), request.user.id))
+	suggestedUser = reccomendNext(info.get('eventID'), request.user.id)
 
-	if(usr != None):
-		response_data['suggested_usr_id'] = suggestedUser.id
-		response_data['suggested_usr_name'] = suggestedUser.getName()
+	if(suggestedUser != None):
+		response_data['suggested_usr_id'] = UserHandler(suggestedUser).id
+		response_data['suggested_usr_name'] = UserHandler(suggestedUser).getName()
 	else:
 		response_data['suggested_usr_id'] = -1
 		response_data['suggested_usr_name'] = ''
