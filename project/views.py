@@ -13,11 +13,7 @@ from django.http import QueryDict
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 
-<<<<<<< HEAD
 from .functions.reccomend import *
-=======
-from .functions.reccomend import reccomendNext, popUser
->>>>>>> 8684421c7d5381afa450b9ab3a8f8949ded9cdab
 from .functions.dbHandler import EventHandler, UserHandler, GroupHandler
 from .forms import EventForm
 
