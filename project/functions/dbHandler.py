@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 import networkx as nx
 import random, string, json
-
+import project.functions.reccomend
 
 from django.contrib.auth.models import User
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
@@ -171,13 +171,19 @@ class UserHandler:
 		eventHandlers = [EventHandler(e.id) for e in db_events]
 		return eventHandlers
 
-	def getEvents(self):
+	#get the events that you don't have a group in
+	def getEventsIn(self):
 		all_events = Event.objects.all()
 		userEvents = []
 		for e in all_events:
 			eh = EventHandler(e.id)
 			if self.id in eh.getUserIds():
 				userEvents.append(eh)
+		return userEvents
+
+	def getEvents(self):
+		event_profiles = EventProfile.objects.filter(user=self.profile)
+		userEvents = [EventHandler(ep.event.id) for ep in event_profiles]
 		return userEvents
 
 	def joinEvent(self, addCode):
@@ -196,8 +202,8 @@ class UserHandler:
 		ep.event = ev.event
 		ep.save()
 		self.setCustomInfo(ev, {})
-		generateList(ev, self.id)
-		userJoinedEvent(ev, self.id)
+		project.functions.reccomend.generateList(ev, self.id)
+		project.functions.reccomend.userJoinedEvent(ev, self.id)
 		
 
 	#takes eventHandler, returns dict of custom info
@@ -252,27 +258,6 @@ class UserHandler:
 		return ep
 
 #================= Helper funcs for list generation ================
-def userJoinedEvent(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
-
-	users = event.getUsers()
-	for u in users:
-		if u.id != user.id:
-			profile = u.getCustomInfo(event)			
-			rec = profile["reccomendList"]
-			rec.append(user.id)
-			profile["reccomendList"] = rec
-			u.setCustomInfo(event, profile)
-
-def generateList(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
-	profile = user.getCustomInfo(event)
-	profile["reccomendList"] = event.getUserIds()
-	user.setCustomInfo(event, profile)
-
-	return profile["reccomendList"]
 
 #=================================================
 
