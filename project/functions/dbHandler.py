@@ -84,6 +84,7 @@ class GroupHandler:
 				self.exists = False
 		except Group.DoesNotExist:
 			self.exists = False
+			print("GROUP ",self.id," DOES NOT EXIST!!!!")
 
 		
 	def __str__(self):
@@ -241,11 +242,15 @@ class UserHandler:
 		self.profile.save()
 
 	def getGroups(self, event=None):
-		groups = Group.objects.filter(users__id=self.id)
+		groups = Group.objects.filter(users__user__id=self.id)
 		if(event is not None):
 			event = EventHandler(event)
 			if event.exists:
-				groups = [g for g in groups if g.event == event.event]
+				groups = [GroupHandler(g.id) for g in groups if g.event == event.event]
+				if groups != []:
+					return groups[0]
+				else:
+					return None
 		return [GroupHandler(g.id) for g in groups]
 
 		#Takes EventHandler object, returns reference to db. Don't use this

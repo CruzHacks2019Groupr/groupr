@@ -1,10 +1,10 @@
 from project.models import Event
-import project.functions.dbHandler as dbHandler
-import project.functions.reccomend
+import project.functions.dbHandler
+
 
 def reccomendNext(e,userID):
-	event = dbHandler.EventHandler(e)
-	user = dbHandler.UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 
 	# profile is a dict containing all private user info for the given event
 	profile = user.getCustomInfo(event)
@@ -30,8 +30,8 @@ def reccomendNext(e,userID):
 
 #delete the first user from the ReccomendNext list
 def popUser(e, userID):
-	event = dbHandler.EventHandler(e)
-	user = dbHandler.UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 	profile = user.getCustomInfo(event)
 	if "reccomendList" in profile:
 		rec = profile["reccomendList"]
@@ -42,8 +42,8 @@ def popUser(e, userID):
 			return temp
 
 def getList(e, userID):
-	event = dbHandler.EventHandler(e)
-	user = dbHandler.UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 	profile = user.getCustomInfo(event)
 	if "reccomendList" in profile:
 		rec = profile["reccomendList"]
@@ -51,8 +51,8 @@ def getList(e, userID):
 	return []
 
 def userJoinedEvent(e, userID):
-	event = dbHandler.EventHandler(e)
-	user = dbHandler.UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 
 	users = event.getUsers()
 	for u in users:
@@ -64,8 +64,8 @@ def userJoinedEvent(e, userID):
 			u.setCustomInfo(event, profile)
 
 def generateList(e, userID):
-	event = dbHandler.EventHandler(e)
-	user = dbHandler.UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 	profile = user.getCustomInfo(event)
 	profile["reccomendList"] = event.getUserIds()
 	user.setCustomInfo(event, profile)
