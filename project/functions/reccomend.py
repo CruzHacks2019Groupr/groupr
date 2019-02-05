@@ -61,7 +61,17 @@ def getList(e, userID):
 		return rec
 	return []
 
-
+def userJoinedEvent(e, userID):
+	event = EventHandler(e)
+	user = UserHandler(userID)
+	users = event.getUsers()
+	for u in users:
+		if u.id != user.id:
+			profile = u.getCustomInfo(event)
+			rec = profile["reccomendList"]
+			rec.append(user.id)
+			profile["reccomendList"] = rec
+			u.setCustomInfo(event, profile)
 
 """
 
