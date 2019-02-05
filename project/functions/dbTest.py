@@ -38,8 +38,8 @@ def createEvent(name, desc, userList, groupSize):
 
 	event = EventHandler(eventId)
 
-	for userIter in range(len(userList)):
-		event.addUser(userList[userIter])
+	for user in userList:
+		event.addUser(user)
 
 	return eventId
 

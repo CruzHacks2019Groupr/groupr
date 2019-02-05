@@ -125,6 +125,7 @@ class UserHandler:
 	def createUser(username, password):
 		user = User.objects.create_user(username=username,
 		password=password)
+		user.save()
 		return UserHandler(user.id)
 
 	def __init__(self, userId):
@@ -174,8 +175,10 @@ class UserHandler:
 		ep.user = self.profile
 		ep.event = ev.event
 		ep.save()
-		userJoinedEvent(ev, self.id)
 		self.setCustomInfo(ev, {})
+		generateList(ev, self.id)
+		userJoinedEvent(ev, self.id)
+		
 
 	#takes eventHandler, returns dict of custom info
 	def getCustomInfo(self, ev):
@@ -193,7 +196,7 @@ class UserHandler:
 		info = json.dumps(d)
 		eventProfile = self._getEventProfile(ev)
 		eventProfile.customInfo = info
-		eventProfile.save()
+		eventProfile.save(force_update=True)
 
 	def getBio(self):
 		return self.profile.bio
@@ -228,43 +231,30 @@ class UserHandler:
 		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
 		return ep
 
+#================= Helper funcs for list generation ================
+def userJoinedEvent(e, userID):
+	event = EventHandler(e)
+	user = UserHandler(userID)
+
+	users = event.getUsers()
+	for u in users:
+		if u.id != user.id:
+			profile = u.getCustomInfo(event)			
+			rec = profile["reccomendList"]
+			rec.append(user.id)
+			profile["reccomendList"] = rec
+			u.setCustomInfo(event, profile)
+
 def generateList(e, userID):
 	event = EventHandler(e)
 	user = UserHandler(userID)
 	profile = user.getCustomInfo(event)
 	profile["reccomendList"] = event.getUserIds()
 	user.setCustomInfo(event, profile)
-	#for debugging
-	print("list for user ", user.id, profile["reccomendList"])
-	print(UserHandler(user.id).getCustomInfo(EventHandler(event.id)))
+
 	return profile["reccomendList"]
 
-def getList(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
-	profile = user.getCustomInfo(event)
-	if "reccomendList" in profile:
-		rec = profile["reccomendList"]
-		return rec
-	return []
-
-def userJoinedEvent(e, userID):
-
-	generateList(e, userID)
-	event = EventHandler(e)
-	user = UserHandler(userID)
-	print("UserJoinedEvent", user.id)
-	users = event.getUsers()
-	for u in users:
-		if u.id != user.id:
-			#profile = u.getCustomInfo(event)
-			profile = UserHandler(u.id).getCustomInfo(EventHandler(event.id))
-			print(UserHandler(u.id).getCustomInfo(EventHandler(event.id)))
-			print("Loading user profile for", u.id)
-			rec = profile["reccomendList"]
-			rec.append(user.id)
-			profile["reccomendList"] = rec
-			u.setCustomInfo(event, profile)
+#=================================================
 
 #=========== event functions ===============
 class EventHandler:
