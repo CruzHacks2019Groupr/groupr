@@ -333,12 +333,12 @@ class EventHandler:
 		return [UserHandler(n) for n in self.di.getNodes()]
 
 	#takes ids
-	def addEdge(self, sourceUser, destinationUser):
-		self.di.addEdge(sourceUser, destinationUser)
+	def addEdge(self, sourceUser, destinationUser, silent=False):
+		self.di.addEdge(sourceUser, destinationUser, silent)
 
 		#Checks if inverse edge exists in DG
 		if (destinationUser, sourceUser) in self.di.getEdges():
-			self.undi.addEdge(destinationUser, sourceUser)
+			self.undi.addEdge(destinationUser, sourceUser, silent)
 
 	#takes ids
 	def removeEdge(self, sourceUser, destinationUser):
@@ -419,7 +419,7 @@ class GraphHandler:
 		n.save()
 
 
-	def addEdge(self, usr_id1, usr_id2):
+	def addEdge(self, usr_id1, usr_id2, silent=False):
 
 		#create nodes if it doesn't have them
 		self.addNode(usr_id1, silent=True)
@@ -431,7 +431,8 @@ class GraphHandler:
 
 		#check if already exists
 		if self.graph.edge_set.filter(a=usr_id1, b=usr_id2):
-			print("Error, graph", self.id, "already has edge (", usr_id1, ", ", usr_id2, ")")
+			if not silent:
+				print("Error, graph", self.id, "already has edge (", usr_id1, ", ", usr_id2, ")")
 			return
 		e = Edge(a=usr_id1, b=usr_id2, graph=self.graph)
 		e.save()

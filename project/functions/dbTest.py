@@ -6,7 +6,7 @@ from .dbHandler import GroupHandler
 from .dbHandler import dropMostTables
 
 __MAXRAND__ = 100000
-__NUMUSERS__ = 20
+__NUMUSERS__ = 5
 
 def generateLukeTestCase(userId):
 	dropMostTables(userId)
@@ -19,12 +19,13 @@ def generateLukeTestCase(userId):
 
 	testEvent = createEvent("TestEvent", "A test event", userList, 3)
 
-	for userIdIter in range(1, len(userList)):
-		testEvent.addEdge(userList[userIdIter], userList[0])
-		for oUserIdIter in range(userIdIter, len(userList)):
-			if(userList[userIdIter] != userList[oUserIdIter]):
-				testEvent.addEdge(userList[userIdIter], userList[oUserIdIter])
-				testEvent.addEdge(userList[oUserIdIter], userList[userIdIter])
+	#eventhandler won't create duplicate edges
+	for user1 in userList:
+		for user2 in userList:
+			if user1 != userId:
+				testEvent.addEdge(user1,user2, silent=True)
+			if user2 != userId:
+				testEvent.addEdge(user2,user1, silent=True)
 
 	print("Users")
 
