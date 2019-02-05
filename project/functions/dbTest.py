@@ -17,7 +17,7 @@ def generateLukeTestCase(userId):
 	testEvent = createEvent("TestEvent", "A test event", userList, 3)
 
 	for userIdIter in range(1, len(userList)):
-		testEvent.addEdge(userList[0], userList[userIdIter])
+		testEvent.addEdge(userList[userIdIter], userList[0])
 
 	print("Users")
 
@@ -26,15 +26,19 @@ def generateLukeTestCase(userId):
 
 	print(testEvent)
 
-def createUser(userNum = random.randint(1, __MAXRAND__)):
-	return UserHandler.createUser("User" + str(userNum), "00000000").id
+	print(testEvent.di.getEdges())
 
-def createEvent(name = "TestEvent", desc = "A test event", userList, groupSize):
+def createUser():
+	userNum = random.randint(1, __MAXRAND__)
+	print(str(userNum))
+	return UserHandler.createUser(("User" + str(userNum)), "00000000").id
+
+def createEvent(name, desc, userList, groupSize):
 	eventId = EventHandler.createEvent(name, desc, groupSize, userList[0])
 
 	event = EventHandler(eventId)
 
-	for userIter in range(userList):
+	for userIter in range(len(userList)):
 		if userIter != 0:
 			event.addUser(userList[userIter])
 
