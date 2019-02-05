@@ -111,7 +111,8 @@ def loadData(request):
 		if(g != []):
 			groupObj = {}
 			groupObj['id'] = g[0].id
-			temp['group'] = {}
+			temp['group'] = g[0]
+			temp['hash'] g[0].hash
 		json_events.append(temp)
 
 	my_events = user.getEventsOwner()
