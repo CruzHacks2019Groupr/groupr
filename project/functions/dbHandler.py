@@ -29,6 +29,26 @@ def dropAllTables():
 	for u in users: 
 		u.delete()
 
+#Deletes everything but userId passed
+def dropMostTables(userId):
+	#delete groups
+	groups = Group.objects.all()
+	for g in groups:
+		g.delete()
+
+	eventProfiles = EventProfile.objects.all()
+	for e in eventProfiles:
+		e.delete()
+
+	events = Event.objects.all()
+	for e in events:
+		e.delete()
+	
+	users = User.objects.all()
+	for u in users: 
+		if u.id != userId:
+			u.delete()
+
 
 class GroupHandler:
 
