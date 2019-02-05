@@ -11,6 +11,24 @@ from django.contrib.auth.models import User
 def genHash(len):
 	return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(len))
 
+def _nukeDBYesImSure():
+	#delete groups
+	groups = Group.objects.all()
+	for g in groups:
+		g.delete()
+
+	eventProfiles = EventProfile.objects.all()
+	for e in eventProfiles:
+		e.delete()
+
+	events = Event.objects.all()
+	for e in events:
+		e.delete()
+	
+	users = User.objects.all()
+	for u in users: 
+		u.delete()
+
 
 class GroupHandler:
 
@@ -31,6 +49,7 @@ class GroupHandler:
 		g.setCustomInfo({})
 		return GroupHandler(g.id)
 
+
 	def __init__(self, groupId):
 		if type(groupId) is GroupHandler:
 			groupId = groupId.id
@@ -38,6 +57,7 @@ class GroupHandler:
 		try:
 			self.group = Group.objects.get(id=groupId)
 			self.event = EventHandler(self.group.event.id)
+			self.hash = group.uniqueHash
 			self.exists = True
 			if self.event.exists == False:
 				self.exists = False
