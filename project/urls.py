@@ -17,7 +17,6 @@ urlpatterns = [
 
 
     #API
-    url(r'^test/$', api.testFunc, name='testFunc'),
     url(r'^testFunc1/$', api.testFunc1, name='testFunc1'),
     url(r'^testFunc2/$', api.testFunc2, name='testFunc2'),
     url(r'^accept/$', api.accept, name='accept'),

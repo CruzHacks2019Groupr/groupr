@@ -10,15 +10,6 @@ from django.http import QueryDict
 from .forms import EventForm
 from .functions import dbTest
 
-def testFunc(request):
-	current_user = request.user
-	print ("Current User ID: ", current_user.id)
-	print("testFunc")
-	demoScript.demo()
-
-	response_data = {}
-	response_data['success'] = True
-	return (JsonResponse(response_data))
 
 def testFunc1(request):
 	print("testFunc1")
