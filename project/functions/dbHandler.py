@@ -104,7 +104,7 @@ class UserHandler:
 	def createUser(username, password):
 		user = User.objects.create_user(username=username,
 		password=password)
-		print(user.id)
+		return UserHandler(user.id)
 
 	def __init__(self, userId):
 		if type(userId) is UserHandler:
