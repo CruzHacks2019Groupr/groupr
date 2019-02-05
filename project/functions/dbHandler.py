@@ -235,7 +235,8 @@ def generateList(e, userID):
 	profile["reccomendList"] = event.getUserIds()
 	user.setCustomInfo(event, profile)
 	#for debugging
-	print(profile["reccomendList"])
+	print("list for user ", user.id, profile["reccomendList"])
+	print(UserHandler(user.id).getCustomInfo(EventHandler(event.id)))
 	return profile["reccomendList"]
 
 def getList(e, userID):
@@ -248,14 +249,18 @@ def getList(e, userID):
 	return []
 
 def userJoinedEvent(e, userID):
+
 	generateList(e, userID)
 	event = EventHandler(e)
 	user = UserHandler(userID)
+	print("UserJoinedEvent", user.id)
 	users = event.getUsers()
 	for u in users:
 		if u.id != user.id:
-			profile = u.getCustomInfo(event)
-			print(profile)
+			#profile = u.getCustomInfo(event)
+			profile = UserHandler(u.id).getCustomInfo(EventHandler(event.id))
+			print(UserHandler(u.id).getCustomInfo(EventHandler(event.id)))
+			print("Loading user profile for", u.id)
 			rec = profile["reccomendList"]
 			rec.append(user.id)
 			profile["reccomendList"] = rec
