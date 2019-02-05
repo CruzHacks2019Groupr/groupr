@@ -3,11 +3,14 @@ import random
 from .dbHandler import UserHandler
 from .dbHandler import EventHandler
 from .dbHandler import GroupHandler
+from .dbHandler import dropMostTables
 
 __MAXRAND__ = 100000
 __NUMUSERS__ = 20
 
 def generateLukeTestCase(userId):
+	dropMostTables(userId)
+
 	userList = []
 	userList.append(userId)
 
