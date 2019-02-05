@@ -99,7 +99,9 @@ def loadData(request):
 			temp['isOwner'] = False
 		g = user.getGroups(event = e)
 		if(g != []):
-			temp['group'] = g[0].id
+			groupObj = {}
+			groupObj['id'] = g[0].id
+			temp['group'] = {}
 		json_events.append(temp)
 
 	my_events = user.getEventsOwner()
