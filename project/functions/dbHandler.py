@@ -66,7 +66,7 @@ class GroupHandler:
 		for user in usersList:
 			g.users.add(UserHandler(user)._getEventProfile(event))
 		g.save()
-		g = GroupHandler(g)
+		g = GroupHandler(g.id)
 		g.setCustomInfo({})
 		return GroupHandler(g.id)
 
@@ -78,7 +78,7 @@ class GroupHandler:
 		try:
 			self.group = Group.objects.get(id=groupId)
 			self.event = EventHandler(self.group.event.id)
-			self.hash = group.uniqueHash
+			self.hash = self.group.uniqueHash
 			self.exists = True
 			if self.event.exists == False:
 				self.exists = False
@@ -112,7 +112,7 @@ class GroupHandler:
 	def setCustomInfo(self, d):
 		info = json.dumps(d)
 		self.group.customInfo = info
-		group.save()
+		self.group.save()
 
 	#lets a user vote
 	def userVote(self, user, boolean):

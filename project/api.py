@@ -72,8 +72,8 @@ def accept(request):
 		groupObj = {}
 		groupObj['id'] = pG.id
 		groupObj['hash'] = pG.hash
-		groupObj['users'] = pG.getUsers()
-		print("group" + groupObj)
+		groupObj['users'] = [u.id for u in pG.getUsers()]
+		print("group" + str(groupObj))
 		response_data['group'] = groupObj
 
 	response_data['success'] = True

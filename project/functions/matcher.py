@@ -1,16 +1,16 @@
 import networkx as nx
 import itertools
-from .dbHandler import UserHandler
-from .dbHandler import EventHandler
+from .dbHandler import UserHandler, EventHandler, GroupHandler
 
 def findPerfectGroup(Event, User):
-	PerfectGroups = nx.cliques_containing_node(Event.G(), User)
+	User = UserHandler(User)
+	PerfectGroups = nx.cliques_containing_node(Event.G(), User.id)
 	for i in PerfectGroups:
 		print(i)
 		if len(i) is Event.groupSize:
 			for j in i:
 				Event._removeUserFromGraph(j)
-			return createGroup(i, Event)
+			return GroupHandler.createGroup(i, Event)
 	return None
 
 def forceGroups(Event):
