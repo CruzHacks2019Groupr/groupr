@@ -6,11 +6,12 @@ from .dbHandler import EventHandler
 def findPerfectGroup(Event, User):
 	PerfectGroups = nx.cliques_containing_node(Event.G(), User)
 	for i in PerfectGroups:
+		print(i)
 		if len(i) is Event.groupSize:
 			for j in i:
 				Event._removeUserFromGraph(j)
 			return createGroup(i, Event)
-	return -1
+	return None
 
 def forceGroups(Event):
 	possibleGroups = list(itertools.combinations(list(Event.DG()), Event.groupSize))    		#All combinations of the Node list in groups of length n are stored in list

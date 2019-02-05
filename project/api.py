@@ -56,7 +56,6 @@ def addEvent(request):
 
 @login_required(login_url='/login/')
 def accept(request):
-	print("accept")
 
 	response_data = {}
 	info = request.GET.dict()
@@ -67,18 +66,21 @@ def accept(request):
 	popUser(event, user)
 
 	event.addEdge(user.id, acceptedUser)
+	pG = findPerfectGroup(event, user)
 
-	if(findPerfectGroup(event, user) == None):
-		response_data['groupFormed'] = False
-	else:
-		response_data['groupFormed'] = True
+	if(pG != None):
+		groupObj = {}
+		groupObj['id'] = pG.id
+		groupObj['hash'] = pG.hash
+		groupObj['users'] = pG.getUsers()
+		print("group" + groupObj)
+		response_data['group'] = groupObj
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))
 
 @login_required(login_url='/login/')
 def decline(request):
-	print("decline")
 	
 	response_data = {}
 	info = request.GET.dict()
@@ -123,7 +125,6 @@ def loadData(request):
 			if(e.id == E.get('ID') and user.id == e.owner):
 				isIn = True
 		if not isIn:	
-			print(e)
 			temp = {}
 			temp['ID'] = e.id
 			temp['name'] = e.name
@@ -138,7 +139,6 @@ def loadData(request):
 
 
 def getNextMatch(request):
-	print("getNextMatch")
 	response_data = {}
 	info = request.GET.dict()
 

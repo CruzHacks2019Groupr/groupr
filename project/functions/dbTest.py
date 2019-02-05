@@ -21,6 +21,10 @@ def generateLukeTestCase(userId):
 
 	for userIdIter in range(1, len(userList)):
 		testEvent.addEdge(userList[userIdIter], userList[0])
+		for oUserIdIter in range(userIdIter, len(userList)):
+			if(userList[userIdIter] != userList[oUserIdIter]):
+				testEvent.addEdge(userList[userIdIter], userList[oUserIdIter])
+				testEvent.addEdge(userList[oUserIdIter], userList[userIdIter])
 
 	print("Users")
 

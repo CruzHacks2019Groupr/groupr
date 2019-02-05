@@ -21,6 +21,9 @@ var app = function() {
 
         $.getJSON(url, function (data) {
             console.log(data)
+            if(typeof data.group != "undefined") {
+                self.vue.events[self.vue.curr_event].group = data.group
+            }
             self.getNextMatch()
         })
     };
@@ -60,7 +63,6 @@ var app = function() {
         $.getJSON(url, function (data) {
             
             console.log(data)
-            
             self.vue.events = data.events
             if(data.events.length != 0)
                 self.vue.curr_event = 0
