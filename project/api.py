@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
 from .forms import EventForm
+from .functions import dbTest
 
 def testFunc(request):
 	current_user = request.user
@@ -18,6 +19,21 @@ def testFunc(request):
 	response_data = {}
 	response_data['success'] = True
 	return (JsonResponse(response_data))
+
+def testFunc1(request):
+	print("testFunc1")
+
+	dbTest.generateLukeTestCase(request.user.id)
+	response_data = {}
+	response_data['success'] = True
+	return (JsonResponse(response_data))
+
+def testFunc2(request):
+	print("testFunc2")
+	response_data = {}
+	response_data['success'] = True
+	return (JsonResponse(response_data))
+
 
 @login_required(login_url='/login/')
 def event(request):

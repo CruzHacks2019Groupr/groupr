@@ -11,16 +11,6 @@ var app = function() {
     }
 
 
-    self.testFunc = function(){
-        var request = {
-        }
-        var url = "/testFunc" + "?" + $.param(request);
-
-        $.getJSON(url, function (data) {
-            console.log(data)
-        })
-    };
-
     self.accept = function(){
 
         var request = {
@@ -80,6 +70,26 @@ var app = function() {
         })
     };
 
+    self.testFunc1 =function(){
+        var request = {
+        }
+        var url = "/testFunc1" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+        })
+    }
+
+    self.testFunc2 =function(){
+        var request = {
+        }
+        var url = "/testFunc2" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+        })
+    }
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -98,10 +108,11 @@ var app = function() {
         methods: {
             accept: self.accept,
             decline: self.decline,
-            testFunc: self.testFunc,
             getNextMatch: self.getNextMatch,
             loadData: self.loadData,
             changeEvent: self.changeEvent,
+            testFunc1: self.testFunc1,
+            testFunc2: self.testFunc2,
         }
 
     });
