@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
 from .forms import EventForm
 from .functions import dbTest
+from .functions import dbHandler
 
 def testFunc(request):
 	current_user = request.user
@@ -30,6 +31,8 @@ def testFunc1(request):
 
 def testFunc2(request):
 	print("testFunc2")
+	dbHandler.dropAllTables()
+
 	response_data = {}
 	response_data['success'] = True
 	return (JsonResponse(response_data))
