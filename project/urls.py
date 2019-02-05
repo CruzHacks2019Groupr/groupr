@@ -3,31 +3,26 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from . import views
+from . import api
 
 urlpatterns = [
     path('', views.index, name='index'),
     url(r'^landing/$', views.landing, name='landing'),
     
-    url(r'^accounts/profile/$', views.redir, name='redir'),
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^chat/$', views.chat, name='chat'),
-    url(r'^event/$', views.event, name='event'),
-    url(r'^addevent/$', views.addEvent, name='event'),
     url(r'^ajax/chat/$', views.broadcast),
 
 
     #API
-    url(r'^test/$', views.testFunc, name='testFunc'),
-    url(r'^accept/$', views.accept, name='accept'),
-    url(r'^decline/$', views.decline, name='decline'),
-    url(r'^getNextMatch/$', views.getNextMatch, name='getNextMatch'),
-    url(r'^loadData/$', views.loadData, name='loadData'),
+    url(r'^test/$', api.testFunc, name='testFunc'),
+    url(r'^accept/$', api.accept, name='accept'),
+    url(r'^decline/$', api.decline, name='decline'),
+    url(r'^getNextMatch/$', api.getNextMatch, name='getNextMatch'),
+    url(r'^loadData/$', api.loadData, name='loadData'),
+    url(r'^event/$', api.event, name='event'),
+    url(r'^addevent/$', api.addEvent, name='event'),
     
-
-    # ex: /notes/5/
-    #path('<int:note_id>/', views.detail, name='detail'),
-    #path('get_notes/', views.get_notes, name='get_notes'),
-    #path('post_note/', views.post_note, name='post_note'),
 ]
