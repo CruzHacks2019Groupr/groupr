@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import networkx as nx
 import random, string, json
 
+from django.contrib.auth.models import User
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
 
@@ -98,6 +99,12 @@ class GroupHandler:
 
 
 class UserHandler:
+
+	@staticmethod
+	def createUser(username, displayName, password):
+		user = User.objects.create_user(username=username,
+		password=password)
+		print(user.id)
 
 	def __init__(self, userId):
 		if type(userId) is UserHandler:
