@@ -62,6 +62,7 @@ def getList(e, userID):
 	return []
 
 def userJoinedEvent(e, userID):
+	generateList(e, userID)
 	event = EventHandler(e)
 	user = UserHandler(userID)
 	users = event.getUsers()

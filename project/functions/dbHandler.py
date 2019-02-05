@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import networkx as nx
 import random, string, json
 
+
 from django.contrib.auth.models import User
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
@@ -193,6 +194,7 @@ class UserHandler:
 		ep.user = self.profile
 		ep.event = ev.event
 		ep.save()
+		userJoinedEvent(ev, self.id)
 		self.setCustomInfo(ev, {})
 
 	#takes eventHandler, returns dict of custom info
@@ -246,7 +248,38 @@ class UserHandler:
 		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
 		return ep
 
+def generateList(e, userID):
+	event = EventHandler(e)
+	user = UserHandler(userID)
+	profile = user.getCustomInfo(event)
+	profile["reccomendList"] = event.getUserIds()
+	user.setCustomInfo(event, profile)
+	#for debugging
+	print(profile["reccomendList"])
+	return profile["reccomendList"]
 
+def getList(e, userID):
+	event = EventHandler(e)
+	user = UserHandler(userID)
+	profile = user.getCustomInfo(event)
+	if "reccomendList" in profile:
+		rec = profile["reccomendList"]
+		return rec
+	return []
+
+def userJoinedEvent(e, userID):
+	generateList(e, userID)
+	event = EventHandler(e)
+	user = UserHandler(userID)
+	users = event.getUsers()
+	for u in users:
+		if u.id != user.id:
+			profile = u.getCustomInfo(event)
+			print(profile)
+			rec = profile["reccomendList"]
+			rec.append(user.id)
+			profile["reccomendList"] = rec
+			u.setCustomInfo(event, profile)
 
 #=========== event functions ===============
 class EventHandler:

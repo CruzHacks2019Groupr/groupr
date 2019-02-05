@@ -42,8 +42,7 @@ def createEvent(name, desc, userList, groupSize):
 	event = EventHandler(eventId)
 
 	for userIter in range(len(userList)):
-		if userIter != 0:
-			event.addUser(userList[userIter])
+		event.addUser(userList[userIter])
 
 	return eventId
 
