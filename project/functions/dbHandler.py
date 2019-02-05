@@ -101,7 +101,7 @@ class GroupHandler:
 class UserHandler:
 
 	@staticmethod
-	def createUser(username, displayName, password):
+	def createUser(username, password):
 		user = User.objects.create_user(username=username,
 		password=password)
 		print(user.id)
