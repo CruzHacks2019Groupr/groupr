@@ -5,6 +5,7 @@ var app = function() {
     Vue.config.silent = false; // show all warnings
     
     self.changeEvent = function(num, bool) {
+        self.vue.edit_profile = false
         self.vue.curr_event = num
         if (self.vue.events[num].isIn)
             self.getNextMatch()
@@ -100,11 +101,13 @@ var app = function() {
         data: {
             //booleans
             page_loaded: true,
+            edit_profile: true,
             suggested_usr_name: "",
             suggested_usr_id: -1,
             logged_in: true,
             curr_event: -1,
             events: [],
+            userData: null,
 
         },
         methods: {
