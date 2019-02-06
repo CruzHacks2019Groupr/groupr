@@ -45,7 +45,7 @@
             <a href='#' v-bind:class="{active: (i == curr_event && !edit_profile)}" v-on:click="changeEvent(i, false)">${e.name}</a>
         </span>
         <p>----------</p>
-        <span><h3><a href="#" v-bind:class="{active: edit_profile}" v-on:click="edit_profile = true">Edit Profile</a></h3></span>
+        <span><h3><a href="#" v-bind:class="{active: edit_profile}" v-on:click="edit_profile = !edit_profile">Edit Profile</a></h3></span>
         <span><h3></h3></span>
     </div>
     <br><br><br><hr><br>

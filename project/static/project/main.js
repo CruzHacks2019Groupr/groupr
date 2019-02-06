@@ -101,7 +101,7 @@ var app = function() {
         data: {
             //booleans
             page_loaded: true,
-            edit_profile: true,
+            edit_profile: false,
             suggested_usr_name: "",
             suggested_usr_id: -1,
             logged_in: true,

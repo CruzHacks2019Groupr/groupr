@@ -96,6 +96,19 @@ def decline(request):
 	response_data['success'] = True
 	return (JsonResponse(response_data))
 
+#helper function
+def getUserData(userId, event=None):
+	user = UserHandler(userId)
+	data = {}
+	data["name"] = user.getName()
+	data["id"] = user.id
+	data["bio"] = user.profile.bio
+	data["image"] = user.getPic()
+	if event is not None:
+		event = EventHandler(event)
+		#more here later
+
+
 @login_required(login_url='/login/')
 def loadData(request):
 	response_data = {}

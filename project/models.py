@@ -71,7 +71,7 @@ class Profile(models.Model):
 	bio = models.TextField(max_length=500,blank=True,null=True)
 
 	age = models.IntegerField(blank=True,null=True)
-	#pic = models.ImageField(upload_to = 'demo/', default = 'demo/no-img.jpg')
+	pic = models.ImageField(upload_to = 'demo/', default = 'demo/no-img.jpg')
 
 
 	@receiver(post_save, sender=User)
