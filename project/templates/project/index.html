@@ -53,7 +53,7 @@
     <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc2">Clear DB</button>
 </div>
 <br><br>
-<div class="col-md-9 col-xl-10">
+<div class="col-md-9 col-xl-8 offset-xl-1">
     <br><br>
     <div v-if="edit_profile" class="col-md-8">
         <h2>Edit Profile</h2>
@@ -78,31 +78,44 @@
     <div v-else>
         <center>
             <span v-if="curr_event != -1">
-                <h1> ${events[curr_event].name} </h1>
-                <h4>${events[curr_event].description}</h4>
-                <br><br>
+                <h1> ${events[curr_event].name}  <small>${events[curr_event].description}</small></h1>
+                <hr>
+                <br>
                 <span v-if="events[curr_event].isIn">
 
                     <span v-if="typeof events[curr_event].group != 'undefined'">
-                        <h3> IN A GROUP! </h3>
-                        <h4>Here are your group members:</h4>
+                        <h4>Here is your group:</h4>
+                        <br>
                         <div class="row">
                             <div v-for="user in events[curr_event].group.users" class="col-sm-4">
-                                <h5>${user.name}</h5>
-                                <img v-bind:src="user.image" class="img img-fluid rounded-circle" style=" max-width: 200px;">
-                                <p>${user.bio}</p>
+                                <img v-bind:src="user.image" class="rounded-circle" style=" width: 200px; height: 200px;">
+                                <h4>${user.name}</h4>
+                                <h7>${user.bio}</h7>
 
                             </div>
                             
                         </div>
                         <br>
-                        <button type="button" class="btn btn-primary btn-lg" v-on:click="rejectGroup">Reject Group</button>
+                        <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc1">Reject Group</button>
                     </span>
+
                     <span v-else-if="suggested_usr.name != ''">
-                        <h3>other user: ${suggested_usr.name} </h3>
-                        <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
-                        <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img v-bind:src="suggested_usr.image" class="img img-fluid rounded-circle" style=" width: 300px; height: 300px;">
+                            </div>
+                            <div class="col-md-6">
+                                <br>
+                                <h3>${suggested_usr.name} </h3>
+                                <br>
+                                <h5 style="line-height: 28px;">${suggested_usr.bio}</h5>
+                            </div>
+                        </div>
+                        <br>               
+                        <button type="button" class="btn acceptdecline btn-primary btn-lg" v-on:click="accept">accept</button>
+                        <button type="button" class="btn acceptdecline btn-primary btn-lg" v-on:click="decline">decline</button>
                     </span>
+
                     <span v-else>
                         <h3>It looks like you've rated everyone in this event!</h3>
                     </span>

@@ -91,6 +91,7 @@ var app = function() {
 
         $.getJSON(url, function (data) {
             console.log(data)
+            self.vue.loadData()
         })
     }
     self.rejectGroup =function(){
@@ -100,6 +101,7 @@ var app = function() {
 
         $.getJSON(url, function (data) {
             console.log(data)
+
         })
     }
 

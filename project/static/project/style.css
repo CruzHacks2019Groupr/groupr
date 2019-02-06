@@ -55,3 +55,17 @@
   top: 0;
   right: 0;
 }
+.btn{
+  margin: 5px;
+}
+.acceptdecline{
+  margin: 40px;
+}
+
+h1 small{
+  font-size: 24px;
+  padding-left: 20px;
+}
+.bio{
+  font-size: 16px;
+}
