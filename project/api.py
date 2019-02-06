@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
-from .forms import EventForm
+from .forms import EventForm, ProfileForm
 from .functions import dbTest
 from .functions import dbHandler
 
@@ -40,9 +40,20 @@ def event(request):
 			ev = EventHandler.createEvent(e.name, e.description, e.group_size, e.creator)
 
 			print(ev)
-
-			return redirect('index')
 	return redirect('index')
+
+def updateProfile(request):
+	if request.method == 'POST':
+		form = ProfileForm(request.POST)
+		if form.is_valid():
+			user = UserHandler(request.user.id)
+			p = form.save(commit=False)
+
+			user.setBio(p.bio)
+			user.setName(p.name)
+			#user.setPic(p.pic)
+	return redirect('index')
+			
 
 @login_required(login_url='/login/')
 def addEvent(request):

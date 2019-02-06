@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import random, string
-#import project.models_.graph as Graph
-#import networkx as nx
 
 import os
 from django.core.validators import int_list_validator

@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^getNextMatch/$', api.getNextMatch, name='getNextMatch'),
     url(r'^loadData/$', api.loadData, name='loadData'),
     url(r'^event/$', api.event, name='event'),
-    url(r'^addevent/$', api.addEvent, name='event'),
+    url(r'^addevent/$', api.addEvent, name='addevent'),
+    url(r'^updateProfile/$', api.updateProfile, name='event'),
     
 ]

@@ -230,7 +230,7 @@ class UserHandler:
 
 	def setBio(self, bio):
 		self.profile.bio = bio
-		self.profile.bio.save()
+		self.profile.save()
 
 	def getPic(self):
 		return self.profile.pic
