@@ -15,8 +15,8 @@ var app = function() {
     self.accept = function(){
 
         var request = {
-            "eventID": self.vue.events[self.vue.curr_event].ID,
-            "acceptedUser": self.vue.suggested_usr_id
+            "eventID": self.vue.events[self.vue.curr_event].id,
+            "acceptedUser": self.vue.suggested_usr.id
         }
         var url = "/accept" + "?" + $.param(request);
 
@@ -31,7 +31,7 @@ var app = function() {
 
     self.decline = function(){
         var request = {
-            "eventID": self.vue.events[self.vue.curr_event].ID
+            "eventID": self.vue.events[self.vue.curr_event].id
         }
         var url = "/decline" + "?" + $.param(request);
 
@@ -45,14 +45,13 @@ var app = function() {
     self.getNextMatch = function(){
 
         var request = {
-            "eventID": self.vue.events[self.vue.curr_event].ID
+            "eventID": self.vue.events[self.vue.curr_event].id
         }
         var url = "/getNextMatch" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
-            self.vue.suggested_usr_name =  data.suggested_usr_name
-            self.vue.suggested_usr_id =  data.suggested_usr_id
+            self.vue.suggested_usr = data.suggested_usr
         })
     };
 
@@ -72,6 +71,17 @@ var app = function() {
  
         })
     };
+
+    self.forceGroups =function(){
+        var request = {
+            "eventID": self.vue.events[self.vue.curr_event].id
+        }
+        var url = "/forceGroups" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+        })
+    }
 
     self.testFunc1 =function(){
         var request = {
@@ -102,8 +112,10 @@ var app = function() {
             //booleans
             page_loaded: true,
             edit_profile: false,
-            suggested_usr_name: "",
-            suggested_usr_id: -1,
+            suggested_usr: {
+                name: "",
+                id: -1,
+            },
             logged_in: true,
             curr_event: -1,
             events: [],
@@ -118,6 +130,7 @@ var app = function() {
             changeEvent: self.changeEvent,
             testFunc1: self.testFunc1,
             testFunc2: self.testFunc2,
+            forceGroups: self.forceGroups,
         }
 
     });

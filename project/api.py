@@ -61,7 +61,7 @@ def getGroup(event, user):
 		groupObj = {}
 		groupObj['id'] = group.id
 		groupObj['hash'] = group.hash
-		groupObj['users'] = [u.id for u in group.getUsers()]
+		groupObj['users'] = [getUserData(u) for u in group.getUsers()]
 		return groupObj
 	return None
 
@@ -103,10 +103,11 @@ def getUserData(userId, event=None):
 	data["name"] = user.getName()
 	data["id"] = user.id
 	data["bio"] = user.profile.bio
-	data["image"] = user.getPic()
+	data["image"] = user.getPic().url
 	if event is not None:
 		event = EventHandler(event)
 		#more here later
+	return data
 
 
 @login_required(login_url='/login/')
@@ -120,7 +121,7 @@ def loadData(request):
 
 	for e in events:
 		temp = {}
-		temp['ID'] = e.id
+		temp['id'] = e.id
 		temp['name'] = e.name
 		temp['isIn'] = True
 		temp['addCode'] = e.addCode
@@ -138,11 +139,11 @@ def loadData(request):
 	for e in my_events:
 		isIn = False
 		for E in json_events:
-			if(e.id == E.get('ID') and user.id == e.owner):
+			if(e.id == E.get('id') and user.id == e.owner):
 				isIn = True
 		if not isIn:	
 			temp = {}
-			temp['ID'] = e.id
+			temp[''] = e.id
 			temp['name'] = e.name
 			temp['addCode'] = e.addCode
 			temp['isIn'] = False
@@ -155,17 +156,34 @@ def loadData(request):
 
 
 def getNextMatch(request):
+	print(request)
 	response_data = {}
 	info = request.GET.dict()
 
 	suggestedUser = reccomendNext(info.get('eventID'), request.user.id)
 
 	if(suggestedUser != None):
-		response_data['suggested_usr_id'] = UserHandler(suggestedUser).id
-		response_data['suggested_usr_name'] = UserHandler(suggestedUser).getName()
+		response_data['suggested_usr'] = getUserData(suggestedUser)
 	else:
-		response_data['suggested_usr_id'] = -1
-		response_data['suggested_usr_name'] = ''
+		response_data['suggested_usr'] = {'id': -1, 'name': 'a'}
 	
+	response_data['success'] = True
+	return (JsonResponse(response_data))
+
+def forceGroups(request):
+	response_data = {}
+	info = request.GET.dict()
+
+	event = EventHandler(info.get('eventID'))
+	user = UserHandler(request.user.id)
+
+	if event.owner != user.id:
+		return
+		print("user is not event owner!!")
+	project.functions.matcher.forceGroups(event)
+	g = getGroup(event,user)
+	if(g != None):
+		response_data['group'] = g
+
 	response_data['success'] = True
 	return (JsonResponse(response_data))

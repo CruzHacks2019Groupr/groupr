@@ -49,8 +49,8 @@
         <span><h3></h3></span>
     </div>
     <br><br><br><hr><br>
-    <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc1">testFunc1()</button>
-    <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc2">testFunc2()</button>
+    <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc1">Reset Demo</button>
+    <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc2">Clear DB</button>
 </div>
 <br><br>
 <div class="col-md-9 col-xl-10">
@@ -85,9 +85,13 @@
 
                     <span v-if="typeof events[curr_event].group != 'undefined'">
                         <h3> IN A GROUP! </h3>
+                        <span v-for="user in events[curr_event].group.users">
+                            <h5>${user.name}</h5>
+                            <img v-bind:src="user.image">
+                        </span>
                     </span>
-                    <span v-else-if="suggested_usr_name != ''">
-                        <h3>other user: ${suggested_usr_name} </h3>
+                    <span v-else-if="suggested_usr.name != ''">
+                        <h3>other user: ${suggested_usr.name} </h3>
                         <button type="button" class="btn btn-primary btn-lg" v-on:click="accept">accept</button>
                         <button type="button" class="btn btn-primary btn-lg" v-on:click="decline">decline</button>
                     </span>
@@ -108,6 +112,8 @@
                     <br><hr><br><br><hr><br>
                     <h2>You are the owner of this event. </h2>
                     <h2>Add Code:  ${events[curr_event].addCode}</h2>
+                    <br>
+                    <button type="button" class="btn btn-primary btn-lg" v-on:click="forceGroups">Force Group Creation</button>
                 </span>
             </span>
 

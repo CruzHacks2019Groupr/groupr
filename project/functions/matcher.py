@@ -39,11 +39,11 @@ def forceGroups(Event):
 
 	groupList = []
 	for k in groupCombo[BestIndex]:
-		groupList.append(createGroup(k, Event))
+		groupList.append(GroupHandler.createGroup(k, Event))
 		for l in k:
 			Event._removeUserFromGraph(l)
 
-	groupList.append(createGroup(list(Event.DG()), Event))
+	groupList.append(GroupHandler.createGroup(list(Event.DG()), Event))
 	return groupList
 
 def computeScore(Event, L):													   				#For a given group computes the score, which is the number edges

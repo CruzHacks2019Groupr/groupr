@@ -233,11 +233,11 @@ class UserHandler:
 		self.profile.bio.save()
 
 	def getPic(self):
-		return profile.pic
+		return self.profile.pic
 
 	def setPic(self, pic):
-		profile.pic = pic
-		profile.save()
+		self.profile.pic = pic
+		self.profile.save()
 
 	def getName(self):
 		if self.profile.name is not None:

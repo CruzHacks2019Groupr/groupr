@@ -19,6 +19,7 @@ urlpatterns = [
     #API
     url(r'^testFunc1/$', api.testFunc1, name='testFunc1'),
     url(r'^testFunc2/$', api.testFunc2, name='testFunc2'),
+    url(r'^forceGroups/$', api.forceGroups, name='forceGroups'),
     url(r'^accept/$', api.accept, name='accept'),
     url(r'^decline/$', api.decline, name='decline'),
     url(r'^getNextMatch/$', api.getNextMatch, name='getNextMatch'),

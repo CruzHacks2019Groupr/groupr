@@ -6,7 +6,7 @@ from .dbHandler import GroupHandler
 from .dbHandler import dropMostTables
 
 __MAXRAND__ = 100000
-__NUMUSERS__ = 5
+__NUMUSERS__ = 15
 
 def generateLukeTestCase(userId):
 	dropMostTables(userId)
@@ -15,7 +15,7 @@ def generateLukeTestCase(userId):
 	userList.append(userId)
 
 	for userNum in range(1, __NUMUSERS__):
-		userList.append(createUser())
+		userList.append(createUser(userNum))
 
 	testEvent = createEvent("TestEvent", "A test event", userList, 3)
 
@@ -36,8 +36,7 @@ def generateLukeTestCase(userId):
 
 	print(testEvent.di.getEdges())
 
-def createUser():
-	userNum = random.randint(1, __MAXRAND__)
+def createUser(userNum):
 	print(str(userNum))
 	return UserHandler.createUser(("User" + str(userNum)), "00000000").id
 
