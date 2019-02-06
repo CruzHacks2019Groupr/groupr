@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 import networkx as nx
 import random, string, json
-
+import project.functions.reccomend
 
 from django.contrib.auth.models import User
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
@@ -66,7 +66,7 @@ class GroupHandler:
 		for user in usersList:
 			g.users.add(UserHandler(user)._getEventProfile(event))
 		g.save()
-		g = GroupHandler(g)
+		g = GroupHandler(g.id)
 		g.setCustomInfo({})
 		return GroupHandler(g.id)
 
@@ -78,12 +78,13 @@ class GroupHandler:
 		try:
 			self.group = Group.objects.get(id=groupId)
 			self.event = EventHandler(self.group.event.id)
-			self.hash = group.uniqueHash
+			self.hash = self.group.uniqueHash
 			self.exists = True
 			if self.event.exists == False:
 				self.exists = False
 		except Group.DoesNotExist:
 			self.exists = False
+			print("GROUP ",self.id," DOES NOT EXIST!!!!")
 
 		
 	def __str__(self):
@@ -112,7 +113,7 @@ class GroupHandler:
 	def setCustomInfo(self, d):
 		info = json.dumps(d)
 		self.group.customInfo = info
-		group.save()
+		self.group.save()
 
 	#lets a user vote
 	def userVote(self, user, boolean):
@@ -171,13 +172,19 @@ class UserHandler:
 		eventHandlers = [EventHandler(e.id) for e in db_events]
 		return eventHandlers
 
-	def getEvents(self):
+	#get the events that you don't have a group in
+	def getEventsIn(self):
 		all_events = Event.objects.all()
 		userEvents = []
 		for e in all_events:
 			eh = EventHandler(e.id)
 			if self.id in eh.getUserIds():
 				userEvents.append(eh)
+		return userEvents
+
+	def getEvents(self):
+		event_profiles = EventProfile.objects.filter(user=self.profile)
+		userEvents = [EventHandler(ep.event.id) for ep in event_profiles]
 		return userEvents
 
 	def joinEvent(self, addCode):
@@ -196,8 +203,8 @@ class UserHandler:
 		ep.event = ev.event
 		ep.save()
 		self.setCustomInfo(ev, {})
-		generateList(ev, self.id)
-		userJoinedEvent(ev, self.id)
+		project.functions.reccomend.generateList(ev, self.id)
+		project.functions.reccomend.userJoinedEvent(ev, self.id)
 		
 
 	#takes eventHandler, returns dict of custom info
@@ -225,6 +232,13 @@ class UserHandler:
 		self.profile.bio = bio
 		self.profile.bio.save()
 
+	def getPic(self):
+		return profile.pic
+
+	def setPic(self, pic):
+		profile.pic = pic
+		profile.save()
+
 	def getName(self):
 		if self.profile.name is not None:
 			return self.profile.name
@@ -235,11 +249,15 @@ class UserHandler:
 		self.profile.save()
 
 	def getGroups(self, event=None):
-		groups = Group.objects.filter(users__id=self.id)
+		groups = Group.objects.filter(users__user__id=self.id)
 		if(event is not None):
 			event = EventHandler(event)
 			if event.exists:
-				groups = [g for g in groups if g.event == event.event]
+				groups = [GroupHandler(g.id) for g in groups if g.event == event.event]
+				if groups != []:
+					return groups[0]
+				else:
+					return None
 		return [GroupHandler(g.id) for g in groups]
 
 		#Takes EventHandler object, returns reference to db. Don't use this
@@ -252,27 +270,6 @@ class UserHandler:
 		return ep
 
 #================= Helper funcs for list generation ================
-def userJoinedEvent(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
-
-	users = event.getUsers()
-	for u in users:
-		if u.id != user.id:
-			profile = u.getCustomInfo(event)			
-			rec = profile["reccomendList"]
-			rec.append(user.id)
-			profile["reccomendList"] = rec
-			u.setCustomInfo(event, profile)
-
-def generateList(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
-	profile = user.getCustomInfo(event)
-	profile["reccomendList"] = event.getUserIds()
-	user.setCustomInfo(event, profile)
-
-	return profile["reccomendList"]
 
 #=================================================
 
@@ -333,12 +330,12 @@ class EventHandler:
 		return [UserHandler(n) for n in self.di.getNodes()]
 
 	#takes ids
-	def addEdge(self, sourceUser, destinationUser):
-		self.di.addEdge(sourceUser, destinationUser)
+	def addEdge(self, sourceUser, destinationUser, silent=False):
+		self.di.addEdge(sourceUser, destinationUser, silent)
 
 		#Checks if inverse edge exists in DG
 		if (destinationUser, sourceUser) in self.di.getEdges():
-			self.undi.addEdge(destinationUser, sourceUser)
+			self.undi.addEdge(destinationUser, sourceUser, silent)
 
 	#takes ids
 	def removeEdge(self, sourceUser, destinationUser):
@@ -419,7 +416,7 @@ class GraphHandler:
 		n.save()
 
 
-	def addEdge(self, usr_id1, usr_id2):
+	def addEdge(self, usr_id1, usr_id2, silent=False):
 
 		#create nodes if it doesn't have them
 		self.addNode(usr_id1, silent=True)
@@ -431,7 +428,8 @@ class GraphHandler:
 
 		#check if already exists
 		if self.graph.edge_set.filter(a=usr_id1, b=usr_id2):
-			print("Error, graph", self.id, "already has edge (", usr_id1, ", ", usr_id2, ")")
+			if not silent:
+				print("Error, graph", self.id, "already has edge (", usr_id1, ", ", usr_id2, ")")
 			return
 		e = Edge(a=usr_id1, b=usr_id2, graph=self.graph)
 		e.save()

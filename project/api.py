@@ -53,6 +53,17 @@ def addEvent(request):
 	user.joinEvent(info.get('code'))
 	return redirect('index')
 
+#this is a helper function
+def getGroup(event, user):
+	user = UserHandler(user)
+	group = user.getGroups(event)
+	if group is not None:
+		groupObj = {}
+		groupObj['id'] = group.id
+		groupObj['hash'] = group.hash
+		groupObj['users'] = [u.id for u in group.getUsers()]
+		return groupObj
+	return None
 
 @login_required(login_url='/login/')
 def accept(request):
@@ -69,12 +80,7 @@ def accept(request):
 	pG = findPerfectGroup(event, user)
 
 	if(pG != None):
-		groupObj = {}
-		groupObj['id'] = pG.id
-		groupObj['hash'] = pG.hash
-		groupObj['users'] = pG.getUsers()
-		print("group" + groupObj)
-		response_data['group'] = groupObj
+		response_data['group'] = getGroup(event,user)
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))
@@ -90,6 +96,19 @@ def decline(request):
 	response_data['success'] = True
 	return (JsonResponse(response_data))
 
+#helper function
+def getUserData(userId, event=None):
+	user = UserHandler(userId)
+	data = {}
+	data["name"] = user.getName()
+	data["id"] = user.id
+	data["bio"] = user.profile.bio
+	data["image"] = user.getPic()
+	if event is not None:
+		event = EventHandler(event)
+		#more here later
+
+
 @login_required(login_url='/login/')
 def loadData(request):
 	response_data = {}
@@ -98,6 +117,7 @@ def loadData(request):
 	user = UserHandler(request.user.id)
 	events = user.getEvents()
 	json_events = []
+
 	for e in events:
 		temp = {}
 		temp['ID'] = e.id
@@ -109,13 +129,9 @@ def loadData(request):
 			temp['isOwner'] = True
 		else:
 			temp['isOwner'] = False
-		g = user.getGroups(event = e)
-		if(g != []):
-			groupObj = {}
-			groupObj['id'] = g[0].id
-			groupObj['hash'] = g[0].hash
-			groupObj['users'] = g[0].getUsers()
-			temp['group'] = groupObj
+		g = getGroup(e, user)
+		if g is not None:
+			temp['group'] = g
 		json_events.append(temp)
 
 	my_events = user.getEventsOwner()

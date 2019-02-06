@@ -1,10 +1,10 @@
-from project.models import Graph
 from project.models import Event
-from .dbHandler import *
+import project.functions.dbHandler
+
 
 def reccomendNext(e,userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 
 	# profile is a dict containing all private user info for the given event
 	profile = user.getCustomInfo(event)
@@ -30,8 +30,8 @@ def reccomendNext(e,userID):
 
 #delete the first user from the ReccomendNext list
 def popUser(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 	profile = user.getCustomInfo(event)
 	if "reccomendList" in profile:
 		rec = profile["reccomendList"]
@@ -41,20 +41,9 @@ def popUser(e, userID):
 			user.setCustomInfo(event, profile)
 			return temp
 
-
-#generates/resets list of swipes
-def generateList(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
-	profile = user.getCustomInfo(event)
-	profile["reccomendList"] = event.getUserIds()
-	user.setCustomInfo(event, profile)
-	#for debugging
-	return profile["reccomendList"]
-
 def getList(e, userID):
-	event = EventHandler(e)
-	user = UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
 	profile = user.getCustomInfo(event)
 	if "reccomendList" in profile:
 		rec = profile["reccomendList"]
@@ -62,17 +51,27 @@ def getList(e, userID):
 	return []
 
 def userJoinedEvent(e, userID):
-	generateList(e, userID)
-	event = EventHandler(e)
-	user = UserHandler(userID)
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
+
 	users = event.getUsers()
 	for u in users:
 		if u.id != user.id:
-			profile = u.getCustomInfo(event)
+			profile = u.getCustomInfo(event)			
 			rec = profile["reccomendList"]
 			rec.append(user.id)
 			profile["reccomendList"] = rec
 			u.setCustomInfo(event, profile)
+
+def generateList(e, userID):
+	event = project.functions.dbHandler.EventHandler(e)
+	user = project.functions.dbHandler.UserHandler(userID)
+	profile = user.getCustomInfo(event)
+	profile["reccomendList"] = event.getUserIds()
+	user.setCustomInfo(event, profile)
+
+	return profile["reccomendList"]
+
 
 """
 
