@@ -55,17 +55,17 @@
 <br><br>
 <div class="col-md-9 col-xl-10">
     <br><br>
-    <div v-if="edit_profile">
+    <div v-if="edit_profile" class="col-md-8">
         <h2>Edit Profile</h2>
         <br><br>
         <h3>Basic Info:</h3>
         <form action='/updateProfile/' method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="name">Your Name</label>
-            <input type="text" class="form-control" placeholder="Your Display Name" name="name" autofocus="">
+            <input type="text" class="form-control" placeholder="Your Display Name" name="name" autofocus="" v-bind:value="userData.name">
 
             <label for="bio">Your Basic Bio</label>
-            <input type="textarea" class="form-control" placeholder="Your bio" name="bio">
+            <textarea rows="4" class="form-control" placeholder="Your bio" name="bio" v-bind:value="userData.bio"> </textarea>
 
             <label for="image">Profile Picture</label>
             <br>
@@ -85,10 +85,18 @@
 
                     <span v-if="typeof events[curr_event].group != 'undefined'">
                         <h3> IN A GROUP! </h3>
-                        <span v-for="user in events[curr_event].group.users">
-                            <h5>${user.name}</h5>
-                            <img v-bind:src="user.image">
-                        </span>
+                        <h4>Here are your group members:</h4>
+                        <div class="row">
+                            <div v-for="user in events[curr_event].group.users" class="col-sm-4">
+                                <h5>${user.name}</h5>
+                                <img v-bind:src="user.image" class="img img-fluid rounded-circle" style=" max-width: 200px;">
+                                <p>${user.bio}</p>
+
+                            </div>
+                            
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-primary btn-lg" v-on:click="rejectGroup">Reject Group</button>
                     </span>
                     <span v-else-if="suggested_usr.name != ''">
                         <h3>other user: ${suggested_usr.name} </h3>
@@ -122,7 +130,7 @@
                 <h3>Why don't you create an event, or join one?</h3>
             </span>
 
-            <br>
+            <br><br><br><br><br>
      </center>
  </div>
 </div>

@@ -163,6 +163,7 @@ def loadData(request):
 			json_events.append(temp)
 
 	response_data['events'] = json_events
+	response_data['userData'] = getUserData(user)
 	return (JsonResponse(response_data))
 
 
@@ -195,6 +196,17 @@ def forceGroups(request):
 	g = getGroup(event,user)
 	if(g != None):
 		response_data['group'] = g
+
+	response_data['success'] = True
+	return (JsonResponse(response_data))
+
+def rejectGroup(request):
+	response_data = {}
+	info = request.GET.dict()
+
+	event = EventHandler(info.get('eventID'))
+	user = UserHandler(request.user.id)
+
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))

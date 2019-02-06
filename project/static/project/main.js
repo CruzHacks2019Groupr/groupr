@@ -64,6 +64,7 @@ var app = function() {
             
             console.log(data)
             self.vue.events = data.events
+            self.vue.userData = data.userData
             if(data.events.length != 0)
                 self.vue.curr_event = 0
             if(data.events.length != 0 && self.vue.events[0].isIn)
@@ -87,6 +88,15 @@ var app = function() {
         var request = {
         }
         var url = "/testFunc1" + "?" + $.param(request);
+
+        $.getJSON(url, function (data) {
+            console.log(data)
+        })
+    }
+    self.rejectGroup =function(){
+        var request = {
+        }
+        var url = "/rejectGroup" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
@@ -131,6 +141,7 @@ var app = function() {
             testFunc1: self.testFunc1,
             testFunc2: self.testFunc2,
             forceGroups: self.forceGroups,
+            rejectGroup: self.rejectGroup,
         }
 
     });

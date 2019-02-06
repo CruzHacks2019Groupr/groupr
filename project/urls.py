@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^event/$', api.event, name='event'),
     url(r'^addevent/$', api.addEvent, name='addevent'),
     url(r'^updateProfile/$', api.updateProfile, name='event'),
+    url(r'^rejectGroup/$', api.rejectGroup, name='event'),
     
 ]
