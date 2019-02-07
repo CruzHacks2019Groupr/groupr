@@ -68,3 +68,11 @@ user_images = [
 "poppins.webp",
 "lebowski.webp",
 "brown.jfif"]
+user_emails = [
+"jsmith@ucsc.edu",
+"jack-sparrow@disney.com",
+"luke_skywalker@cruzio.com",
+"poppins@gmail.com",
+"dont_touch_my_rug@gmail.com",
+"docbrown@aol.net",
+]
