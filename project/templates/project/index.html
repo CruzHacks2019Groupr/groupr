@@ -58,24 +58,34 @@
 
 <br><br>
 
+
 <div class="col-md-9 col-xl-8 offset-xl-1">
     <br><br>
     <div v-if="edit_profile" class="col-md-8">
-        <h2>Edit Profile</h2>
+        <h2><center>Edit Profile</center></h2>
         <br><br>
         <div v-show="userData.bio == null" class="alert alert-dismissible alert-success">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
           <strong>Welcome to Groupr!</strong> Why don't you add some basic info, so that we can get started?
         </div>
         <h3>Basic Info:</h3>
+
+
+        <br>
         <form action='/updateProfile/' method="post" enctype="multipart/form-data">
             {% csrf_token %}
-
-            <input type="text" class="form-control" placeholder="Your Display Name" name="name" id="id_name" autofocus="" v-bind:value="userData.name">
-
-
-            <textarea rows="4" id="id_bio" class="form-control" placeholder="Your bio" name="bio" v-bind:value="userData.bio"> </textarea>
-
+            <div class="form-group">
+                <label for="id_name form-control">Display Name</label>
+                <input type="text" class="form-control" placeholder="Your Display Name" name="name" id="id_name" autofocus="" v-bind:value="userData.name">
+            </div>
+            <div class="form-group">
+                <label for="id_bio form-control">Bio</label>
+                <textarea rows="4" id="id_bio" class="form-control" placeholder="Your bio" name="bio" v-bind:value="userData.bio"> </textarea>
+            </div>
+            <div class="form-group">
+                <label for="id_contact form-control">Phone/email (This will be released to your group after it is formed)</label>
+                <input type="text" class="form-control" placeholder="Contact Info" name="contact" id="id_contact" autofocus="" v-bind:value="userData.contact">
+            </div>
             <div class="fileUpload btn btn-lg btn-primary">
                 <span v-html="inputFileName"> </span>
                 <input id="id_pic" type="file" class="file-input upload" name="pic" v-model="fileName">
