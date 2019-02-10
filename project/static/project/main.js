@@ -5,7 +5,7 @@ var app = function() {
     Vue.config.silent = false; // show all warnings
     
     self.changeEvent = function(num, bool) {
-        self.vue.edit_profile = false
+        if(self.vue.userData.bio != null) self.vue.edit_profile = false
         self.vue.curr_event = num
         if (self.vue.events[num].isIn)
             self.getNextMatch()
@@ -69,6 +69,10 @@ var app = function() {
                 self.vue.curr_event = 0
             if(data.events.length != 0 && self.vue.events[0].isIn)
                 self.getNextMatch()
+            if (self.vue.userData.bio == null){
+                self.vue.edit_profile = true
+            }
+            this.loading = false;
  
         })
     };
@@ -120,6 +124,17 @@ var app = function() {
         el: "#vue-div",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
+        computed: {
+            inputFileName : function() {
+                if(this.fileName == null){
+                    return 'Profile Photo <small>(optional)</small>'
+                }
+                else{
+                    fname = this.fileName.split("\\");
+                    return fname[fname.length- 1];
+                }
+            },
+        },
         data: {
             //booleans
             page_loaded: true,
@@ -132,6 +147,8 @@ var app = function() {
             curr_event: -1,
             events: [],
             userData: null,
+            fileName: null,
+            loading: true,
 
         },
         methods: {

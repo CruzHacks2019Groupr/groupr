@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 
 MEDIA_ROOT = "project"
 
+LOGIN_REDIRECT_URL = "index"
+
+
 # Application definition
 
 INSTALLED_APPS = [

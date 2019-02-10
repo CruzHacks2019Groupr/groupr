@@ -10,4 +10,4 @@ class EventForm(ModelForm):
 class ProfileForm(forms.Form):
 	name = forms.CharField()
 	bio = forms.CharField()
-	pic = forms.ImageField()
+	pic = forms.ImageField(required=False)
