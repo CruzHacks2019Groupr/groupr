@@ -6,27 +6,23 @@ from .dbHandler import GroupHandler
 from .dbHandler import dropMostTables
 
 __MAXRAND__ = 100000
-__NUMUSERS__ = 5
+__NUMUSERS__ = 10
 
 def generateLukeTestCase(userId):
 	dropMostTables(userId)
-	UserHandler(userId).setPic("static/uploads/cone.jfif")
 	userList = []
-	userList.append(userId)
+	userList.append(UserHandler(userId))
 
 	for userNum in range(0, __NUMUSERS__):
 		userList.append(createUser(userNum))
-
-	testEvent = createEvent("CMPS 183", "Web Delevopment Class", userList, 3)
-
+	testEvent = createEvent("CMPS 183", "Web Delevopment Class", userList, 6)
 	#eventhandler won't create duplicate edges
+	print("building graph")
 	for user1 in userList:
 		for user2 in userList:
-			if user1 != userId:
-				testEvent.addEdge(user1,user2, silent=True)
-			if user2 != userId:
-				testEvent.addEdge(user2,user1, silent=True)
-
+			if user1.id != userId:
+				testEvent.addEdge(user1.id,user2.id, silent=True)
+			
 	print("Users")
 
 	for user in userList:
@@ -37,14 +33,19 @@ def generateLukeTestCase(userId):
 	print(testEvent.di.getEdges())
 
 def createUser(userNum):
-	print(str(userNum))
-	u = UserHandler.createUser(user_names[userNum], "00000000")
-	u.setBio(user_bios[userNum])
-	u.setPic("static/uploads/" + user_images[userNum])
-	return u.id
+
+	#u = UserHandler.createUser(user_names[userNum], "00000000")
+	#u.setBio(user_bios[userNum])
+	#u.setPic("static/uploads/" + user_images[userNum])
+	
+	u = UserHandler.createUser("User" + str(userNum), "00000000")
+	u.setBio("I am a robot. Help.")
+
+
+	return u
 
 def createEvent(name, desc, userList, groupSize):
-	eventId = EventHandler.createEvent(name, desc, groupSize, userList[0])
+	eventId = EventHandler.createEvent(name, desc, groupSize, userList[0].id)
 
 	event = EventHandler(eventId)
 

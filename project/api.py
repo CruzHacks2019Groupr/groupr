@@ -44,14 +44,21 @@ def event(request):
 
 def updateProfile(request):
 	if request.method == 'POST':
-		form = ProfileForm(request.POST)
+		form = ProfileForm(request.POST, request.FILES)
+		print(form)
 		if form.is_valid():
+			print("valid")
 			user = UserHandler(request.user.id)
-			p = form.save(commit=False)
+			p = form.cleaned_data
+			print(p)
+			user.setBio(p["bio"])
+			user.setName(p["name"])
+			if p["pic"] is not None:
+				print("updating profile pic")
+				print(p["pic"])
+				user.profile.pic = form.cleaned_data['pic']
+				user.profile.save()
 
-			user.setBio(p.bio)
-			user.setName(p.name)
-			#user.setPic(p.pic)
 	return redirect('index')
 			
 
@@ -169,6 +176,7 @@ def loadData(request):
 
 def getNextMatch(request):
 	print(request)
+	
 	response_data = {}
 	info = request.GET.dict()
 
@@ -180,7 +188,9 @@ def getNextMatch(request):
 		response_data['suggested_usr'] = {'id': -1, 'name': 'a'}
 	
 	response_data['success'] = True
+
 	return (JsonResponse(response_data))
+
 
 def forceGroups(request):
 	response_data = {}

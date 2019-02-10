@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block title %}Groupr{% endblock %}
-{% block head %}<script type="text/javascript" src="static/project/main.js"></script> {% endblock %}
+{% block head %}<script type="text/javascript" src="static/project/main.js"></script> 
+
+
+{% endblock %}
 {% block content %}
 
 <div class="container">
@@ -61,16 +64,15 @@
         <h3>Basic Info:</h3>
         <form action='/updateProfile/' method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="name">Your Name</label>
-            <input type="text" class="form-control" placeholder="Your Display Name" name="name" autofocus="" v-bind:value="userData.name">
 
-            <label for="bio">Your Basic Bio</label>
-            <textarea rows="4" class="form-control" placeholder="Your bio" name="bio" v-bind:value="userData.bio"> </textarea>
+            <input type="text" class="form-control" placeholder="Your Display Name" name="name" id="id_name" autofocus="" v-bind:value="userData.name">
 
-            <label for="image">Profile Picture</label>
-            <br>
-            <input id="id_image" type="file" class="file-input" name="image">
-            <br><br>
+
+            <textarea rows="4" id="id_bio" class="form-control" placeholder="Your bio" name="bio" v-bind:value="userData.bio"> </textarea>
+
+
+            <input id="id_pic" type="file" class="file-input" name="pic">
+
             <input type="submit">
         </form>
 

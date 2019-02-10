@@ -27,6 +27,7 @@ class Event(models.Model):
 	#not actually checked for uniqueness, pls fix
 	addCode = models.CharField(max_length=10)
 
+	customInfo = models.TextField(max_length=2000, default="{}")
 
 	di = models.OneToOneField(
 		Graph,

@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_one/
 #https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/
 
+debug = False
+
 def genHash(len):
 	return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(len))
 
@@ -74,6 +76,7 @@ class GroupHandler:
 	def __init__(self, groupId):
 		if type(groupId) is GroupHandler:
 			groupId = groupId.id
+			self.id
 		self.id = groupId
 		try:
 			self.group = Group.objects.get(id=groupId)
@@ -150,8 +153,14 @@ class UserHandler:
 		return UserHandler(user.id)
 
 	def __init__(self, userId):
+		if debug:
+			print("init UserHandler")
 		if type(userId) is UserHandler:
-			userId = userId.id
+			self.id = userId.id
+			self.user = userId.user
+			self.profile = userId.profile
+			self.exists = userId.exists
+			return
 		try:
 			self.id = userId
 			self.user = User.objects.get(id=userId)
@@ -204,6 +213,7 @@ class UserHandler:
 		ep.save()
 		self.setCustomInfo(ev, {})
 		project.functions.reccomend.generateList(ev, self.id)
+		
 		project.functions.reccomend.userJoinedEvent(ev, self.id)
 		
 
@@ -269,17 +279,13 @@ class UserHandler:
 		ep = EventProfile.objects.get(event=ev.event, user=self.profile)
 		return ep
 
-#================= Helper funcs for list generation ================
-
-#=================================================
-
 #=========== event functions ===============
 class EventHandler:
 	#create event
 	@staticmethod
 	def createEvent(name, desc, groupSize, creator):
 		e = Event()
-
+		
 		e.addCode = genHash(5)
 		while Event.objects.filter(addCode=e.addCode):
 			e.addCode = genHash(5)
@@ -299,8 +305,20 @@ class EventHandler:
 		return EventHandler(e.id)
 
 	def __init__(self, event_id):
+		if debug:
+			print("init eventHandler")
 		if type(event_id) is EventHandler:
-			event_id = event_id.id
+			self.id = event_id.id
+			self.event = event_id.event
+			self.owner = event_id.owner
+			self.di = event_id.di
+			self.undi = event_id.undi
+			self.name = event_id.name
+			self.groupSize = event_id.groupSize
+			self.addCode = event_id.addCode
+			self.description = event_id.description
+			self.exists = event_id.exists
+			return
 		try:
 			self.event = Event.objects.get(id=event_id)
 			self.owner = self.event.owner
@@ -320,6 +338,20 @@ class EventHandler:
 
 	def __repr__(self):
 		return str(self)
+
+	def getCustomInfo(self):
+		info = self.event.customInfo
+		if info is not "":
+			return json.loads(info)
+		else:
+			return {}
+
+	#takes eventHandler and a dict
+	def setCustomInfo(self, d):
+		info = json.dumps(d)
+		self.event.customInfo = info
+		self.event.save(force_update=True)
+
 
 	#returns list of ids (depreciated)
 	def getUserIds(self):
@@ -372,7 +404,7 @@ class EventHandler:
 	#get/set user profile
 
 	def addUser(self, userId):
-		UserHandler(userId).joinEvent(self.addCode)
+		userId.joinEvent(self.addCode)
 
 
 	#DO NOT USE, use addUser

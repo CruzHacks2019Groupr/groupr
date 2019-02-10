@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django import forms
 from .models import Event, Profile
 
 class EventForm(ModelForm):
@@ -6,7 +7,7 @@ class EventForm(ModelForm):
 		model = Event
 		fields = ['name', 'group_size', 'description']
 
-class ProfileForm(ModelForm):
-	class Meta:
-		model = Profile
-		fields = ['name', 'bio', 'pic']
+class ProfileForm(forms.Form):
+	name = forms.CharField()
+	bio = forms.CharField()
+	pic = forms.ImageField()

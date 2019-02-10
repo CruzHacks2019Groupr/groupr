@@ -42,6 +42,7 @@ def popUser(e, userID):
 			return temp
 
 def getList(e, userID):
+
 	event = project.functions.dbHandler.EventHandler(e)
 	user = project.functions.dbHandler.UserHandler(userID)
 	profile = user.getCustomInfo(event)
@@ -51,6 +52,7 @@ def getList(e, userID):
 	return []
 
 def userJoinedEvent(e, userID):
+	
 	event = project.functions.dbHandler.EventHandler(e)
 	user = project.functions.dbHandler.UserHandler(userID)
 

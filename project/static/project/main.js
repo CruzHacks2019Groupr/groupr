@@ -18,7 +18,7 @@ var app = function() {
             "eventID": self.vue.events[self.vue.curr_event].id,
             "acceptedUser": self.vue.suggested_usr.id
         }
-        var url = "/accept" + "?" + $.param(request);
+        var url = "/accept/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
@@ -33,7 +33,7 @@ var app = function() {
         var request = {
             "eventID": self.vue.events[self.vue.curr_event].id
         }
-        var url = "/decline" + "?" + $.param(request);
+        var url = "/decline/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
@@ -47,7 +47,7 @@ var app = function() {
         var request = {
             "eventID": self.vue.events[self.vue.curr_event].id
         }
-        var url = "/getNextMatch" + "?" + $.param(request);
+        var url = "/getNextMatch/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
@@ -58,7 +58,7 @@ var app = function() {
     self.loadData = function(){
         var request = {
         }
-        var url = "/loadData" + "?" + $.param(request);
+        var url = "/loadData/" + "?" + $.param(request);
         $("#vue-div").show();
         $.getJSON(url, function (data) {
             
@@ -77,7 +77,7 @@ var app = function() {
         var request = {
             "eventID": self.vue.events[self.vue.curr_event].id
         }
-        var url = "/forceGroups" + "?" + $.param(request);
+        var url = "/forceGroups/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
@@ -87,7 +87,7 @@ var app = function() {
     self.testFunc1 =function(){
         var request = {
         }
-        var url = "/testFunc1" + "?" + $.param(request);
+        var url = "/testFunc1/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
@@ -97,7 +97,7 @@ var app = function() {
     self.rejectGroup =function(){
         var request = {
         }
-        var url = "/rejectGroup" + "?" + $.param(request);
+        var url = "/rejectGroup/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
@@ -108,7 +108,7 @@ var app = function() {
     self.testFunc2 =function(){
         var request = {
         }
-        var url = "/testFunc2" + "?" + $.param(request);
+        var url = "/testFunc2/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
             console.log(data)
