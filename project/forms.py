@@ -11,3 +11,4 @@ class ProfileForm(forms.Form):
 	name = forms.CharField()
 	bio = forms.CharField()
 	pic = forms.ImageField(required=False)
+	contactInfo = forms.CharField()

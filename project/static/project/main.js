@@ -14,30 +14,37 @@ var app = function() {
 
     self.accept = function(){
 
-        var request = {
-            "eventID": self.vue.events[self.vue.curr_event].id,
-            "acceptedUser": self.vue.suggested_usr.id
-        }
-        var url = "/accept/" + "?" + $.param(request);
-
-        $.getJSON(url, function (data) {
-            console.log(data)
-            if(typeof data.group != "undefined") {
-                self.vue.events[self.vue.curr_event].group = data.group
+        $("#suggestedUserView").fadeTo(400,0, function(){
+            var request = {
+                "eventID": self.vue.events[self.vue.curr_event].id,
+                "acceptedUser": self.vue.suggested_usr.id
             }
-            self.getNextMatch()
+            var url = "/accept/" + "?" + $.param(request);
+
+            $.getJSON(url, function (data) {
+                console.log(data)
+                if(typeof data.group != "undefined") {
+                    self.vue.events[self.vue.curr_event].group = data.group
+                }
+                self.getNextMatch()
+                 $("#suggestedUserView").fadeTo(600,1)
+            })
         })
+
     };
 
     self.decline = function(){
-        var request = {
-            "eventID": self.vue.events[self.vue.curr_event].id
-        }
-        var url = "/decline/" + "?" + $.param(request);
+        $("#suggestedUserView").fadeTo(400,0, function(){
+            var request = {
+                "eventID": self.vue.events[self.vue.curr_event].id
+            }
+            var url = "/decline/" + "?" + $.param(request);
 
-        $.getJSON(url, function (data) {
-            console.log(data)
-            self.getNextMatch()
+            $.getJSON(url, function (data) {
+                console.log(data)
+                self.getNextMatch()
+                $("#suggestedUserView").fadeTo(600,1)
+            })
         })
 
     };
@@ -59,7 +66,7 @@ var app = function() {
         var request = {
         }
         var url = "/loadData/" + "?" + $.param(request);
-        $("#vue-div").show();
+        
         $.getJSON(url, function (data) {
             
             console.log(data)
@@ -72,7 +79,9 @@ var app = function() {
             if (self.vue.userData.bio == null){
                 self.vue.edit_profile = true
             }
-            this.loading = false;
+            self.vue.page_loaded = true;
+            $("#vue-div").delay(100).fadeIn();
+
  
         })
     };
@@ -137,7 +146,7 @@ var app = function() {
         },
         data: {
             //booleans
-            page_loaded: true,
+            page_loaded: false,
             edit_profile: false,
             suggested_usr: {
                 name: "",
@@ -148,7 +157,7 @@ var app = function() {
             events: [],
             userData: null,
             fileName: null,
-            loading: true,
+            loading: false,
 
         },
         methods: {

@@ -1,6 +1,7 @@
 from project.models import Event
 import project.functions.dbHandler
 
+MODE = 1
 
 def reccomendNext(e,userID):
 	event = project.functions.dbHandler.EventHandler(e)
@@ -9,10 +10,27 @@ def reccomendNext(e,userID):
 	# profile is a dict containing all private user info for the given event
 	profile = user.getCustomInfo(event)
 
+
 	#check if the user has the reccomend list. It should be generated during joinEvent probably.
 	if "reccomendList" not in profile:
 		generateList(e, userID)
 		profile = user.getCustomInfo(event)
+
+	if MODE == 1:
+		#update our list
+		changes = event.getCustomInfo()['changes']
+		changedStuff = False
+		while len(changes) > profile['changePos']:
+			changedStuff = True
+			(cmd,usrId) = changes[profile['changePos']]
+			if cmd == "add":
+				profile["reccomendList"].append(usrId)
+				profile['changePos'] += 1
+		if(changedStuff):
+			user.setCustomInfo(event, profile)
+
+
+
 
 	rec = profile["reccomendList"]
 	
@@ -54,21 +72,39 @@ def getList(e, userID):
 def userJoinedEvent(e, userID):
 	
 	event = project.functions.dbHandler.EventHandler(e)
-	user = project.functions.dbHandler.UserHandler(userID)
+	
 
-	users = event.getUsers()
-	for u in users:
-		if u.id != user.id:
-			profile = u.getCustomInfo(event)			
-			rec = profile["reccomendList"]
-			rec.append(user.id)
-			profile["reccomendList"] = rec
-			u.setCustomInfo(event, profile)
+	#we need to update everyone else's list
+
+
+	#let's try just not doing this and pretend we did
+	if MODE == 0:
+		user = project.functions.dbHandler.UserHandler(userID)
+		users = event.getUsers()
+		for u in users:
+			if u.id != user.id:
+				profile = u.getCustomInfo(event)			
+				rec = profile["reccomendList"]
+				rec.append(user.id)
+				profile["reccomendList"] = rec
+				u.setCustomInfo(event, profile)
+
+	if MODE == 1:
+		eventInfo = event.getCustomInfo()
+		#add the tuple ('add', #)
+		eventInfo['changes'].append(("add", userID))
+		event.setCustomInfo(eventInfo)
+
+
 
 def generateList(e, userID):
 	event = project.functions.dbHandler.EventHandler(e)
 	user = project.functions.dbHandler.UserHandler(userID)
 	profile = user.getCustomInfo(event)
+	if MODE == 1:
+		changes = event.getCustomInfo()['changes']
+		profile['changePos'] = len(changes)
+
 	profile["reccomendList"] = event.getUserIds()
 	user.setCustomInfo(event, profile)
 

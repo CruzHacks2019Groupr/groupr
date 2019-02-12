@@ -6,7 +6,7 @@ from .dbHandler import GroupHandler
 from .dbHandler import dropMostTables
 
 __MAXRAND__ = 100000
-__NUMUSERS__ = 10
+__NUMUSERS__ = 20
 
 def generateLukeTestCase(userId):
 	dropMostTables(userId)
@@ -40,6 +40,7 @@ def createUser(userNum):
 	
 	u = UserHandler.createUser("User" + str(userNum), "00000000")
 	u.setBio("I am a robot. Help.")
+	u.setContactInfo("User" + str(userNum) + "@groupr.net")
 
 
 	return u

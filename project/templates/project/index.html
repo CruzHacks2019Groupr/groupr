@@ -8,7 +8,8 @@
 {% block content %}
 
 <div class="container">
-	<div class="row">
+
+	<div class="row" id="website" v-if="page_loaded">
 
 		<div class=" col-md-3 col-xl-2 sidenav" v-show="logged_in">
             <div style="padding-left: 30px;">
@@ -84,7 +85,7 @@
             </div>
             <div class="form-group">
                 <label for="id_contact form-control">Phone/email (This will be released to your group after it is formed)</label>
-                <input type="text" class="form-control" placeholder="Contact Info" name="contact" id="id_contact" autofocus="" v-bind:value="userData.contact">
+                <input type="text" class="form-control" placeholder="Contact Info" name="contactInfo" id="id_contact" autofocus="" v-bind:value="userData.contact">
             </div>
             <div class="fileUpload btn btn-lg btn-primary">
                 <span v-html="inputFileName"> </span>
@@ -105,21 +106,34 @@
                     <span v-if="typeof events[curr_event].group != 'undefined'">
                         <h4>Here is your group:</h4>
                         <br>
+                        <div class="container">
+                            <center>
                         <div class="row">
-                            <div v-for="user in events[curr_event].group.users" class="col-sm-4">
-                                <img v-bind:src="user.image" class="rounded-circle" style=" width: 200px; height: 200px;">
-                                <h4>${user.name}</h4>
-                                <h7>${user.bio}</h7>
-
+ 
+                                <div v-for="user in events[curr_event].group.users" class=" col-md-6 col-xl-4" >
+                                    <div class=" card mx-2 my-4">
+                                <h4 class="card-header">${user.name}</h4>
+                                <center>
+                                <img v-bind:src="user.image" class="rounded-circle mt-2" style=" width: 200px; height: 200px;">
+                            </center>
+                                <div class="card-body">
+                                    <p class="card-text">${user.bio}</p>
+                                </div>
+                                <h6>${user.contactInfo}</h6>
                             </div>
-                            
+                            </div>
+                            </div>
+                        </center>
                         </div>
+                            
+                            
+                        
                         <br>
                         <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc1">Reject Group</button>
                     </span>
 
                     <span v-else-if="suggested_usr.name != ''">
-                        <div class="row">
+                        <div class="row" id="suggestedUserView">
                             <div class="col-md-6">
                                 <img v-bind:src="suggested_usr.image" class="img img-fluid rounded-circle" style=" width: 300px; height: 300px;">
                             </div>

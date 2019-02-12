@@ -68,6 +68,7 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	name = models.TextField(max_length=30, blank=True,null=True)
 	bio = models.TextField(max_length=500,blank=True,null=True)
+	contactInfo = models.TextField(max_length=60, blank=True,null=True)
 
 	age = models.IntegerField(blank=True,null=True)
 	pic = models.ImageField(upload_to = 'static/uploads/', default = 'static/uploads/no-img.jpg')

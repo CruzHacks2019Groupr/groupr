@@ -212,9 +212,12 @@ class UserHandler:
 		ep.event = ev.event
 		ep.save()
 		self.setCustomInfo(ev, {})
+
 		project.functions.reccomend.generateList(ev, self.id)
-		
 		project.functions.reccomend.userJoinedEvent(ev, self.id)
+
+
+		
 		
 
 	#takes eventHandler, returns dict of custom info
@@ -242,6 +245,12 @@ class UserHandler:
 		self.profile.bio = bio
 		self.profile.save()
 
+	def getContactInfo(self):
+		return self.profile.contactInfo
+
+	def setContactInfo(self, info):
+		self.profile.contactInfo = info
+		self.profile.save()
 	def getPic(self):
 		return self.profile.pic
 
@@ -302,7 +311,9 @@ class EventHandler:
 		e.owner = creator
 		e.description = desc
 		e.save()
-		return EventHandler(e.id)
+		handler = EventHandler(e.id)
+		handler.setCustomInfo({'changes': []})
+		return handler
 
 	def __init__(self, event_id):
 		if debug:
@@ -330,6 +341,7 @@ class EventHandler:
 			self.addCode = self.event.addCode
 			self.description = self.event.description
 			self.exists = True
+			
 		except Event.DoesNotExist:
 			self.exists = False
 

@@ -11,11 +11,14 @@ from .forms import EventForm, ProfileForm
 from .functions import dbTest
 from .functions import dbHandler
 
+import time
 
 def testFunc1(request):
 	print("testFunc1")
-
+	start = time.time()
 	dbTest.generateLukeTestCase(request.user.id)
+	end = time.time()
+	print("TIME DIFF: ", start - end)
 	response_data = {}
 	response_data['success'] = True
 	return (JsonResponse(response_data))
@@ -53,6 +56,7 @@ def updateProfile(request):
 			print(p)
 			user.setBio(p["bio"])
 			user.setName(p["name"])
+			user.setContactInfo(p["contactInfo"])
 			if p["pic"] is not None:
 				print("updating profile pic")
 				print(p["pic"])
@@ -79,7 +83,7 @@ def getGroup(event, user):
 		groupObj = {}
 		groupObj['id'] = group.id
 		groupObj['hash'] = group.hash
-		groupObj['users'] = [getUserData(u) for u in group.getUsers()]
+		groupObj['users'] = [getUserData(u, contactInfo=True) for u in group.getUsers()]
 		return groupObj
 	return None
 
@@ -115,7 +119,7 @@ def decline(request):
 	return (JsonResponse(response_data))
 
 #helper function
-def getUserData(userId, event=None):
+def getUserData(userId, event=None, contactInfo=False):
 	user = UserHandler(userId)
 	data = {}
 	data["name"] = user.getName()
@@ -125,6 +129,8 @@ def getUserData(userId, event=None):
 	if event is not None:
 		event = EventHandler(event)
 		#more here later
+	if contactInfo:
+		data["contactInfo"] = user.getContactInfo()
 	return data
 
 
@@ -185,7 +191,7 @@ def getNextMatch(request):
 	if(suggestedUser != None):
 		response_data['suggested_usr'] = getUserData(suggestedUser)
 	else:
-		response_data['suggested_usr'] = {'id': -1, 'name': 'a'}
+		response_data['suggested_usr'] = {'id': -1, 'name': ''}
 	
 	response_data['success'] = True
 
