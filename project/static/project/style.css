@@ -88,3 +88,22 @@ h1 small{
   opacity: 0;
   filter: alpha(opacity=0);
 }
+
+.loadingIndicator{
+  position: fixed;
+  left: 50%;
+  right: 50%;
+  top: 50%;
+  bottom: 50%;
+  z-index: 4;
+}
+
+.fade-enter-active{
+  transition: opacity .6s;
+}
+.fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}

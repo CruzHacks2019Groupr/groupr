@@ -15,6 +15,7 @@ var app = function() {
     self.accept = function(){
 
         $("#suggestedUserView").fadeTo(400,0, function(){
+            self.vue.loading = true
             var request = {
                 "eventID": self.vue.events[self.vue.curr_event].id,
                 "acceptedUser": self.vue.suggested_usr.id
@@ -35,6 +36,7 @@ var app = function() {
 
     self.decline = function(){
         $("#suggestedUserView").fadeTo(400,0, function(){
+            self.vue.loading = true
             var request = {
                 "eventID": self.vue.events[self.vue.curr_event].id
             }
@@ -57,6 +59,7 @@ var app = function() {
         var url = "/getNextMatch/" + "?" + $.param(request);
 
         $.getJSON(url, function (data) {
+            self.vue.loading = false
             console.log(data)
             self.vue.suggested_usr = data.suggested_usr
         })
@@ -98,6 +101,8 @@ var app = function() {
     }
 
     self.testFunc1 =function(){
+        $("#mainPage").fadeTo(300,0)
+        self.vue.loading = true
         var request = {
         }
         var url = "/testFunc1/" + "?" + $.param(request);
@@ -105,6 +110,8 @@ var app = function() {
         $.getJSON(url, function (data) {
             console.log(data)
             self.vue.loadData()
+            $("#mainPage").fadeTo(300,1)
+            self.vue.loading = false
         })
     }
     self.rejectGroup =function(){

@@ -9,6 +9,10 @@
 
 <div class="container">
 
+    <transition name="fade" v-if="loading">
+        <img src="static/project/loading.svg" class="loadingIndicator">
+    </transition>
+
 	<div class="row" id="website" v-if="page_loaded">
 
 		<div class=" col-md-3 col-xl-2 sidenav" v-show="logged_in">
@@ -60,7 +64,7 @@
 <br><br>
 
 
-<div class="col-md-9 col-xl-8 offset-xl-1">
+<div class="col-md-9 col-xl-8 offset-xl-1" id="mainPage">
     <br><br>
     <div v-if="edit_profile" class="col-md-8">
         <h2><center>Edit Profile</center></h2>
@@ -132,8 +136,8 @@
                         <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc1">Reject Group</button>
                     </span>
 
-                    <span v-else-if="suggested_usr.name != ''">
-                        <div class="row" id="suggestedUserView">
+                    <span v-else-if="suggested_usr.name != ''" id="suggestedUserView">
+                        <div class="row" >
                             <div class="col-md-6">
                                 <img v-bind:src="suggested_usr.image" class="img img-fluid rounded-circle" style=" width: 300px; height: 300px;">
                             </div>
