@@ -386,9 +386,9 @@ class EventHandler:
 		self.di.deleteEdge(sourceUser, destinationUser)
 		undiEdges = self.undi.getEdges()
 		if (destinationUser, sourceUser) in undiEdges:
-			self.undi.deleteEdge(destinationUser, sourceUser)
+			self.undi.deleteEdge(destinationUser, sourceUser, silent=True)
 		if (sourceUser, destinationUser) in undiEdges:
-			self.undi.deleteEdge(sourceUser, destinationUser)
+			self.undi.deleteEdge(sourceUser, destinationUser, silent=True)
 
 	def G(self):
 		g = nx.Graph()

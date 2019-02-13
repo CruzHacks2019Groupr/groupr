@@ -52,7 +52,7 @@ var app = function() {
     };
 
     self.getNextMatch = function(){
-
+        self.vue.confirmReject = false
         var request = {
             "eventID": self.vue.events[self.vue.curr_event].id
         }
@@ -115,14 +115,24 @@ var app = function() {
         })
     }
     self.rejectGroup =function(){
-        var request = {
+        if(self.vue.confirmReject == false){
+            self.vue.confirmReject = true
         }
-        var url = "/rejectGroup/" + "?" + $.param(request);
+        else{
+            $("#mainPage").fadeTo(300,0)
+            loading = true
+            var request = {
+                "eventID": self.vue.events[self.vue.curr_event].id
+            }
+            var url = "/rejectGroup/" + "?" + $.param(request);
 
-        $.getJSON(url, function (data) {
-            console.log(data)
+            $.getJSON(url, function (data) {
+                console.log(data)
+                self.loadData()
+                $("#mainPage").fadeTo(300,1)
+            })
+        }
 
-        })
     }
 
     self.testFunc2 =function(){
@@ -162,12 +172,16 @@ var app = function() {
             logged_in: true,
             curr_event: -1,
             events: [],
-            userData: null,
+            userData: {
+                image: null,
+            },
             fileName: null,
             loading: false,
+            confirmReject: false,
 
         },
         methods: {
+
             accept: self.accept,
             decline: self.decline,
             getNextMatch: self.getNextMatch,
@@ -177,6 +191,9 @@ var app = function() {
             testFunc2: self.testFunc2,
             forceGroups: self.forceGroups,
             rejectGroup: self.rejectGroup,
+            toggleEditMode: function(){
+                if(this.userData.bio != null) this.edit_profile = !this.edit_profile
+            }
         }
 
     });

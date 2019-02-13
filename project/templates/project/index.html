@@ -53,7 +53,7 @@
             <a href='#' v-bind:class="{active: (i == curr_event && !edit_profile)}" v-on:click="changeEvent(i, false)">${e.name}</a>
         </span>
         <p>----------</p>
-        <span><h3><a href="#" v-bind:class="{active: edit_profile}" v-on:click="if(userData.bio != null) edit_profile = !edit_profile">Edit Profile</a></h3></span>
+        <span><img :src="userData.image" class="rounded-circle mt-2" style=" width: 50px; height: 50px; margin-left: 3em;"> <h3><a href="#" v-bind:class="{active: edit_profile}" v-on:click="toggleEditMode"> Edit Profile</a></h3></span>
         <span><h3></h3></span>
     </div>
     <br><br><br><hr><br>
@@ -89,13 +89,13 @@
             </div>
             <div class="form-group">
                 <label for="id_contact form-control">Phone/email (This will be released to your group after it is formed)</label>
-                <input type="text" class="form-control" placeholder="Contact Info" name="contactInfo" id="id_contact" autofocus="" v-bind:value="userData.contact">
+                <input type="text" class="form-control" placeholder="Contact Info" name="contactInfo" id="id_contact" autofocus="" v-bind:value="userData.contactInfo">
             </div>
             <div class="fileUpload btn btn-lg btn-primary">
                 <span v-html="inputFileName"> </span>
-                <input id="id_pic" type="file" class="file-input upload" name="pic" v-model="fileName">
+                <input id="id_pic" type="file" class="file-input upload" name="pic" @input="fileName = $event.target.value">
             </div>
-            <input type="submit" class="btn btn-lg btn-secondary">
+            <input type="submit" class="btn btn-lg btn-success" value="Save">
         </form>
 
     </div>
@@ -116,7 +116,7 @@
  
                                 <div v-for="user in events[curr_event].group.users" class=" col-md-6 col-xl-4" >
                                     <div class=" card mx-2 my-4">
-                                <h4 class="card-header">${user.name}</h4>
+                                <h4 class="card-header">${user.name}<span v-if="user.id == userData.id" class="text-muted"> <small>(You!)</small></span></h4>
                                 <center>
                                 <img v-bind:src="user.image" class="rounded-circle mt-2" style=" width: 200px; height: 200px;">
                             </center>
@@ -133,7 +133,9 @@
                             
                         
                         <br>
-                        <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc1">Reject Group</button>
+                        <h5 class="text-warning" v-show="confirmReject">Are you sure? <br>This will Destroy the group for everyone!</h5>
+                        <button type="button" class="btn btn-primary btn-lg" v-on:click="rejectGroup">Reject Group</button>
+
                     </span>
 
                     <span v-else-if="suggested_usr.name != ''" id="suggestedUserView">

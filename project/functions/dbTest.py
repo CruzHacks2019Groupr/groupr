@@ -6,7 +6,7 @@ from .dbHandler import GroupHandler
 from .dbHandler import dropMostTables
 
 __MAXRAND__ = 100000
-__NUMUSERS__ = 20
+__NUMUSERS__ = 15
 
 def generateLukeTestCase(userId):
 	dropMostTables(userId)

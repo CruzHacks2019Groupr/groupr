@@ -176,7 +176,7 @@ def loadData(request):
 			json_events.append(temp)
 
 	response_data['events'] = json_events
-	response_data['userData'] = getUserData(user)
+	response_data['userData'] = getUserData(user, contactInfo = True)
 	return (JsonResponse(response_data))
 
 
@@ -199,6 +199,7 @@ def getNextMatch(request):
 
 
 def forceGroups(request):
+	print("forceGroups")
 	response_data = {}
 	info = request.GET.dict()
 
@@ -221,8 +222,10 @@ def rejectGroup(request):
 	info = request.GET.dict()
 
 	event = EventHandler(info.get('eventID'))
+	print(event.exists)
 	user = UserHandler(request.user.id)
-
+	group = user.getGroups(event)
+	disbandGroup(group,event)
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))

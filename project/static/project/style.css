@@ -10,6 +10,7 @@
 }
 
 .sidenav .active{
+
   color: #ccc;
   font-weight: bold;
 }
@@ -20,7 +21,9 @@
   padding-left: 0px;
   left: 0;
   background-color: #333;
-  position: relative;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
   float: left;
 }
 .container{
@@ -90,6 +93,7 @@ h1 small{
 }
 
 .loadingIndicator{
+
   position: fixed;
   left: 50%;
   right: 50%;
@@ -99,11 +103,18 @@ h1 small{
 }
 
 .fade-enter-active{
+  animation-delay: 5s;
+  transition-delay: 5s;
   transition: opacity .6s;
+
 }
 .fade-leave-active {
   transition: opacity .3s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.about{
+  background-color: #333;
+  padding: 50px;
 }
