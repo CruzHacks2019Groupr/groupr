@@ -33,7 +33,7 @@ def leaveGroup(group, event, user):
 			if(otherUser.id not in reccomendList):
 				#add users to the front of the list
 				reccomendList.insert(0 , otherUser.id)
-			event.removeEdge(user.id,otherUser.id)
+			event.removeEdge(user.id,otherUser.id, silent=True)
 	profile['reccomendList'] = reccomendList
 	user.setCustomInfo(event,profile)
 	group.group.users.remove(user._getEventProfile(event))
