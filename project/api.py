@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
-from .functions.reccomend import *
-from .functions.dbHandler import EventHandler, UserHandler, GroupHandler
 from django.contrib.auth.models import User
-from .functions.matcher import *
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.http import QueryDict
 from .forms import EventForm, ProfileForm
+
+from django.http import QueryDict
+from .functions.matcher import *
+from .functions.reccomend import *
+from .functions.groupFunctions import *
+from .functions.dbHandler import EventHandler, UserHandler, GroupHandler
 from .functions import dbTest
 from .functions import dbHandler
 
@@ -209,6 +211,7 @@ def forceGroups(request):
 	if event.owner != user.id:
 		return
 		print("user is not event owner!!")
+
 	project.functions.matcher.forceGroups(event)
 	g = getGroup(event,user)
 	if(g != None):
@@ -225,7 +228,7 @@ def rejectGroup(request):
 	print(event.exists)
 	user = UserHandler(request.user.id)
 	group = user.getGroups(event)
-	disbandGroup(group,event)
+	leaveGroup(group,event, user)
 
 	response_data['success'] = True
 	return (JsonResponse(response_data))
