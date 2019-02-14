@@ -16,6 +16,9 @@ from .functions import dbHandler
 import time
 
 def testFunc1(request):
+	#for production
+	return
+
 	print("testFunc1")
 	start = time.time()
 	dbTest.generateLukeTestCase(request.user.id)
@@ -26,6 +29,9 @@ def testFunc1(request):
 	return (JsonResponse(response_data))
 
 def testFunc2(request):
+	#for production
+	return
+	
 	print("testFunc2")
 	dbHandler.dropAllTables()
 
