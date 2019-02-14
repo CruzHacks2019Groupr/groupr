@@ -15,20 +15,23 @@ def findPerfectGroup(Event, User):
 
 def forceGroups(Event):
 	possibleGroups = list(itertools.combinations(list(Event.DG()), Event.groupSize))    		#All combinations of the Node list in groups of length n are stored in list
+	dg = Event.DG()
+	print(possibleGroups)
 	i = 0
 	groupCombo = [list(list())]	
 	scoreList = []										  										#Nested loops build a combination of groups (disjoint is used to make sure the same person doesnt end up in a group twice)
 	while i < len(possibleGroups) and not set(possibleGroups[0]).isdisjoint(possibleGroups[i]):
+		print(i)
 		groupCombo.append([])
 		groupCombo[i].append(possibleGroups[i])                         						#Add first group
-		scoreList.append(computeScore(Event, possibleGroups[i]))           						#Add score of first group
+		scoreList.append(computeScore(dg, possibleGroups[i]))           						#Add score of first group
 		j = i + 1
 		while j < len(possibleGroups):
 			for k in groupCombo[i]:                                        						#Checks if any shared members in current running groupCombo
 				if not set(k).isdisjoint(possibleGroups[j]):
 					break												   						#Breaks if shared members
 				groupCombo[i].append(possibleGroups[j])                    						#If there is no break then group is added to combo
-				scoreList[i] += computeScore(Event, possibleGroups[j])            				#Score is added as well
+				scoreList[i] += computeScore(dg, possibleGroups[j])            				#Score is added as well
 			j+=1
 		i+=1
 
@@ -44,12 +47,13 @@ def forceGroups(Event):
 			Event._removeUserFromGraph(l)
 
 	groupList.append(GroupHandler.createGroup(list(Event.DG()), Event))
+	print(groupList)
 	return groupList
 
-def computeScore(Event, L):													   				#For a given group computes the score, which is the number edges
+def computeScore(DG, L):													   				#For a given group computes the score, which is the number edges
 	score = 0
 	for i in L:
 		for j in L:
-			if i != j and i in Event.DG().neighbors(j):
+			if i != j and i in DG.neighbors(j):
 				score+=1;
 	return score
