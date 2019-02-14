@@ -382,7 +382,7 @@ class EventHandler:
 			self.undi.addEdge(destinationUser, sourceUser, silent)
 
 	#takes ids
-	def removeEdge(self, sourceUser, destinationUser):
+	def removeEdge(self, sourceUser, destinationUser, silent=False):
 		self.di.deleteEdge(sourceUser, destinationUser)
 		undiEdges = self.undi.getEdges()
 		if (destinationUser, sourceUser) in undiEdges:
