@@ -1,1 +1,2 @@
-from hackathon.wsgi import main as app
+from hackathon.wsgi import application
+app = application
