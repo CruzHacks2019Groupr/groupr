@@ -1,0 +1,1 @@
+from hackathon.wsgi import main as app
