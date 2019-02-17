@@ -6,7 +6,7 @@ from .dbHandler import GroupHandler
 from .dbHandler import dropMostTables
 
 __MAXRAND__ = 100000
-__NUMUSERS__ = 15
+__NUMUSERS__ = 6
 
 def generateLukeTestCase(userId):
 	dropMostTables(userId)
@@ -15,7 +15,7 @@ def generateLukeTestCase(userId):
 
 	for userNum in range(0, __NUMUSERS__):
 		userList.append(createUser(userNum))
-	testEvent = createEvent("CMPS 183", "Web Delevopment Class", userList, 6)
+	testEvent = createEvent("CMPS 183", "Web Development Class", userList, 4)
 	#eventhandler won't create duplicate edges
 	print("building graph")
 	for user1 in userList:
@@ -34,13 +34,14 @@ def generateLukeTestCase(userId):
 
 def createUser(userNum):
 
-	#u = UserHandler.createUser(user_names[userNum], "00000000")
-	#u.setBio(user_bios[userNum])
-	#u.setPic("static/uploads/" + user_images[userNum])
-	
-	u = UserHandler.createUser("User" + str(userNum), "00000000")
-	u.setBio("I am a robot. Help.")
-	u.setContactInfo("User" + str(userNum) + "@groupr.net")
+	u = UserHandler.createUser(user_names[userNum], "00000000")
+	u.setBio(user_bios[userNum])
+	u.setPic("static/uploads/" + user_images[userNum])
+	u.setContactInfo(user_emails[userNum])
+
+	#u = UserHandler.createUser("User" + str(userNum), "00000000")
+	#u.setBio("I am a robot. Help.")
+	#u.setContactInfo("User" + str(userNum) + "@groupr.net")
 
 
 	return u

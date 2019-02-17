@@ -10,11 +10,11 @@ from django.contrib.auth.forms import UserCreationForm
 
 pusher = Pusher(app_id=u'694776', key=u'4105ec1d8d985dcf27bf', secret=u'1cf25393f1f636e8dc3e' ,cluster=u'us2')
 
-@login_required(login_url='/landing/')
+
 def index(request):
     print(request.user)
-    if request.user is None:
-        return redirect('landing')
+    if not request.user.is_authenticated:
+        return render(request, 'project/landing.html')
     return render(request, 'project/index.html')
 
 def landing(request):
