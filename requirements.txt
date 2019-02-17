@@ -3,3 +3,4 @@ networkx==2.2
 Pillow==5.4.1
 pusher==2.1.2
 PyMySQL==0.9.3
+mysqlclient==1.4.2.post1
