@@ -36,7 +36,7 @@ def forceGroups(Event):
 		i+=1
 
 	BestIndex = 0
-	for k in range(len(scoreList)):													   			#Finds best group combo (highest score)
+	for k in range(len(scoreList)):											   			#Finds best group combo (highest score)
 		if scoreList[k] > scoreList[BestIndex]:
 			BestIndex = k
 

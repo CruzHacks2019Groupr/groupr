@@ -57,8 +57,7 @@
         <span><h3></h3></span>
     </div>
     <br><br><br><hr><br>
-    <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc1">Reset Demo</button>
-    <button type="button" class="btn btn-primary btn-lg" v-on:click="testFunc2">Clear DB</button>
+
 </div>
 
 <br><br>
@@ -150,9 +149,10 @@
                                 <h5 style="line-height: 28px;">${suggested_usr.bio}</h5>
                             </div>
                         </div>
-                        <br>               
+                        <br>
+                        <button type="button" class="btn acceptdecline btn-primary btn-lg" v-on:click="decline">decline</button>               
                         <button type="button" class="btn acceptdecline btn-primary btn-lg" v-on:click="accept">accept</button>
-                        <button type="button" class="btn acceptdecline btn-primary btn-lg" v-on:click="decline">decline</button>
+
                     </span>
 
                     <span v-else>
